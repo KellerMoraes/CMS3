@@ -1,0 +1,151 @@
+<template>
+  <main >
+    <zoompinch
+ref="zoompinchRef"
+v-model:transform="transform"
+:width="1300"
+:height="900"
+:offset="{ top: 10, right: 500, bottom: 10, left: 85 }"
+:min-scale="0.4"
+:max-scale="10.0"
+:bounds="false"
+:mouse="pan"
+wheel
+
+>
+<template #canvas>
+  <div class="board">
+  <Draggable :style="pan ? 'pointer-events: none' : ''"
+  :list="paginaStore.subpaginaAtiva.filhos"
+  :item-key="'nomeTag'"
+  class="v-container v-container--fluid pr-10"
+  :group="{ name: 'linhas' }"
+  >
+  <template #item="{ element, index }">
+    <component
+    :is="Linha"
+    :key="element.nomeTag"
+    v-model="paginaStore.subpaginaAtiva.filhos[index]"
+    />
+  </template>
+  </Draggable>
+  <v-btn :style="pan ? 'pointer-events: none' : ''"
+  location="bottom"
+  class="mt-6 "
+  icon="mdi-plus"
+  @click.exact="adicionarLinha()"
+  />
+  </div>
+</template>
+<template v-slot:matrix="{ composePoint }">
+  <svg xmlns="http://www.w3.org/2000/svg" @click="handleClickOnLayer">
+    <!-- This circle will stick to the center of the canvas -->
+    <circle :cx="composePoint(0.5, 0.5)[0]" :cy="composePoint(0.5, 0.5)[1]" r="5" style="opacity: 0;" />
+  </svg>
+</template>
+</zoompinch>
+  </main>
+</template>
+
+<script setup>
+import Draggable from "vuedraggable";
+import Linha from "@/components/Componentes/Genericos/Linha.vue";
+import { ListaDeElementos } from "@/model/Elementos";
+import { usePaginaStore } from '@/stores/pagina.js';
+import { useGoTo } from 'vuetify';
+import { computed, ref } from 'vue';
+import { Zoompinch } from '@/libs/zoompinch/index';
+import 'zoompinch/style.css';
+const pan = ref(false)
+const transform = ref({
+  x: 0,
+  y: 0,
+  scale: 0.1,
+});
+onMounted(() => {
+  document.addEventListener('keydown', handleKeyDown);
+  document.addEventListener('keyup', handleKeyUp);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeyDown);
+  document.removeEventListener('keyup', handleKeyUp);
+});
+function handleKeyDown(event) {
+  if (event.code === 'Space') {
+    pan.value = true;
+  }
+}
+
+function handleKeyUp(event) {
+  if (event.code === 'Space') {
+    pan.value = false;
+  }
+}
+
+const zoompinchRef = ref();
+const goTo = useGoTo();
+let paginaStore = usePaginaStore();
+paginaStore.pagina = new ListaDeElementos.Pagina("Pagina Teste", 5, "11/05/2024");
+paginaStore.pagina.filhos.push(new ListaDeElementos.SubPagina());
+paginaStore.MudarSubPaginaAtiva(0);
+
+paginaStore.tamanhoColunagemResponsiva = computed(() => {
+  switch (name.value) {
+    case 'xs':
+    case 'sm':
+      return { editor: '8', configuracao: '4' };
+    case 'md':
+    case 'lg':
+    case 'xl':
+      return { editor: '9', configuracao: '3' };
+    case 'xxl':
+      return { editor: '10', configuracao: '2' };
+    default:
+      return { editor: '8', configuracao: '4' }; // Valor padrão para casos não previstos
+  }
+});
+function handleClickOnLayer(event) {
+  console.log(event)
+  const [x, y] = zoompinchRef.value?.normalizeMatrixCoordinates(event.clientX, event.clientY);
+
+  console.log('clicked at', x, y);
+}
+function adicionarLinha() {
+  let linha = new ListaDeElementos.Linha();
+  paginaStore.subpaginaAtiva.filhos.push(linha);
+  // setTimeout(() => { 
+  //   goTo(10000, {
+  //     duration: 300,
+  //     easing: "easeInOutCubic",
+  //     offset: 0,
+  //   });
+  // }, 100);
+}
+function espaco(){
+  console.log("ceta")
+  // teste.value = true
+}
+</script>
+
+<style scoped lang="scss">
+
+main {
+  height: 100%;
+  width: 100%;
+  // display: grid;
+  // grid-template-columns: 4.17vw 72.17vw 8.33vw;
+}
+
+.board {
+  // grid-column: 2; /* Define que a div.board ocupa a segunda coluna do grid */
+  background: #b6b6b6c0;
+  height: auto;
+  min-height: 90vh;
+  width: 72vw;
+  border: 2px #aeaeaec0 solid;
+  border-radius:15px ;
+  margin-top: 7vh;
+  padding: 1em;
+}
+</style>

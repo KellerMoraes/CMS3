@@ -34,7 +34,7 @@ const ListaDeElementos = {
         const linhaId = gerarId();
         return {
             nomeTag: "linha-" + linhaId,
-            atributos: { cor: { nome: 'background-color', valor: '#ffffff' } },
+            atributos: { estilo: { 'background': '#ffffff' }, tipoFundo: 'Cor sólida' },
             filhos: [
                 {
                     nomeTag: "coluna-" + gerarId(),
@@ -49,7 +49,7 @@ const ListaDeElementos = {
                             conteudo: "Titulo 1"
                         },
                     ],
-                    atributos: { estilo: { 'background-color': '#ffffff' } }
+                    atributos: { estilo: { 'background': '#ffffff' }, tipoFundo: 'Cor sólida'  }
                 }
             ]
         };
@@ -59,7 +59,7 @@ const ListaDeElementos = {
             nomeTag: "coluna-" + gerarId(),
             estrutura: 12,
             filhos: [],
-            atributos: []
+            atributos: { estilo: { 'background': '#ffffff' }, tipoFundo: 'Cor sólida'  }
         };
     },
     Componentes:  

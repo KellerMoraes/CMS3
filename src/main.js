@@ -8,9 +8,9 @@
 // Plugins
 import { registerPlugins } from '@/plugins'
 import './assets/styles/cms.scss'
-import Titulo from '@/components/Componentes/Titulos/Titulo.vue'
-import Paragrafo from '@/components/Componentes/Paragrafos/Paragrafo.vue'
-import Card from '@/components/Componentes/Cards/Card.vue'
+import Titulo from '@/components/Menu/Componentes/Titulos/Titulo.vue'
+import Paragrafo from '@/components/Menu/Componentes/Paragrafos/Paragrafo.vue'
+import Card from '@/components/Menu/Componentes/Cards/Card.vue'
 // Components
 import App from './App.vue'
 

@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { useZoom } from '../controllers/zoom';
-import { ref, defineProps, toRef, computed, onMounted, watch, toRefs, onUnmounted, reactive } from 'vue';
+import { ref, toRef, computed, onMounted, watch, toRefs, onUnmounted, reactive } from 'vue';
 import { radiansToDegrees } from '../controllers/helpers';
 import { detectTrackpad } from '../controllers/wheel';
 

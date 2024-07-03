@@ -1,13 +1,13 @@
 <template>
-  <main >
+  <main :class="pan ? 'panOn': '' " >
     <zoompinch
 ref="zoompinchRef"
 v-model:transform="transform"
-:width="1300"
-:height="900"
-:offset="{ top: 10, right: 500, bottom: 10, left: 85 }"
+:width="tamanho.largura"
+:height="tamanho.altura"
+:offset="{ top: 10, right: 10, bottom: 10, left: 10 }"
 :min-scale="0.4"
-:max-scale="10.0"
+:max-scale="2.0"
 :bounds="false"
 :mouse="pan"
 wheel
@@ -49,19 +49,25 @@ wheel
 
 <script setup>
 import Draggable from "vuedraggable";
-import Linha from "@/components/Componentes/Genericos/Linha.vue";
+import Linha from "@/components/Menu/Componentes/Genericos/Linha.vue";
 import { ListaDeElementos } from "@/model/Elementos";
 import { usePaginaStore } from '@/stores/pagina.js';
 import { useGoTo } from 'vuetify';
 import { computed, ref } from 'vue';
 import { Zoompinch } from '@/libs/zoompinch/index';
-import 'zoompinch/style.css';
+import '@/libs/zoompinch/style.css';
 const pan = ref(false)
 const transform = ref({
   x: 0,
   y: 0,
   scale: 0.1,
 });
+const tamanho = computed(()=>{
+  return {
+    largura: window.innerWidth,
+    altura: window.innerHeight,
+  }
+})
 onMounted(() => {
   document.addEventListener('keydown', handleKeyDown);
   document.addEventListener('keyup', handleKeyUp);
@@ -122,10 +128,6 @@ function adicionarLinha() {
   //   });
   // }, 100);
 }
-function espaco(){
-  console.log("ceta")
-  // teste.value = true
-}
 </script>
 
 <style scoped lang="scss">
@@ -142,10 +144,15 @@ main {
   background: #b6b6b6c0;
   height: auto;
   min-height: 90vh;
-  width: 72vw;
+  width: 71vw;
   border: 2px #aeaeaec0 solid;
   border-radius:15px ;
-  margin-top: 7vh;
+  margin-top: 8vh;
+  margin-left: 5vw;
   padding: 1em;
+}
+.panOn:hover{
+  cursor: grab;
+
 }
 </style>

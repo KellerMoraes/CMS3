@@ -6,7 +6,8 @@
     height="80%"
   >
     <v-card
-      style="transition: 0.5s"
+      style="transition: 0.5s; position: sticky; top: 0; z-index: 1000;"
+      width="100%"
       append-icon="mdi-cog"
       class="mx-auto"
       rel="noopener"
@@ -21,10 +22,10 @@
     </v-card>
     <v-sheet class="configuracoesComponentes" />
     <v-sheet>
-      <componentes-genericos-configuracao-cabecalho v-if="ferramentaStore.ferramentaSelecionada == 'Cabecalho'" />
-      <FerramentaLinha v-if="ferramentaStore.ferramentaSelecionada == 'Linha'" />
-      <FerramentaColuna v-if="ferramentaStore.ferramentaSelecionada == 'Coluna'" />
-      <FerramentaComponente v-if="ferramentaStore.ferramentaSelecionada == 'Componente'" />
+      <MenuConfigCabecalho v-if="ferramentaStore.ferramentaSelecionada == 'Cabecalho'" />
+      <MenuConfigLinha v-if="ferramentaStore.ferramentaSelecionada == 'Linha'" />
+      <MenuConfigColuna v-if="ferramentaStore.ferramentaSelecionada == 'Coluna'" />
+      <MenuConfigComponente v-if="ferramentaStore.ferramentaSelecionada == 'Componente'" />
       <!-- {{ ferramentaStore.itemSelecionado.atributos }} -->
     </v-sheet>
   </v-sheet>

@@ -13,8 +13,7 @@
     "core-js": "^3.34.0",
     "roboto-fontface": "*",
     "vue": "^3.4.0",
-    "vuedraggable": "^4.1.0",
-    "zoompinch": "^0.0.38"
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.2.0",

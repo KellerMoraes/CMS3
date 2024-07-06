@@ -31,7 +31,6 @@ import { useEditorStore } from '@/stores/editor.js';
 import { defineModel,ref } from 'vue';
 let dados = defineModel()
 let editavel = ref(false)
-console.log("chamou")
 const editorStore = useEditorStore()
 function habilitarEditavel(valor) {
       editavel.value = true

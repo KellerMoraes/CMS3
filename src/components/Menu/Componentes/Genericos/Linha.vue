@@ -42,18 +42,9 @@ const ferramentaStore = useFerramentaStore()
           })
         }
         else{
-          if(indexEstilo == 'margin'){
-            console.log("AS")
-            let valor = atributos.estilo[indexEstilo] + 'px'
-            estiloCSS += `${indexEstilo}: '${valor};'`;
-          }
-          else{
-            estiloCSS += `${indexEstilo}: ${atributos.estilo[indexEstilo]}; `;
-
-          }
+            estiloCSS += `${indexEstilo}: ${typeof atributos.estilo[indexEstilo] == 'number' ? atributos.estilo[indexEstilo] + 'px' : atributos.estilo[indexEstilo] }; `;
         }
       }
-      console.log(estiloCSS)
       return estiloCSS;
     
     }

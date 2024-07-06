@@ -16,7 +16,7 @@ wheel
 <template #canvas>
   <div class="board">
   <Draggable :style="pan ? 'pointer-events: none' : ''"
-  :list="paginaStore.subpaginaAtiva.filhos"
+  :list="subpaginaAtiva.filhos"
   :item-key="'nomeTag'"
   class="v-container v-container--fluid pr-10"
   :group="{ name: 'linhas' }"
@@ -25,7 +25,7 @@ wheel
     <component
     :is="Linha"
     :key="element.nomeTag"
-    v-model="paginaStore.subpaginaAtiva.filhos[index]"
+    v-model="subpaginaAtiva.filhos[index]"
     />
   </template>
   </Draggable>
@@ -34,6 +34,12 @@ wheel
   class="mt-6 "
   icon="mdi-plus"
   @click.exact="adicionarLinha()"
+  />
+  <v-btn
+  location="bottom"
+  class="mt-6 ml-10 "
+  icon="mdi-minus"
+  @click.exact="refaz()"
   />
   </div>
 </template>
@@ -52,11 +58,13 @@ import Draggable from "vuedraggable";
 import Linha from "@/components/Menu/Componentes/Genericos/Linha.vue";
 import { ListaDeElementos } from "@/model/Elementos";
 import { usePaginaStore } from '@/stores/pagina.js';
-import { useGoTo } from 'vuetify';
 import { computed, ref } from 'vue';
 import { Zoompinch } from '@/libs/zoompinch/index';
 import '@/libs/zoompinch/style.css';
+import { useRefHistory } from '@vueuse/core'
+
 const pan = ref(false)
+const zoompinchRef = ref();
 const transform = ref({
   x: 0,
   y: 0,
@@ -68,9 +76,25 @@ const tamanho = computed(()=>{
     altura: window.innerHeight,
   }
 })
+let paginaStore = usePaginaStore();
+const {pagina,subpaginaAtiva, paginaAtual,subpaginaAtivaAtual, adicionarLinhaStore,deletarLinha, MudarSubPaginaAtiva,criarSubPagina } = paginaStore
+
+
+const { history,undo,redo } = useRefHistory(ref(subpaginaAtivaAtual), {deep: true})
+function adicionarLinha() {
+  adicionarLinhaStore()
+  console.log(history)
+
+}
+function refaz(){
+  undo()
+  console.log(history)
+}
+
 onMounted(() => {
   document.addEventListener('keydown', handleKeyDown);
   document.addEventListener('keyup', handleKeyUp);
+  
 });
 
 onUnmounted(() => {
@@ -89,44 +113,23 @@ function handleKeyUp(event) {
   }
 }
 
-const zoompinchRef = ref();
-const goTo = useGoTo();
-let paginaStore = usePaginaStore();
-paginaStore.pagina = new ListaDeElementos.Pagina("Pagina Teste", 5, "11/05/2024");
-paginaStore.pagina.filhos.push(new ListaDeElementos.SubPagina());
-paginaStore.MudarSubPaginaAtiva(0);
-
-paginaStore.tamanhoColunagemResponsiva = computed(() => {
-  switch (name.value) {
-    case 'xs':
-    case 'sm':
-      return { editor: '8', configuracao: '4' };
-    case 'md':
-    case 'lg':
-    case 'xl':
-      return { editor: '9', configuracao: '3' };
-    case 'xxl':
-      return { editor: '10', configuracao: '2' };
-    default:
-      return { editor: '8', configuracao: '4' }; // Valor padrão para casos não previstos
-  }
-});
+// paginaStore.tamanhoColunagemResponsiva = computed(() => {
+//   switch (name.value) {
+//     case 'xs':
+//     case 'sm':
+//       return { editor: '8', configuracao: '4' };
+//     case 'md':
+//     case 'lg':
+//     case 'xl':
+//       return { editor: '9', configuracao: '3' };
+//     case 'xxl':
+//       return { editor: '10', configuracao: '2' };
+//     default:
+//       return { editor: '8', configuracao: '4' }; // Valor padrão para casos não previstos
+//   }
+// });
 function handleClickOnLayer(event) {
-  console.log(event)
   const [x, y] = zoompinchRef.value?.normalizeMatrixCoordinates(event.clientX, event.clientY);
-
-  console.log('clicked at', x, y);
-}
-function adicionarLinha() {
-  let linha = new ListaDeElementos.Linha();
-  paginaStore.subpaginaAtiva.filhos.push(linha);
-  // setTimeout(() => { 
-  //   goTo(10000, {
-  //     duration: 300,
-  //     easing: "easeInOutCubic",
-  //     offset: 0,
-  //   });
-  // }, 100);
 }
 </script>
 

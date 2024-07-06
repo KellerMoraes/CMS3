@@ -132,7 +132,7 @@
               </span>
             </v-col>
             <v-col cols="5">
-              <v-number-input width="150" suffix="px" rounded="5" flat variant="outlined" inset density="compact" control-variant="stacked"></v-number-input>
+              <v-number-input v-model="ferramentaStore.itemSelecionado.atributos.estilo['min-height']" width="150" suffix="px" rounded="5" flat variant="outlined" inset density="compact" control-variant="stacked"></v-number-input>
             </v-col>
           </v-row>
           <v-row>

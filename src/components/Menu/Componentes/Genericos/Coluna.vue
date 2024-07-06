@@ -7,7 +7,7 @@
     tag="div"
     style="transition: all 0.3s ease-out;"
     :class="`v-col cols-${dados.estrutura} coluna ${ferramentaStore.itemSelecionado.nomeTag == dados.nomeTag ? 'ativa' : ''}`"
-    :style="geraEstilos(dados.atributos)"
+    :style="geraEstilos(dados)"
     :item-key="dados.nomeTag"
     :group="{ name: 'componentes' }"
     @click.self.exact="selecionarColuna(dados)"
@@ -32,12 +32,11 @@ const ferramentaStore = useFerramentaStore()
   function selecionarColuna(coluna) {
       ferramentaStore.selecionarColuna(coluna)
   }
-  function geraEstilos(estilos) {
-    console.log(estilos)
+  function geraEstilos(dados) {
+    let atributos = dados.atributos
     let estiloCSS = '';
-      for (let estilo in estilos.estilo) {
-        estiloCSS += `${estilo}: ${estilos.estilo[estilo]}; `;
-        console.log(estiloCSS)
+      for (let indexEstilo in atributos.estilo) {
+        estiloCSS += `${indexEstilo}: ${typeof atributos.estilo[indexEstilo] == 'number' ? atributos.estilo[indexEstilo] + 'px' : atributos.estilo[indexEstilo] }; `;
       }
       return estiloCSS;
     

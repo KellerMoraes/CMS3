@@ -44,9 +44,9 @@
     <v-sheet width="100%" class="d-flex flex-column justify-center align-center py-2" >
      
 
-        <v-btn v-for="recurso in recursos" @click="selecionar(recurso.nome)"  :variant="recurso.nome == editorStore.recursoSelecionado ? 'tonal' : 'plain'" size="43" :key="recurso.nome">
+        <v-btn v-for="recurso in recursos" @click="selecionar(recurso)"  :variant="recurso.Nome == editorStore.recursoSelecionado ? 'tonal' : 'plain'" size="43" :key="recurso.Nome">
           <v-icon size="30">
-            {{ recurso.icone }}
+            {{ recurso.Icone }}
           </v-icon>
         </v-btn>
     </v-sheet>
@@ -65,7 +65,7 @@
 
   <div class="d-flex justify-space-between align-center ma-2 mt-4 mb-4">
 
-    <span class="titulo">{{ editorStore.recursoSelecionado  }}</span>
+    <span class="titulo">{{ editorStore.recursoSelecionado.Nome  }}</span>
     <!-- sá bosta tem que fechar junto <<<<<<<<<<<<< -->
     <v-btn
     @click="fecharComponentes()"
@@ -90,7 +90,7 @@
   single-line
   ></v-text-field>
 </div>
-<div v-for="elemento in elementos.Componentes" :key="elemento.Nome"  class="mt-4">
+<div v-for="elemento in editorStore.recursoSelecionado.Itens" :key="elemento.Nome"  class="mt-4">
 
   <span class="subtitulo">{{ elemento.Nome }}</span>
     <Draggable
@@ -129,14 +129,15 @@ import { useEditorStore } from '@/stores/editor.js';
 let editorStore = useEditorStore()
 const { xlAndUp } = useDisplay()
 let drawer = ref(true)
-let elementos = ListaDeElementos
+let recursos = ListaDeElementos.Recursos
 let indiceSelecionado = ref(null)
 let itensRecurso = reactive([])
 // let opcaoIndiceSelecionadoComp = ref(null)
-let recursos = [
-  {nome: 'Componentes', icone:'mdi-plus-box-outline', },
-  {nome: 'Layouts', icone:'mdi-blur', },
-]
+// let recursos = [
+//   {nome: 'Componentes', nomeRecurso: 'Componentes', icone:'mdi-plus-box-outline' },
+//   {nome: 'Moldes', nomeRecurso: 'Moldes', icone:'mdi-group' },
+//   {nome: 'Formulários', nomeRecurso: 'Formularios', icone:'mdi-form-select' },
+// ]
 
 function fecharComponentes() {
   editorStore.recursoSelecionado = false
@@ -148,8 +149,6 @@ function fecharComponentes() {
 
 function selecionar(recurso) {
   editorStore.selecionarRecurso(recurso)
-  itensRecurso = [elementos[recurso]]
-  console.log(itensRecurso)
   }
 
 </script>

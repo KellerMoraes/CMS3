@@ -1,28 +1,34 @@
 import { defineStore } from 'pinia';
 import { ListaDeElementos } from '@/model/Elementos';
 import { reactive,ref} from 'vue';
-export const usePaginaStore = defineStore('pagina', { 
-  state: () => ({
-    // paginas
-    pagina: reactive({}),
-    subpaginaAtiva: reactive({}),
-    tamanhoColunagemResponsiva: ref(null)
-  
+// import { useRefHistory  } from '@vueuse/core'
+export const usePaginaStore = defineStore('pagina', () => { 
 
-  }),
-  actions: {
-    configuracaoCabecalho() {
+  // Pagina
+  const pagina = ref(new ListaDeElementos.Pagina("Pagina Teste", 5, "11/05/2024"))
+  const paginaAtual = computed(() => pagina.value)
+  // Pagina
+  // SubPagina
+  const subpaginaAtiva = ref(null)
+  const subpaginaAtivaAtual = computed(() => {return subpaginaAtiva.value})
+  criarSubPagina()
+  MudarSubPaginaAtiva(0)
+  function criarSubPagina() {
+    pagina.value.filhos.push(new ListaDeElementos.SubPagina())
+  }
+  function adicionarLinhaStore() {
+    // count.value.n++
+    let linha = new ListaDeElementos.Linha();
+    subpaginaAtiva.value.filhos.push(linha)
+  }
+  function MudarSubPaginaAtiva(indice) {
+    subpaginaAtiva.value = paginaAtual.value.filhos[indice]
+   }
+   function deletarLinha(){
+    subpaginaAtiva.value.filhos.pop()
+   }
 
-      this.itemSelecionado = this.subpaginaAtiva
-      this.ferramentaSelecionada = "Cabecalho"
-      this.corBarra.cor = "#830909"
-    },
-    criarSubPagina() {
-      let subPagina = new ListaDeElementos.SubPagina()
-      this.pagina.filhos.push(subPagina)
-    },
-    MudarSubPaginaAtiva(indice) {
-      this.subpaginaAtiva = this.pagina.filhos[indice]
-    }
-  },
+   
+  return {pagina , subpaginaAtiva, paginaAtual,deletarLinha,subpaginaAtivaAtual, adicionarLinhaStore, criarSubPagina, MudarSubPaginaAtiva }
+
 })

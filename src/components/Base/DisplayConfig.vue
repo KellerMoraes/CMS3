@@ -15,7 +15,7 @@
                 variant="outlined"
                 v-model="ferramentaStore.itemSelecionado.atributos.estilo.display"
               >
-              <v-btn v-for="item in display" :key="item.propriedade" :value="item.propriedade" @click="defineDisplay(item.propriedade)"  size="small">
+              <v-btn v-for="item in display" :key="item.propriedade" :value="item.propriedade" :disabled="habilitados? habilitados?.find((habilitado)=>{return habilitado == item.propriedade}) ? false : true : false" @click="defineDisplay(item.propriedade)"  size="small">
                 <v-icon size="26">{{ theme.name.value == 'dark' ? '$'+item.icone+"Light" : '$'+item.icone+"Dark" }}</v-icon>
                 <v-tooltip
           activator="parent"
@@ -147,8 +147,8 @@
   </template>
   <script setup>
   import { useFerramentaStore } from '@/stores/ferramenta';
-  import { reactive } from 'vue'
   import { useTheme } from 'vuetify'
+  const props = defineProps(['habilitados'])
   const theme = useTheme()
   let ferramentaStore = useFerramentaStore()
   

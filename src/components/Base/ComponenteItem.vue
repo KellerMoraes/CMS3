@@ -14,7 +14,6 @@
 import { useFerramentaStore } from '@/stores/ferramenta.js';
 import { defineModel} from 'vue';
 let dados = defineModel()
-console.log(dados)
 // let visibilidade = desabilitado == true ? "componente-desabilitado" : ""
 const ferramentaStore = useFerramentaStore()
   function selecionarComponente() {

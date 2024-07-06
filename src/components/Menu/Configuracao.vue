@@ -15,7 +15,7 @@
       :subtitle="ferramentaStore.ferramentaSelecionada ? 'Configuração' : '' "
       :color="ferramentaStore.corBarra.cor"
       :rounded="0"
-      :title="!paginaStore.pagina.filhos ? ferramentaStore.ferramentaSelecionada ?? 'Configuração Inicial' : ferramentaStore.ferramentaSelecionada "
+      :title="!paginaStore.paginaAtual.filhos ? ferramentaStore.ferramentaSelecionada ?? 'Configuração Inicial' : ferramentaStore.ferramentaSelecionada "
     >
       <v-divider />
       <v-spacer />

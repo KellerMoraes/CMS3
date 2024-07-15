@@ -8,6 +8,7 @@ export const useFerramentaStore = defineStore('ferramenta', {
         itemSelecionado: reactive({}),
         ferramentaSelecionada: ref(null),
         colunaSelecionada: ref(""),
+        formularioSelecionado: reactive({})
     
       }),
       actions: {
@@ -25,6 +26,12 @@ export const useFerramentaStore = defineStore('ferramenta', {
           this.itemSelecionado = linha
           this.corBarra.cor = "green"
           this.ferramentaSelecionada = "Linha"
+        },
+        selecionarFormulario(formulario) {
+          this.itemSelecionado = formulario
+          this.formularioSelecionado = formulario
+          this.corBarra.cor = "#ffd900"
+          this.ferramentaSelecionada = "Formulário"
         },
         selecionarColuna(coluna) {
           this.itemSelecionado = coluna

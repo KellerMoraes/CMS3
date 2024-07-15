@@ -15,7 +15,7 @@
       :subtitle="ferramentaStore.ferramentaSelecionada ? 'Configuração' : '' "
       :color="ferramentaStore.corBarra.cor"
       :rounded="0"
-      :title="!paginaStore.paginaAtual.filhos ? ferramentaStore.ferramentaSelecionada ?? 'Configuração Inicial' : ferramentaStore.ferramentaSelecionada "
+      :title="!paginaAtual.filhos ? ferramentaStore.ferramentaSelecionada ?? 'Configuração Inicial' : ferramentaStore.ferramentaSelecionada "
     >
       <v-divider />
       <v-spacer />
@@ -38,5 +38,6 @@ import { useDisplay } from 'vuetify'
 const { xxl } = useDisplay()
 const ferramentaStore = useFerramentaStore()
 const paginaStore = usePaginaStore()
+const {pagina,subpaginaAtiva, paginaAtual,subpaginaAtivaAtual, adicionarLinhaStore,deletarLinha, MudarSubPaginaAtiva,criarSubPagina,desfaz } = paginaStore
 
 </script>

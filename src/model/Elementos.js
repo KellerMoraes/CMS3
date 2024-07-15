@@ -33,11 +33,13 @@ const ListaDeElementos = {
     Linha: function () {
         const linhaId = gerarId();
         return {
+            nome: "Linha",
             nomeTag: "linha-" + linhaId,
             atributos: { estilo: { 'background': '#ffffff','min-height': 105 }, tipoFundo: 'Cor sólida' },
             filhos: [
                 {
                     nomeTag: "coluna-" + gerarId(),
+                    nome: "Coluna",
                     estrutura: 12,
                     filhos: [
                         {
@@ -57,6 +59,7 @@ const ListaDeElementos = {
     Coluna: function () {
         return {
             nomeTag: "coluna-" + gerarId(),
+            nome: "Coluna",
             estrutura: 12,
             filhos: [],
             atributos: { estilo: { 'background': '#ffffff' }, tipoFundo: 'Cor sólida'  }

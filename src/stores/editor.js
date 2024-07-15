@@ -6,7 +6,7 @@ export const useEditorStore = defineStore('editor', {
         // Edições
         campoSelecionado: reactive({}),
         opcaoComponenteSelecionado: ref(false),
-        recursoSelecionado: ref(false)
+        recursoSelecionado: ref(false),
 
     
       }),
@@ -14,7 +14,7 @@ export const useEditorStore = defineStore('editor', {
         selecionarRecurso(recurso){
           this.recursoSelecionado = recurso
           this.opcaoComponenteSelecionado = true
-        }
+        },
       }
     //     mudarColunagem(opcao, qtdColunas) {
     //       console.log(opcao)

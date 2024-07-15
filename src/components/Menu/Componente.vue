@@ -100,7 +100,7 @@
     tag="div"
     :clone="clonar"
     item-key="nomeTag"
-    :group="{ name: 'componentes', pull: 'clone', put: false, }"
+    :group="{ name: elemento.Grupo, pull: 'clone', put: false, }"
     >
     <template #item="{ element }">
           <v-card color="#f5f5f5" width="85px" height="105px" class="mx-1 my-1 d-flex flex-column justify-center align-center">
@@ -124,14 +124,14 @@
 
 import { ref } from "vue";
 import Draggable from "vuedraggable";
-import { ListaDeElementos } from "@/model/Elementos"
 import { useDisplay } from 'vuetify'
 import { useEditorStore } from '@/stores/editor.js';
 import _ from 'lodash'
+import { Recursos } from "@/model/Recursos";
 let editorStore = useEditorStore()
 const { xlAndUp } = useDisplay()
 let drawer = ref(true)
-let recursos = ListaDeElementos.Recursos
+let recursos = Recursos
 let indiceSelecionado = ref(null)
 let itensRecurso = reactive([])
 // let opcaoIndiceSelecionadoComp = ref(null)
@@ -145,8 +145,11 @@ function fecharComponentes() {
   editorStore.recursoSelecionado = false
 }
 function clonar(item) {
+  console.log(item)
   let elemento = _.cloneDeep(item)
+  console.log(elemento)
   elemento.nomeTag = elemento.nomeTag + gerarId()
+  delete elemento?.icone
   return elemento
   
 }

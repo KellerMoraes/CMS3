@@ -23,7 +23,7 @@ wheel
   >
   <template #item="{ element, index }">
     <component
-    :is="Linha"
+    :is="'Comp'+element.nome"
     :key="element.nomeTag"
     v-model="subpaginaAtiva.filhos[index]"
     />

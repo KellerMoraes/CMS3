@@ -9,6 +9,7 @@
     :class="`v-col cols-${dados.estrutura} coluna ${ferramentaStore.itemSelecionado.nomeTag == dados.nomeTag ? 'ativa' : ''}`"
     :style="geraEstilos(dados)"
     :item-key="dados.nomeTag"
+    @change="teste"
     :group="{ name: 'componentes' }"
     @click.self.exact="selecionarColuna(dados)"
   >
@@ -40,6 +41,9 @@ const ferramentaStore = useFerramentaStore()
       }
       return estiloCSS;
     
+    }
+    function teste(){
+      console.log(dados)
     }
 </script>
 

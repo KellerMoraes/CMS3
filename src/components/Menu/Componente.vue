@@ -98,6 +98,7 @@
     :list="elemento.Componentes"
     class="listaDeComponentes v-sheet d-flex flex-wrap ma-2"
     tag="div"
+    :clone="clonar"
     item-key="nomeTag"
     :group="{ name: 'componentes', pull: 'clone', put: false, }"
     >
@@ -126,6 +127,7 @@ import Draggable from "vuedraggable";
 import { ListaDeElementos } from "@/model/Elementos"
 import { useDisplay } from 'vuetify'
 import { useEditorStore } from '@/stores/editor.js';
+import _ from 'lodash'
 let editorStore = useEditorStore()
 const { xlAndUp } = useDisplay()
 let drawer = ref(true)
@@ -142,11 +144,15 @@ let itensRecurso = reactive([])
 function fecharComponentes() {
   editorStore.recursoSelecionado = false
 }
-// function reInstancia() {
-//   opcaoIndiceSelecionado.value = componentes[indiceSelecionado.value]
+function clonar(item) {
+  let elemento = _.cloneDeep(item)
+  elemento.nomeTag = elemento.nomeTag + gerarId()
+  return elemento
   
-// }
-
+}
+function gerarId() {
+    return Math.random().toString(36).slice(2);
+}
 function selecionar(recurso) {
   editorStore.selecionarRecurso(recurso)
   }

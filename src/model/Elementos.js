@@ -77,7 +77,7 @@ const ListaDeElementos = {
                 Componentes: 
                 [
                     {
-                        nomeTag: "linha-" + gerarId(),
+                        nomeTag: "linha-",
                         icone: 'mdi-view-day-outline',
                         atributos: { estilo: { 'background': '#ffffff','height': 105 }, tipoFundo: 'Cor sólida' },
                         filhos: []
@@ -98,7 +98,7 @@ const ListaDeElementos = {
                 Componentes: 
                 [
                     {
-                        nomeTag: "linha-" + gerarId(),
+                        nomeTag: "linha-",
                         icone: 'mdi-view-day-outline',
                         atributos: { estilo: { 'background': '#ffffff','height': 105 }, tipoFundo: 'Cor sólida' },
                         filhos: []
@@ -112,7 +112,7 @@ const ListaDeElementos = {
                 [
                     {
                         nome: "Titulo",
-                        nomeTag: "h1-" + gerarId(),
+                        nomeTag: "h1-",
                         icone: 'mdi-format-title',
                         atributos: [], 
                         classe: "", 
@@ -120,7 +120,7 @@ const ListaDeElementos = {
                     },
                     {
                         nome: "Paragrafo",
-                        nomeTag: "p-" + gerarId(),
+                        nomeTag: "p-",
                         icone: 'mdi-format-paragraph',
                         atributos: [], 
                         classe: "", 
@@ -135,7 +135,7 @@ const ListaDeElementos = {
                 [
                     {  
                         nome: "Card",
-                        nomeTag: "card-" + gerarId(), 
+                        nomeTag: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
                         conteudo: { "titulo": "Título", "subtitulo": "Sub Título", "texto": "Lorem ipsum dolor, sit amet consectetur adipisicing elit." },
@@ -158,7 +158,7 @@ const ListaDeElementos = {
                 [
                     {
                         nome: "Titulo",
-                        nomeTag: "h1-" + gerarId(),
+                        nomeTag: "h1-",
                         icone: 'mdi-format-title',
                         atributos: [], 
                         classe: "", 
@@ -166,7 +166,7 @@ const ListaDeElementos = {
                     },
                     {
                         nome: "Paragrafo",
-                        nomeTag: "p-" + gerarId(),
+                        nomeTag: "p-",
                         icone: 'mdi-format-paragraph',
                         atributos: [], 
                         classe: "", 
@@ -181,7 +181,7 @@ const ListaDeElementos = {
                 [
                     {  
                         nome: "Card",
-                        nomeTag: "card-" + gerarId(), 
+                        nomeTag: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
                         conteudo: { "titulo": "Título", "subtitulo": "Sub Título", "texto": "Lorem ipsum dolor, sit amet consectetur adipisicing elit." },
@@ -196,7 +196,7 @@ const ListaDeElementos = {
                 [
                     {  
                         nome: "Card",
-                        nomeTag: "card-" + gerarId(), 
+                        nomeTag: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
                         conteudo: { "titulo": "Título", "subtitulo": "Sub Título", "texto": "Lorem ipsum dolor, sit amet consectetur adipisicing elit." },
@@ -211,7 +211,7 @@ const ListaDeElementos = {
                 [
                     {  
                         nome: "Card",
-                        nomeTag: "card-" + gerarId(), 
+                        nomeTag: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
                         conteudo: { "titulo": "Título", "subtitulo": "Sub Título", "texto": "Lorem ipsum dolor, sit amet consectetur adipisicing elit." },
@@ -234,7 +234,7 @@ const ListaDeElementos = {
                 [
                     {
                         nome: "Titulo",
-                        nomeTag: "h1-" + gerarId(),
+                        nomeTag: "h1-",
                         icone: 'mdi-format-title',
                         atributos: [], 
                         classe: "", 
@@ -242,7 +242,7 @@ const ListaDeElementos = {
                     },
                     {
                         nome: "Paragrafo",
-                        nomeTag: "p-" + gerarId(),
+                        nomeTag: "p-",
                         icone: 'mdi-format-paragraph',
                         atributos: [], 
                         classe: "", 
@@ -257,7 +257,7 @@ const ListaDeElementos = {
                 [
                     {  
                         nome: "Card",
-                        nomeTag: "card-" + gerarId(), 
+                        nomeTag: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
                         conteudo: { "titulo": "Título", "subtitulo": "Sub Título", "texto": "Lorem ipsum dolor, sit amet consectetur adipisicing elit." },
@@ -272,7 +272,7 @@ const ListaDeElementos = {
                 [
                     {  
                         nome: "Card",
-                        nomeTag: "card-" + gerarId(), 
+                        nomeTag: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
                         conteudo: { "titulo": "Título", "subtitulo": "Sub Título", "texto": "Lorem ipsum dolor, sit amet consectetur adipisicing elit." },

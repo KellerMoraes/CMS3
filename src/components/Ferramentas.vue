@@ -10,7 +10,7 @@
       </v-btn>
       <div
         class="d-inline"
-        v-if="ferramentaStore.ferramentaSelecionada == 'Linha'"
+        v-if="ferramentaStore.ferramentaSelecionada.nome == 'Linha'"
       >
         <v-btn 
           
@@ -26,7 +26,7 @@
       </div>
       <div
         class="d-inline"
-        v-if="ferramentaStore.ferramentaSelecionada == 'Coluna'"
+        v-if="ferramentaStore.ferramentaSelecionada.nome == 'Coluna'"
       >
         <v-btn
           
@@ -41,7 +41,7 @@
       </div>
       <div
         class="d-inline"
-        v-if="ferramentaStore.ferramentaSelecionada == 'Componente'"
+        v-if="ferramentaStore.ferramentaSelecionada.nome == 'Componente'"
       >
         <v-btn
           

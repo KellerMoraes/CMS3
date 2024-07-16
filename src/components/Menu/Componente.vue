@@ -145,9 +145,7 @@ function fecharComponentes() {
   editorStore.recursoSelecionado = false
 }
 function clonar(item) {
-  console.log(item)
   let elemento = _.cloneDeep(item)
-  console.log(elemento)
   elemento.nomeTag = elemento.nomeTag + gerarId()
   delete elemento?.icone
   return elemento

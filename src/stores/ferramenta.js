@@ -4,9 +4,8 @@ import { reactive, ref } from 'vue';
 export const useFerramentaStore = defineStore('ferramenta', { 
     state: () => ({
         // Ferramentas
-        corBarra: reactive({ cor: "white" }),
         itemSelecionado: reactive({}),
-        ferramentaSelecionada: ref(null),
+        ferramentaSelecionada: reactive({nome: "" , cor: "white" }),
         colunaSelecionada: ref(""),
         formularioSelecionado: reactive({})
     
@@ -24,30 +23,30 @@ export const useFerramentaStore = defineStore('ferramenta', {
         },
         selecionarLinha(linha) {
           this.itemSelecionado = linha
-          this.corBarra.cor = "green"
-          this.ferramentaSelecionada = "Linha"
+          this.ferramentaSelecionada.cor = "green"
+          this.ferramentaSelecionada.nome = "Linha"
         },
         selecionarFormulario(formulario) {
           this.itemSelecionado = formulario
           this.formularioSelecionado = formulario
-          this.corBarra.cor = "#ffd900"
-          this.ferramentaSelecionada = "Formulário"
+          this.ferramentaSelecionada.cor = "#ffd900"
+          this.ferramentaSelecionada.nome = "Formulário"
         },
         selecionarColuna(coluna) {
           this.itemSelecionado = coluna
-          this.ferramentaSelecionada = "Coluna"
-          this.corBarra.cor = "blue"
+          this.ferramentaSelecionada.nome = "Coluna"
+          this.ferramentaSelecionada.cor = "blue"
         },
         selecionarComponente(componente) {
           this.itemSelecionado = componente
-          this.ferramentaSelecionada = "Componente"
-          this.corBarra.cor = "purple"
+          this.ferramentaSelecionada.nome = "Componente"
+          this.ferramentaSelecionada.cor = "purple"
         },
         configuracaoCabecalho() {
     
           this.itemSelecionado = this.subpaginaAtiva
-          this.ferramentaSelecionada = "Cabecalho"
-          this.corBarra.cor = "#830909"
+          this.ferramentaSelecionada.nome = "Cabecalho"
+          this.ferramentaSelecionada.cor = "#830909"
         }
       },
 })

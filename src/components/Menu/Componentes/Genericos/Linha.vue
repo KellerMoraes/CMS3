@@ -12,7 +12,7 @@
   >
     <template #item="{ element,index }">
       <component
-        :is="Coluna"
+        :is="'Comp'+element.nome"
         v-model="dados.filhos[index]"
         :estrutura="element.estrutura"
       />

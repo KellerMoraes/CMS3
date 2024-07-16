@@ -3,7 +3,7 @@
       <v-card rounded
       :class="`mx-auto my-6 form ${ ferramentaStore.itemSelecionado.nomeTag == dados.nomeTag ? 'ativo' : '' } `" 
     :link="false"  >
-      <v-card-item class="handHover" @click.exact="ferramentaStore.selecionarFormulario(dados)" prepend-icon="mdi-list-box-outline" subtitle="Simples" title="Formulário">
+      <v-card-item class="handHover" @click.exact="ferramentaStore.selecionarFormulario(dados)" append-icon="mdi-outlined-check" prepend-icon="mdi-list-box-outline" subtitle="Simples" title="Formulário">
       </v-card-item>
 
     <v-card-text class="bg-surface-light pt-4" >
@@ -13,10 +13,11 @@
         <Draggable
         :list="dados.filhos"
         tag="div"
-        class="v-container v-container--fluid pr-10 "
+        class="v-container v-container--fluid pr-10"
+        :class="ferramentaStore?.formularioSelecionado?.nomeTag == dados.nomeTag ? 'FormAtivo' : 'FormInativo'"
         style="transition: all 0.3s ease-out;"
         :item-key="dados.nomeTag"
-        :group="{ name: 'linhas' }"
+        :group="{ name: 'linhas', pull: false }"
         >
         <!-- Grupo Arrumar: o problema é que, o grupo é o "Linhas" que no caso é o mesmo de todas as linhas, lá dentro tem o grupo colunas, que carrega os componentes, 
         provavelmente vai ter que ter uma linha e coluna só para o formulario para poder suportar os inputs, e evitar que as linhas normais suportem também -->
@@ -66,6 +67,14 @@
   }
   .handHover:hover{
     cursor: pointer;
+  }
+  .FormInativo{
+    cursor: no-drop;
+    pointer-events: none;
+  }
+  .FormAtivo{
+    cursor: unset;
+    pointer-events: unset;
   }
   </style>
   

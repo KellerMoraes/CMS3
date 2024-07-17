@@ -1,8 +1,9 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div>
-    cet
-  </div>
+  <v-expansion-panels>
+
+    <component :is="'Config'+config" v-for="config in ferramentaStore.itemSelecionado.configuracoes" :key="config"></component>
+  </v-expansion-panels>
   <!-- <MenuConfigComponentesCampoTexto v-if="ferramentaStore.itemSelecionado.nome == 'CampoTexto'"></MenuConfigComponentesCampoTexto> -->
 </template>
 <script setup>

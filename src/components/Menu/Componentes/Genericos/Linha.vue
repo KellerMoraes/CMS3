@@ -23,7 +23,6 @@
 <script setup>
 import Draggable from "vuedraggable";
 import { useFerramentaStore } from '@/stores/ferramenta.js';
-import Coluna from '@/components/Menu/Componentes/Genericos/Coluna.vue';
 import { defineModel } from 'vue';
 let dados = defineModel()
 

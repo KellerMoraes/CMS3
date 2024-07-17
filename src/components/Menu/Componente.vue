@@ -99,6 +99,7 @@
     class="listaDeComponentes v-sheet d-flex flex-wrap ma-2"
     tag="div"
     :clone="clonar"
+    :sort="false"
     item-key="nomeTag"
     :group="{ name: elemento.Grupo, pull: 'clone', put: false, }"
     >

@@ -12,8 +12,16 @@ import { defineModel,ref } from 'vue';
 const ferramentaStore = useFerramentaStore()
 
 let dados = defineModel()
-console.log(dados)
 let NomeCampo = "Email"
+onMounted(()=>{
+  let i = ferramentaStore.formularioSelecionado.tiposCampo.findIndex((item)=>{return item == NomeCampo})
+    ferramentaStore.formularioSelecionado.tiposCampo.splice(i,1)
+
+})
+  onUnmounted(()=>{
+    ferramentaStore.formularioSelecionado.tiposCampo.push(NomeCampo)
+
+  })
     const rules = [
       value => {
         if (validateEmail(value)) return true

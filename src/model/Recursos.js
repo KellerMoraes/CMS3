@@ -130,7 +130,7 @@ const Recursos =  [
                     nomeTag: "CampoTexto-",
                     configuracoes:["Input","Dimensoes"],
                     icone: 'mdi-form-textbox',
-                    atributos: { estilo: { 'background': '#ffffff' }, definicoes: {variante: "outlined", densidade: 'comfortable', tipo: "Nome" } },
+                    atributos: { estilo: { 'background': '#ffffff' }, definicoes: {variante: "outlined", densidade: 'comfortable', tipo: "Blank" } },
                     conteudo: ""
                 },
                 {
@@ -170,6 +170,13 @@ const Recursos =  [
       nomeTag: "Formulario-",
       atributos: [],
       configuracoes:[""],
+      tiposCampo: [
+        "Nome",
+        "CPF",
+        "Telefone",
+        "Email",
+        "Descricao"
+      ],
       icone: 'mdi-list-box-outline',
       filhos: [
         new ListaDeElementos.Linha()

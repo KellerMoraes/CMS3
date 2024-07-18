@@ -8,7 +8,7 @@
           <h5>Tipo campo</h5>
         </v-expansion-panel-title>
         <v-expansion-panel-text>
-          <v-select v-model="ferramentaStore.itemSelecionado.atributos.definicoes.tipo" :items="tipoCampoOpcoes">
+          <v-select v-model="ferramentaStore.itemSelecionado.atributos.definicoes.tipo" :items="ferramentaStore.formularioSelecionado.tiposCampo">
 
           </v-select>
 
@@ -44,12 +44,7 @@
 
 
   ])
-  let i = ferramentaStore.formularioSelecionado?.conteudo[ferramentaStore.itemSelecionado.atributos.definicoes.tipo]
-  if(i){
-
-    let index = tipoCampoOpcoes.value.findIndex((item)=>{return item == ferramentaStore.itemSelecionado.atributos.definicoes.tipo})
-    tipoCampoOpcoes.value.splice(index,1)
-  }
+  
   let estiloCampoOpcoes = [
     "default",
     "outlined",

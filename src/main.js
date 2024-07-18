@@ -16,6 +16,7 @@ import CampoNome from '@/components/Menu/Componentes/Formularios/Campos/Nome.vue
 import CampoCPF from '@/components/Menu/Componentes/Formularios/Campos/CPF.vue'
 import CampoDescricao from '@/components/Menu/Componentes/Formularios/Campos/Descricao.vue'
 import CampoEmail from '@/components/Menu/Componentes/Formularios/Campos/Email.vue'
+import CampoBlank from '@/components/Menu/Componentes/Formularios/Campos/Blank.vue'
 import CampoTelefone from '@/components/Menu/Componentes/Formularios/Campos/Telefone.vue'
 import CampoSelecionavel from '@/components/Menu/Componentes/Formularios/CampoSelecionavel.vue'
 import ConfigInput from '@/components/Menu/Config/Componentes/Input.vue'
@@ -50,4 +51,5 @@ app.component(prefixoCampo+'CPF', CampoCPF);
 app.component(prefixoCampo+'Telefone', CampoTelefone);
 app.component(prefixoCampo+'Email', CampoEmail);
 app.component(prefixoCampo+'Descricao', CampoDescricao);
+app.component(prefixoCampo+'Blank', CampoBlank);
 app.mount('#app')

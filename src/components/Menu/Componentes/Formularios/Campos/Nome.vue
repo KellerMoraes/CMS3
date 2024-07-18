@@ -15,6 +15,15 @@
   let dados = defineModel()
   
   let NomeCampo = "Nome"
+  onMounted(()=>{
+  let i = ferramentaStore.formularioSelecionado.tiposCampo.findIndex((item)=>{return item == NomeCampo})
+    ferramentaStore.formularioSelecionado.tiposCampo.splice(i,1)
+
+})
+  onUnmounted(()=>{
+    ferramentaStore.formularioSelecionado.tiposCampo.push(NomeCampo)
+
+  })
       const rules = [
         value => {
           if (value) return true

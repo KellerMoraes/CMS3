@@ -71,7 +71,7 @@
         </v-icon>
         Publicar
       </v-btn>
-      <v-btn size="large">
+      <v-btn size="large" to="/visualizacao">
         <v-icon class="mr-2">
           mdi-eye
         </v-icon>

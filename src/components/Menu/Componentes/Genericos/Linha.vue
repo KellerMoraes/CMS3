@@ -1,5 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
+  
   <Draggable
     style="position: relative; transition: all 0.2s ease-out;"
     :list="dados.filhos"

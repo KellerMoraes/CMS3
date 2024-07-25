@@ -30,7 +30,15 @@ const ListaDeElementos = {
             ]
         };
     },
-    Linha: function () {
+    Linha: function (componente = {
+        nome: "Titulo",
+        nomeTag: "h1-" + gerarId(),
+        icone: 'mdi-format-title',
+        atributos: [], 
+        classe: "", 
+        conteudo: "Titulo 1"
+    }) {
+        // Temporariamente...
         const linhaId = gerarId();
         return {
             nome: "Linha",
@@ -42,14 +50,7 @@ const ListaDeElementos = {
                     nome: "Coluna",
                     estrutura: 12,
                     filhos: [
-                        {
-                            nome: "Titulo",
-                            nomeTag: "h1-" + gerarId(),
-                            icone: 'mdi-format-title',
-                            atributos: [], 
-                            classe: "", 
-                            conteudo: "Titulo 1"
-                        },
+                        componente ?? ""
                     ],
                     atributos: { estilo: { 'background': '#ffffff' }, tipoFundo: 'Cor sólida'  }
                 }

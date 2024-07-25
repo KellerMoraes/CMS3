@@ -9,9 +9,10 @@
 import { registerPlugins } from '@/plugins'
 import './assets/styles/cms.scss'
 import Titulo from '@/components/Menu/Componentes/Titulos/Titulo.vue'
+import Botao from '@/components/Menu/Componentes/Botoes/Botao.vue'
 import Paragrafo from '@/components/Menu/Componentes/Paragrafos/Paragrafo.vue'
 import Card from '@/components/Menu/Componentes/Cards/Card.vue'
-import CampoTexto from '@/components/Menu/Componentes/Formularios/CampoTexto.vue'
+import Campo from '@/components/Menu/Componentes/Formularios/Campo.vue'
 import CampoNome from '@/components/Menu/Componentes/Formularios/Campos/Nome.vue'
 import CampoCPF from '@/components/Menu/Componentes/Formularios/Campos/CPF.vue'
 import CampoDescricao from '@/components/Menu/Componentes/Formularios/Campos/Descricao.vue'
@@ -40,9 +41,10 @@ app.component(prefixoComp+'Linha', Linha);
 app.component(prefixoComp+'Coluna', Coluna);
 app.component(prefixoComp+'Formulario', Formulario);
 app.component(prefixoComp+'Titulo', Titulo);
+app.component(prefixoComp+'Botao', Botao);
 app.component(prefixoComp+'Card', Card);
 app.component(prefixoComp+'Paragrafo', Paragrafo);
-app.component(prefixoComp+'CampoTexto', CampoTexto);
+app.component(prefixoComp+'Campo', Campo);
 app.component(prefixoComp+'CampoSelecionavel', CampoSelecionavel);
 app.component(prefixoConfig+'Input', ConfigInput);
 app.component(prefixoConfig+'Dimensoes', ConfigDimensoes);

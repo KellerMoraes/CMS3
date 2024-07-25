@@ -3,12 +3,13 @@
 
 <template>
     <v-col :style="geraEstilos()" :cols="dados.estrutura">
-      <component v-for="dado in dados.filhos" :key="dado.nomeTag" :is="componenteNome(dado.nome)" :dados="dado" ></component>
+      <component v-for="dado in dados.filhos" :key="dado.nomeTag" :is="componenteNome(dado.nome)" v-model="infoModel" :dados="dado" ></component>
     </v-col>
   </template>
   
   <script setup>
   const props = defineProps(['dados'])
+  const infoModel = defineModel()
   function componenteNome(nome){return defineAsyncComponent(() => import(`./${nome}.vue`))}
     function geraEstilos() {
       let dados = props.dados

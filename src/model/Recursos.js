@@ -126,8 +126,8 @@ const Recursos =  [
             Componentes: 
             [
                 {
-                    nome: "CampoTexto",
-                    nomeTag: "CampoTexto-",
+                    nome: "Campo",
+                    nomeTag: "Campo-",
                     configuracoes:["Input","Dimensoes"],
                     icone: 'mdi-form-textbox',
                     atributos: { estilo: { 'background': '#ffffff' }, definicoes: {variante: "outlined", densidade: 'comfortable', tipo: "Blank" } },
@@ -179,7 +179,14 @@ const Recursos =  [
       ],
       icone: 'mdi-list-box-outline',
       filhos: [
-        new ListaDeElementos.Linha()
+        new ListaDeElementos.Linha(),
+        new ListaDeElementos.Linha({
+            nome: "Botao",
+            nomeTag: "btn-1243124124",
+            atributos: { estilo: { }, definicoes: {variante: "tonal", tipo: "Submit" } }, 
+            classe: "", 
+            conteudo: "Titulo 1"
+        })
         // {
         //     nomeTag: "linha-" + id(),
         //     nome: "Linha",

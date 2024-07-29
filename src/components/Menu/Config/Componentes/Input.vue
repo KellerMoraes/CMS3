@@ -32,19 +32,7 @@
   <script setup>
   import { useFerramentaStore } from '@/stores/ferramenta.js';
   let ferramentaStore = useFerramentaStore()
-
-  // COLOCAR ISSO NA STORE PARA PODER COMPARTILHAR EM TODOS SE DEIXAR AS OPCOES PARA QUE CADA UM DEFINA SE TEM OU NÃO, NÃO VAI FUNCIONAR
-  let tipoCampoOpcoes = ref(
-  [
-    "Nome",
-    "CPF",
-    "Telefone",
-    "Email",
-    "Descricao",
-
-
-  ])
-  
+    
   let estiloCampoOpcoes = [
     "default",
     "outlined",

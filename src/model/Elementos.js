@@ -66,6 +66,13 @@ const ListaDeElementos = {
             atributos: { estilo: { 'background': '#ffffff' }, tipoFundo: 'Cor sólida'  }
         };
     },
+    Celula: function (indice) {
+        return {
+            nomeTag: "cell-" + indice,
+            nome: "GridCell",
+            filhos: []
+        };
+    },
     Recursos: [
         // recursos: [
         //     {Nome: ,icone: , itens}

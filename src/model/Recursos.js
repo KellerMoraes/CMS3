@@ -135,10 +135,12 @@ const Recursos =  [
                 },
                 {
                     nome: "Selecionavel",
-                    nomeTag: "CampoSelecionavel-",
-                    icone: 'mdi-form-dropdown',
-                    atributos: [],
-                    conteudo: "-Selecione-",
+                    nomeTag: "Selecionavel-",
+                    configuracoes:["GridMaker"],
+                    icone: 'mdi-radiobox-marked',
+                    atributos: { estilo: {}, definicoes: { tipo: "Blank", grid: [1,1] } },
+                    filhos: [],
+                    conteudo: "",
                     
                 }   
             ]

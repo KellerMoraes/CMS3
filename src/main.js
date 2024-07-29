@@ -12,6 +12,7 @@ import Titulo from '@/components/Menu/Componentes/Titulos/Titulo.vue'
 import Botao from '@/components/Menu/Componentes/Botoes/Botao.vue'
 import Paragrafo from '@/components/Menu/Componentes/Paragrafos/Paragrafo.vue'
 import Card from '@/components/Menu/Componentes/Cards/Card.vue'
+import GridCell from '@/components/Base/BaseGridCell.vue'
 import Campo from '@/components/Menu/Componentes/Formularios/Campo.vue'
 import CampoNome from '@/components/Menu/Componentes/Formularios/Campos/Nome.vue'
 import CampoCPF from '@/components/Menu/Componentes/Formularios/Campos/CPF.vue'
@@ -19,8 +20,9 @@ import CampoDescricao from '@/components/Menu/Componentes/Formularios/Campos/Des
 import CampoEmail from '@/components/Menu/Componentes/Formularios/Campos/Email.vue'
 import CampoBlank from '@/components/Menu/Componentes/Formularios/Campos/Blank.vue'
 import CampoTelefone from '@/components/Menu/Componentes/Formularios/Campos/Telefone.vue'
-import CampoSelecionavel from '@/components/Menu/Componentes/Formularios/CampoSelecionavel.vue'
+import Selecionavel from '@/components/Menu/Componentes/Formularios/Selecionavel.vue'
 import ConfigInput from '@/components/Menu/Config/Componentes/Input.vue'
+import ConfigGridMaker from '@/components/Menu/Config/Componentes/GridMaker.vue'
 import ConfigDimensoes from '@/components/Menu/Config/Componentes/Dimensoes.vue'
 import Linha from '@/components/Menu/Componentes/Genericos/Linha.vue'
 import Coluna from '@/components/Menu/Componentes/Genericos/Coluna.vue'
@@ -43,10 +45,12 @@ app.component(prefixoComp+'Formulario', Formulario);
 app.component(prefixoComp+'Titulo', Titulo);
 app.component(prefixoComp+'Botao', Botao);
 app.component(prefixoComp+'Card', Card);
+app.component('Base'+'GridCell', GridCell);
 app.component(prefixoComp+'Paragrafo', Paragrafo);
 app.component(prefixoComp+'Campo', Campo);
-app.component(prefixoComp+'CampoSelecionavel', CampoSelecionavel);
+app.component(prefixoComp+'Selecionavel', Selecionavel);
 app.component(prefixoConfig+'Input', ConfigInput);
+app.component(prefixoConfig+'GridMaker', ConfigGridMaker);
 app.component(prefixoConfig+'Dimensoes', ConfigDimensoes);
 app.component(prefixoCampo+'Nome', CampoNome);
 app.component(prefixoCampo+'CPF', CampoCPF);

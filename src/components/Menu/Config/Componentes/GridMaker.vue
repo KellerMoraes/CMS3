@@ -15,6 +15,7 @@
   <script setup>
   import { computed } from 'vue';
   import { useFerramentaStore } from '@/stores/ferramenta';
+  import { ListaDeElementos } from '@/model/Elementos';
 const ferramentaStore = useFerramentaStore()
   
   const props = defineProps({
@@ -47,7 +48,11 @@ const ferramentaStore = useFerramentaStore()
     return ((index - 1) % props.Tamanho[1]) + 1;
   }
   function retornaTamanho(valor,valor2){
+    ferramentaStore.itemSelecionado.filhos = []
     ferramentaStore.itemSelecionado.atributos.definicoes.grid = [valor, valor2]
+    for(let x = 0; x < valor * valor2; x++){
+      ferramentaStore.itemSelecionado.filhos.push(new ListaDeElementos.Celula(x))
+}
   }
   function highlight(valor,valor2){
     hoverAtual.value = [valor, valor2]

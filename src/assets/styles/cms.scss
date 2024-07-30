@@ -389,11 +389,14 @@ input[type="color"] {
 
 .componente-item {
   border: 4px transparent solid;
+  border-top: 12px transparent solid;
+  padding: 2px;
   border-radius: 5px;
 }
 
 .componente-item:hover {
   border: 4px pink solid !important;
+  border-top: 12px pink solid !important;
 }
 
 

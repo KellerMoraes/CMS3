@@ -2,7 +2,7 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div 
-    @click.exact="dados ? selecionarComponente() : ''"  
+    @click.self.exact="dados ? selecionarComponente() : ''"  
     :style="dados ? ferramentaStore.itemSelecionado.nomeTag == dados.nomeTag ? 'border: 4px pink solid' : '' : ''"  
     class="componente-item"
   >

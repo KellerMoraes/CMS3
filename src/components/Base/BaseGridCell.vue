@@ -8,7 +8,7 @@
     class="grid-cell-comp"
     :item-key="dados.nomeTag"
     :group="{ name: 'componentes' }"
-    @click.self.exact="selecionarComponente(dados)"
+    @click.exact="selecionarCelula(dados)"
   >
     <template #item="{ element,index}">
       <component
@@ -25,13 +25,20 @@
   import Draggable from "vuedraggable";
   const ferramentaStore = useFerramentaStore()
   let dados = defineModel()
-  console.log(dados)
+  function selecionarCelula(valor){
+    console.log(valor)
+  }
   
   </script>
   <style lang="scss" scoped>
     .grid-cell-comp{
         width: 100%;
-        height: 100px;
         background-color: grey;
-    }
+      }
+      .grid-cell-comp > .componente-item:hover{
+        border: 4px #7e303d solid !important;
+        border-top: 12px #7e303d solid !important;
+
+      }
+      
 </style>

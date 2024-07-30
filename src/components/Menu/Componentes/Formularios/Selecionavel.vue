@@ -5,12 +5,18 @@
       v-if="dados"
       #edicao
     >
-    <v-radio-group :style="gridStyle">
-      <div v-if="dados.filhos" >
-        <BaseGridCell 
-        v-for="cell in (dados.filhos, index)" :key="cell" v-model="dados.filhos[index]" ></BaseGridCell>
-      </div>
-      </v-radio-group>
+      <Draggable
+    :list="dados.filhos"
+    tag="div"
+    :style="gridStyle"
+    :class="`${ferramentaStore.itemSelecionado.nomeTag == dados.nomeTag ? 'ativa' : ''}`"
+    :item-key="dados.nomeTag"
+    :group="{ name: 'celulas' }"
+  >
+    <template #item="{ element,index}">
+      <BaseGridCell v-if="element" :key="element.nomeTag" v-model="dados.filhos[index]" ></BaseGridCell>
+    </template>
+  </Draggable>
     </template>
   </BaseComponenteItem>
 </template>
@@ -18,22 +24,27 @@
 import { defineModel,ref } from 'vue';
 import { useFerramentaStore } from '@/stores/ferramenta';
 import Draggable from "vuedraggable";
-import { ListaDeElementos } from '@/model/Elementos';
+
 const ferramentaStore = useFerramentaStore()
 let dados = defineModel()
-let quantidadeCelulas = ref(dados.value.atributos.definicoes.grid[0] * dados.value.atributos.definicoes.grid[1])
 
-for(let x = 1; x < dados.value.atributos.definicoes.grid[0] * dados.value.atributos.definicoes.grid[1]; x++){
-  dados.value.filhos.push(new ListaDeElementos.Celula(dados.value.atributos.definicoes.grid[0]++))
-}
 
 const gridStyle = computed(() => {
-  const rows = Array(dados.value.atributos.definicoes.grid[0]).fill('auto').join(' ');
-    const columns = Array(dados.value.atributos.definicoes.grid[1]).fill('auto').join(' ');
+  // tentar ajustar isso aqui para que cada celula tenha o seu tamanho definido e reflita no pai para determinar o tamanho do grid??
+  let row = ""
+  dados.value.filhos.forEach((celula)=>{
+    row += celula.estrutura
+  })
+  const rows = Array(dados.value.atributos.definicoes.grid[0]).fill('1fr').join(' ');
+    const columns = Array(dados.value.atributos.definicoes.grid[1]).fill('1fr').join(' ');
     return {
       display: 'grid',
       gridTemplateRows: rows,
       gridTemplateColumns: columns,
+      height: '200px',
+      gap: '5px',
+      backgroundColor: 'teal'
+
     };
   });
 </script>

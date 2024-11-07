@@ -3,9 +3,9 @@
     <Draggable
     :list="dados.filhos"
     tag="div"
-    :class="`${ferramentaStore.celulasSelecionadas?.find((item)=>{return item.nomeTag == dados.nomeTag }) ? 'ativa' : ''}`"
+    :class="`${ferramentaStore.celulasSelecionadas?.find((item)=>{return item[_cmsProps.id] == dados[_cmsProps.id] }) ? 'ativa' : ''}`"
     class="grid-cell-comp"
-    :item-key="dados.nomeTag"
+    :item-key="_cmsProps.id"
     :group="{ name: 'componentes' }"
     @click.ctrl.shift.exact="selecionarCelula(dados)"
   >
@@ -14,7 +14,7 @@
         v-if="element"
         :is="'Comp'+element.nome"
         v-model="dados.filhos[index]"
-        :key="element.nomeTag"
+        :key="element[_cmsProps.id]"
       />
     </template>
   </Draggable>

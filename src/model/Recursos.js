@@ -1,5 +1,5 @@
 import { ListaDeElementos } from "./Elementos";
-
+import _cmsProps from "../../config"
 function id() {
     return Math.random().toString(36).slice(2);
 }
@@ -45,7 +45,7 @@ const Recursos =  [
             [
                 {
                     nome: "Titulo",
-                    nomeTag: "h1-",
+                    [_cmsProps.id]: "h1-",
                     icone: 'mdi-format-title',
                     atributos: [], 
                     classe: "", 
@@ -53,7 +53,7 @@ const Recursos =  [
                 },
                 {
                     nome: "Paragrafo",
-                    nomeTag: "p-",
+                    [_cmsProps.id]: "p-",
                     icone: 'mdi-format-paragraph',
                     atributos: [], 
                     classe: "", 
@@ -70,7 +70,7 @@ const Recursos =  [
 //             [
 //                 {  
 //                     nome: "Card",
-//                     nomeTag: "card-" + id, 
+//                     [_cmsProps.id]: "card-" + id, 
 //                     atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
 //                     classe: "", 
 //                     conteudo: { "titulo": "Título", "subtitulo": "Sub Título", "texto": "Lorem ipsum dolor, sit amet consectetur adipisicing elit." },
@@ -94,7 +94,7 @@ const Recursos =  [
 //             [
 //                 {
 //                     nome: "Titulo",
-//                     nomeTag: "h1-" + id,
+//                     [_cmsProps.id]: "h1-" + id,
 //                     icone: 'mdi-format-title',
 //                     atributos: [], 
 //                     classe: "", 
@@ -102,7 +102,7 @@ const Recursos =  [
 //                 },
 //                 {
 //                     nome: "Paragrafo",
-//                     nomeTag: "p-" + id,
+//                     [_cmsProps.id]: "p-" + id,
 //                     icone: 'mdi-format-paragraph',
 //                     atributos: [], 
 //                     classe: "", 
@@ -127,7 +127,7 @@ const Recursos =  [
             [
                 {
                     nome: "Campo",
-                    nomeTag: "Campo-",
+                    [_cmsProps.id]: "Campo-",
                     configuracoes:["Input","Dimensoes"],
                     icone: 'mdi-form-textbox',
                     atributos: { estilo: { 'background': '#ffffff' }, definicoes: {variante: "outlined", densidade: 'comfortable', tipo: "Blank" } },
@@ -135,7 +135,7 @@ const Recursos =  [
                 },
                 {
                     nome: "Selecionavel",
-                    nomeTag: "Selecionavel-",
+                    [_cmsProps.id]: "Selecionavel-",
                     configuracoes:["GridMaker"],
                     icone: 'mdi-radiobox-marked',
                     atributos: { estilo: {}, definicoes: { tipo: "Blank", grid: [1,1] } },
@@ -151,7 +151,7 @@ const Recursos =  [
         //     [
         //         {
         //             nome: "BotaoSimples",
-        //             nomeTag: "BotaoSimples-" + id,
+        //             [_cmsProps.id]: "BotaoSimples-" + id,
         //             icone: 'mdi-button-cursor',
         //             atributos: [],
         //             conteudo: { "label": "Botão", "Icone": "mdi-check" }
@@ -169,7 +169,7 @@ const Recursos =  [
 
       conteudo: {},
       nome: "Formulario",
-      nomeTag: "Formulario-",
+      [_cmsProps.id]: "Formulario-",
       atributos: [],
       configuracoes:[""],
       tiposCampo: [
@@ -184,24 +184,24 @@ const Recursos =  [
         new ListaDeElementos.Linha(),
         new ListaDeElementos.Linha({
             nome: "Botao",
-            nomeTag: "btn-1243124124",
+            [_cmsProps.id]: "btn-1243124124",
             atributos: { estilo: { }, definicoes: {variante: "tonal", tipo: "Submit" } }, 
             classe: "", 
             conteudo: "Titulo 1"
         })
         // {
-        //     nomeTag: "linha-" + id(),
+        //     [_cmsProps.id]: "linha-" + id(),
         //     nome: "Linha",
         //     atributos: { estilo: { 'background': '#ffffff','min-height': 105 }, tipoFundo: 'Cor sólida' },
         //     filhos: [
         //         {
         //             nome: "Coluna",
-        //             nomeTag: "coluna-" + id(),
+        //             [_cmsProps.id]: "coluna-" + id(),
         //             estrutura: 12,
         //             filhos: [
         //                 {
         //                     nome: "Titulo",
-        //                     nomeTag: "h1-" + id(),
+        //                     [_cmsProps.id]: "h1-" + id(),
         //                     icone: 'mdi-format-title',
         //                     atributos: [], 
         //                     classe: "", 

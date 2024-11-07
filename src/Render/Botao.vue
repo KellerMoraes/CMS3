@@ -1,7 +1,7 @@
         <!-- eslint-disable vue/multi-word-component-names -->
 <template>
     <v-btn
-          :id="dados.nomeTag"
+          :id="dados[_cmsProps.id]"
           :variant="dados.atributos.definicoes.variante"
           :type="dados.atributos.definicoes.tipo"
           v-html="dados.conteudo"

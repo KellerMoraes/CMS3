@@ -9,12 +9,12 @@
     :list="dados.filhos"
     tag="div"
     :style="gridStyle"
-    :class="`${ferramentaStore.itemSelecionado.nomeTag == dados.nomeTag ? 'ativa' : ''}`"
-    :item-key="dados.nomeTag"
+    :class="`${ferramentaStore.itemSelecionado[_cmsProps.id] == dados[_cmsProps.id] ? 'ativa' : ''}`"
+    :item-key="_cmsProps.id"
     :group="{ name: 'celulas' }"
   >
     <template #item="{ element,index}">
-      <BaseGridCell v-if="element" :key="element.nomeTag" v-model="dados.filhos[index]" ></BaseGridCell>
+      <BaseGridCell v-if="element" :key="element[_cmsProps.id]" v-model="dados.filhos[index]" ></BaseGridCell>
     </template>
   </Draggable>
   <div style="position: absolute; top: 1%;" :style="ferramentaStore.celulasSelecionadas.length > 1 ? 'display: block': 'display: none'"><v-btn @click="ferramentaStore.combinarCelulas()">Merge</v-btn></div>

@@ -36,7 +36,7 @@ import App from './App.vue'
 import { createApp } from 'vue'
 
 const app = createApp(App)
-app.config.globalProperties.$properties = properties;
+app.config.globalProperties._cmsProps = properties
 let prefixoComp = "Comp"
 let prefixoConfig = "Config"
 let prefixoCampo = "Campo"

@@ -6,7 +6,7 @@
       #edicao
     >
       <div
-        :id="dados?.nomeTag ?? ''"
+        :id="dados[_cmsProps.id] ?? ''"
         class="v-card v-sheet theme--light elevation-0"
         :style="dados.atributos"
       >

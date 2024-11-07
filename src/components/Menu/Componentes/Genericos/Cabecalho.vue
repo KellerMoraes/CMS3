@@ -19,7 +19,7 @@
           <v-window v-model="model">
             <v-window-item
               v-for=" (subpagina, i) in paginaStore.pagina.filhos"
-              :key="`subPagina-${subpagina.nomeTag}`"
+              :key="`subPagina-${subpagina[_cmsProps.id]}`"
               :value="i"
             >
               <span class="text-h4 text-white">
@@ -70,7 +70,7 @@
           >  
             <v-item
               v-for="(subPagina, i) in paginaStore.pagina.filhos"
-              :key="subPagina.nomeTag"
+              :key="subPagina[_cmsProps.id]"
               v-slot="{ isSelected }"
               :value="i"
             >

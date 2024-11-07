@@ -79,7 +79,7 @@
     tag="div"
     :clone="clonar"
     :sort="false"
-    item-key="nomeTag"
+    :item-key="this._cmsProps.id"
     :group="{ name: elemento.Grupo, pull: 'clone', put: false, }"
     >
     <template #item="{ element }">
@@ -108,6 +108,7 @@ import { useDisplay } from 'vuetify'
 import { useEditorStore } from '@/stores/editor.js';
 import _ from 'lodash'
 import { Recursos } from "@/model/Recursos";
+import $properties from "../../../config"
 let editorStore = useEditorStore()
 const { xlAndUp } = useDisplay()
 let drawer = ref(true)
@@ -118,7 +119,7 @@ function fecharComponentes() {
 }
 function clonar(item) {
   let elemento = _.cloneDeep(item)
-  elemento.nomeTag = elemento.nomeTag + gerarId()
+  elemento[this._cmsProps.id] = elemento[this._cmsProps.id] + gerarId()
   delete elemento?.icone
   return elemento
   

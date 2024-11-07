@@ -2,7 +2,7 @@
 <template>
     
         <h1
-          :id="dados.nomeTag" v-html="dados.conteudo"
+          :id="dados[_cmsProps.id]" v-html="dados.conteudo"
         >
         </h1>
       

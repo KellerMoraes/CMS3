@@ -6,9 +6,9 @@
     :list="dados.filhos"
     tag="div"
     style="transition: all 0.3s ease-out;"
-    :class="`v-col cols-${dados.estrutura} coluna ${ferramentaStore.itemSelecionado.nomeTag == dados.nomeTag ? 'ativa' : ''}`"
+    :class="`v-col cols-${dados.estrutura} coluna ${ferramentaStore.itemSelecionado[_cmsProps.id] == dados[_cmsProps.id] ? 'ativa' : ''}`"
     :style="geraEstilos(dados)"
-    :item-key="dados.nomeTag"
+    :item-key="_cmsProps.id"
     :group="{ name: 'componentes' }"
     @click.self.exact="selecionarColuna(dados)"
   >
@@ -17,7 +17,7 @@
         v-if="element"
         :is="'Comp'+element.nome"
         v-model="dados.filhos[index]"
-        :key="element.nomeTag"
+        :key="element[_cmsProps.id]"
       />
     </template>
   </Draggable>

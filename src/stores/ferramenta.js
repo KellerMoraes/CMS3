@@ -44,7 +44,7 @@ export const useFerramentaStore = defineStore('ferramenta', {
           this.ferramentaSelecionada.cor = "purple"
         },
         selecionarCelula(componente) {
-          let indexCelula = this.celulasSelecionadas.findIndex((celula)=>{return celula.nomeTag == componente.nomeTag})
+          let indexCelula = this.celulasSelecionadas.findIndex((celula)=>{return celula[this._cmsProps.id] == componente[this._cmsProps.id]})
           if(indexCelula == -1){
             this.celulasSelecionadas.push(componente)
             return
@@ -53,7 +53,7 @@ export const useFerramentaStore = defineStore('ferramenta', {
         },
         combinarCelulas() {
           console.log(this.celulasSelecionadas[1])
-          let i = this.itemSelecionado.filhos.findIndex((cell)=>{return cell.nomeTag == this.celulasSelecionadas[1].nomeTag})
+          let i = this.itemSelecionado.filhos.findIndex((cell)=>{return cell[this._cmsProps.id] == this.celulasSelecionadas[1][this._cmsProps.id]})
           this.itemSelecionado.filhos.splice(i,1)
           this.celulasSelecionadas[0].estrutura = 2
         },

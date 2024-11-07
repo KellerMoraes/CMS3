@@ -34,14 +34,14 @@
     <div class="board">
     <Draggable :style="pan ? 'pointer-events: none' : ''"
     :list="subpaginaAtiva.filhos"
-    :item-key="'nomeTag'"
+    :item-key="_cmsProps.id"
     class="v-container v-container--fluid pr-10"
     :group="{ name: 'linhas' }"
     >
     <template #item="{ element, index }">
       <component
       :is="'Comp'+element.nome"
-      :key="element.nomeTag"
+      :key="element[_cmsProps.id]"
       v-model="subpaginaAtiva.filhos[index]"
       />
     </template>

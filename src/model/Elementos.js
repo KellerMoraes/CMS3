@@ -1,5 +1,5 @@
 // ESTA PAGINA CONTÉM O CORE DO CMS, AQUI É DEFINIDO A ESTRUTURA PARA SER LIDA PELO COMPONENTE VUE NA HORA DE CONSTRUIR O MESMO
-
+import _cmsProps from "../../config"
 function gerarId() {
     return Math.random().toString(36).slice(2);
 }
@@ -7,7 +7,7 @@ function gerarId() {
 const ListaDeElementos = {
     Pagina: function (nomePagina, dominioId, dataInicial) {
         return {
-            nomeTag: "pagina",
+            [_cmsProps.id]: "pagina",
             nomePagina,
             dominioId,
             versao: 'cms-3.0',
@@ -22,7 +22,7 @@ const ListaDeElementos = {
         const PaginaId = gerarId();
         return {
 
-            nomeTag: "subpagina-" + PaginaId,
+            [_cmsProps.id]: "subpagina-" + PaginaId,
             nome: "Subpágina",
             atributos: { visibilidade: { nome: 'display', valor: 'block', extensao: null }, imagem: { mostrar: false, desktop: '', mobile: '', pontoFocal: '' } },
             filhos: [
@@ -32,7 +32,7 @@ const ListaDeElementos = {
     },
     Linha: function (componente = {
         nome: "Titulo",
-        nomeTag: "h1-" + gerarId(),
+        [_cmsProps.id]: "h1-" + gerarId(),
         icone: 'mdi-format-title',
         atributos: [], 
         classe: "", 
@@ -42,11 +42,11 @@ const ListaDeElementos = {
         const linhaId = gerarId();
         return {
             nome: "Linha",
-            nomeTag: "linha-" + linhaId,
+            [_cmsProps.id]: "linha-" + linhaId,
             atributos: { estilo: { 'background': '#ffffff','min-height': 105 }, tipoFundo: 'Cor sólida' },
             filhos: [
                 {
-                    nomeTag: "coluna-" + gerarId(),
+                    [_cmsProps.id]: "coluna-" + gerarId(),
                     nome: "Coluna",
                     estrutura: 12,
                     filhos: [
@@ -59,7 +59,7 @@ const ListaDeElementos = {
     },
     Coluna: function () {
         return {
-            nomeTag: "coluna-" + gerarId(),
+            [_cmsProps.id]: "coluna-" + gerarId(),
             nome: "Coluna",
             estrutura: 12,
             filhos: [],
@@ -68,7 +68,7 @@ const ListaDeElementos = {
     },
     Celula: function (indice) {
         return {
-            nomeTag: "cell-" + indice,
+            [_cmsProps.id]: "cell-" + indice,
             nome: "GridCell",
             estrutura: 1,
             filhos: []
@@ -89,7 +89,7 @@ const ListaDeElementos = {
                 Componentes: 
                 [
                     {
-                        nomeTag: "linha-",
+                        [_cmsProps.id]: "linha-",
                         icone: 'mdi-view-day-outline',
                         atributos: { estilo: { 'background': '#ffffff','height': 105 }, tipoFundo: 'Cor sólida' },
                         filhos: []
@@ -110,7 +110,7 @@ const ListaDeElementos = {
                 Componentes: 
                 [
                     {
-                        nomeTag: "linha-",
+                        [_cmsProps.id]: "linha-",
                         icone: 'mdi-view-day-outline',
                         atributos: { estilo: { 'background': '#ffffff','height': 105 }, tipoFundo: 'Cor sólida' },
                         filhos: []
@@ -124,7 +124,7 @@ const ListaDeElementos = {
                 [
                     {
                         nome: "Titulo",
-                        nomeTag: "h1-",
+                        [_cmsProps.id]: "h1-",
                         icone: 'mdi-format-title',
                         atributos: [], 
                         classe: "", 
@@ -132,11 +132,11 @@ const ListaDeElementos = {
                     },
                     {
                         nome: "Paragrafo",
-                        nomeTag: "p-",
+                        [_cmsProps.id]: "p-",
                         icone: 'mdi-format-paragraph',
                         atributos: [], 
                         classe: "", 
-                        conteudo: "Paragrafo 1",
+                        conteudo: "Pa   ragrafo 1",
                         
                     }   
                 ]
@@ -147,7 +147,7 @@ const ListaDeElementos = {
                 [
                     {  
                         nome: "Card",
-                        nomeTag: "card-", 
+                        [_cmsProps.id]: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
                         conteudo: { "titulo": "Título", "subtitulo": "Sub Título", "texto": "Lorem ipsum dolor, sit amet consectetur adipisicing elit." },
@@ -170,7 +170,7 @@ const ListaDeElementos = {
                 [
                     {
                         nome: "Titulo",
-                        nomeTag: "h1-",
+                        [_cmsProps.id]: "h1-",
                         icone: 'mdi-format-title',
                         atributos: [], 
                         classe: "", 
@@ -178,7 +178,7 @@ const ListaDeElementos = {
                     },
                     {
                         nome: "Paragrafo",
-                        nomeTag: "p-",
+                        [_cmsProps.id]: "p-",
                         icone: 'mdi-format-paragraph',
                         atributos: [], 
                         classe: "", 
@@ -193,7 +193,7 @@ const ListaDeElementos = {
                 [
                     {  
                         nome: "Card",
-                        nomeTag: "card-", 
+                        [_cmsProps.id]: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
                         conteudo: { "titulo": "Título", "subtitulo": "Sub Título", "texto": "Lorem ipsum dolor, sit amet consectetur adipisicing elit." },
@@ -208,7 +208,7 @@ const ListaDeElementos = {
                 [
                     {  
                         nome: "Card",
-                        nomeTag: "card-", 
+                        [_cmsProps.id]: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
                         conteudo: { "titulo": "Título", "subtitulo": "Sub Título", "texto": "Lorem ipsum dolor, sit amet consectetur adipisicing elit." },
@@ -223,7 +223,7 @@ const ListaDeElementos = {
                 [
                     {  
                         nome: "Card",
-                        nomeTag: "card-", 
+                        [_cmsProps.id]: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
                         conteudo: { "titulo": "Título", "subtitulo": "Sub Título", "texto": "Lorem ipsum dolor, sit amet consectetur adipisicing elit." },
@@ -246,7 +246,7 @@ const ListaDeElementos = {
                 [
                     {
                         nome: "Titulo",
-                        nomeTag: "h1-",
+                        [_cmsProps.id]: "h1-",
                         icone: 'mdi-format-title',
                         atributos: [], 
                         classe: "", 
@@ -254,7 +254,7 @@ const ListaDeElementos = {
                     },
                     {
                         nome: "Paragrafo",
-                        nomeTag: "p-",
+                        [_cmsProps.id]: "p-",
                         icone: 'mdi-format-paragraph',
                         atributos: [], 
                         classe: "", 
@@ -269,7 +269,7 @@ const ListaDeElementos = {
                 [
                     {  
                         nome: "Card",
-                        nomeTag: "card-", 
+                        [_cmsProps.id]: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
                         conteudo: { "titulo": "Título", "subtitulo": "Sub Título", "texto": "Lorem ipsum dolor, sit amet consectetur adipisicing elit." },
@@ -284,7 +284,7 @@ const ListaDeElementos = {
                 [
                     {  
                         nome: "Card",
-                        nomeTag: "card-", 
+                        [_cmsProps.id]: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
                         conteudo: { "titulo": "Título", "subtitulo": "Sub Título", "texto": "Lorem ipsum dolor, sit amet consectetur adipisicing elit." },

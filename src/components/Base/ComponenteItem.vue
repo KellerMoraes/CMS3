@@ -3,7 +3,7 @@
 <template>
   <div 
     @click.self.exact="dados ? selecionarComponente() : ''"  
-    :style="dados ? ferramentaStore.itemSelecionado.nomeTag == dados.nomeTag ? 'border: 4px pink solid; border-top: 12px pink solid' : '' : ''"  
+    :style="dados ? ferramentaStore.itemSelecionado[_cmsProps.id] == dados[_cmsProps.id] ? 'border: 4px pink solid; border-top: 12px pink solid' : '' : ''"  
     class="componente-item"
   >
     <slot name="edicao" />

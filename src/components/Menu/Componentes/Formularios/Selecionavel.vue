@@ -17,6 +17,7 @@
       <BaseGridCell v-if="element" :key="element.nomeTag" v-model="dados.filhos[index]" ></BaseGridCell>
     </template>
   </Draggable>
+  <div style="position: absolute; top: 1%;" :style="ferramentaStore.celulasSelecionadas.length > 1 ? 'display: block': 'display: none'"><v-btn @click="ferramentaStore.combinarCelulas()">Merge</v-btn></div>
     </template>
   </BaseComponenteItem>
 </template>
@@ -30,20 +31,30 @@ let dados = defineModel()
 
 
 const gridStyle = computed(() => {
+  console.log("cet")
   // tentar ajustar isso aqui para que cada celula tenha o seu tamanho definido e reflita no pai para determinar o tamanho do grid??
   let row = ""
-  dados.value.filhos.forEach((celula)=>{
-    row += celula.estrutura
-  })
-  const rows = Array(dados.value.atributos.definicoes.grid[0]).fill('1fr').join(' ');
-    const columns = Array(dados.value.atributos.definicoes.grid[1]).fill('1fr').join(' ');
+  let col = ""
+  let qtdRows = dados.value.atributos.definicoes.grid[0]
+  let qtdCols = dados.value.atributos.definicoes.grid[1]
+  for(let x = 0; x < qtdRows; x++){
+    row += `${dados.value.filhos[x]?.estrutura}fr `
+    // HORIZONTAL(LINHA)
+  }
+  for(let y = 0; y < qtdCols; y++){
+    col += `${dados.value.filhos[y]?.estrutura}fr `
+    // VERTICAL(COLUNA)
+  }
+
+  // const rows = Array(dados.value.atributos.definicoes.grid[0]).fill('1fr').join(' ');
+  //   const columns = Array(dados.value.atributos.definicoes.grid[1]).fill('1fr').join(' ');
     return {
       display: 'grid',
-      gridTemplateRows: rows,
-      gridTemplateColumns: columns,
+      gridTemplateRows: row,
+      gridTemplateColumns: col,
       height: '200px',
       gap: '5px',
-      backgroundColor: 'teal'
+      padding: '8px'
 
     };
   });

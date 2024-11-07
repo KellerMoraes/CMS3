@@ -5,6 +5,7 @@ export const useFerramentaStore = defineStore('ferramenta', {
     state: () => ({
         // Ferramentas
         itemSelecionado: reactive({}),
+        celulasSelecionadas: reactive([]),
         ferramentaSelecionada: reactive({nome: "" , cor: "white" }),
         colunaSelecionada: ref(""),
         formularioSelecionado: reactive({})
@@ -41,6 +42,20 @@ export const useFerramentaStore = defineStore('ferramenta', {
           this.itemSelecionado = componente
           this.ferramentaSelecionada.nome = "Componente"
           this.ferramentaSelecionada.cor = "purple"
+        },
+        selecionarCelula(componente) {
+          let indexCelula = this.celulasSelecionadas.findIndex((celula)=>{return celula.nomeTag == componente.nomeTag})
+          if(indexCelula == -1){
+            this.celulasSelecionadas.push(componente)
+            return
+          }
+          this.celulasSelecionadas.splice(indexCelula,1)
+        },
+        combinarCelulas() {
+          console.log(this.celulasSelecionadas[1])
+          let i = this.itemSelecionado.filhos.findIndex((cell)=>{return cell.nomeTag == this.celulasSelecionadas[1].nomeTag})
+          this.itemSelecionado.filhos.splice(i,1)
+          this.celulasSelecionadas[0].estrutura = 2
         },
         configuracaoCabecalho() {
     

@@ -8,6 +8,8 @@
 // Plugins
 import { registerPlugins } from '@/plugins'
 import './assets/styles/cms.scss'
+import properties from '../config';
+
 import Titulo from '@/components/Menu/Componentes/Titulos/Titulo.vue'
 import Botao from '@/components/Menu/Componentes/Botoes/Botao.vue'
 import Paragrafo from '@/components/Menu/Componentes/Paragrafos/Paragrafo.vue'
@@ -34,6 +36,7 @@ import App from './App.vue'
 import { createApp } from 'vue'
 
 const app = createApp(App)
+app.config.globalProperties.$properties = properties;
 let prefixoComp = "Comp"
 let prefixoConfig = "Config"
 let prefixoCampo = "Campo"

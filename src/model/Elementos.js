@@ -1,4 +1,4 @@
-// ESTA PAGINA CONTÉM O CORE DO CMS, AQUI É DEFINIDO A ESTRUTURA PARA SER LIDA PELO COMPONENTE VUE NA HORA DE CONTRUIR O MESMO
+// ESTA PAGINA CONTÉM O CORE DO CMS, AQUI É DEFINIDO A ESTRUTURA PARA SER LIDA PELO COMPONENTE VUE NA HORA DE CONSTRUIR O MESMO
 
 function gerarId() {
     return Math.random().toString(36).slice(2);
@@ -70,6 +70,7 @@ const ListaDeElementos = {
         return {
             nomeTag: "cell-" + indice,
             nome: "GridCell",
+            estrutura: 1,
             filhos: []
         };
     },

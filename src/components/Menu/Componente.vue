@@ -21,26 +21,6 @@
     </div>
 
     <v-divider />
-    <!-- <v-list
-      density="compact"
-      nav
-    >
-      <v-list-item
-        v-for="(componente, opcao,index) in componentes"
-        @click="selecionar(opcao)"
-        variant="elevated"
-        :base-color="componente.cor"
-        :key="index"
-        :title="componente.nome"
-        :value="componente.valor"
-      >
-        <template #prepend>
-          <v-icon class="text-center">
-            {{ componente.icone }}
-          </v-icon>
-        </template>
-      </v-list-item>
-    </v-list> -->
     <v-sheet width="100%" class="d-flex flex-column justify-center align-center py-2" >
      
 
@@ -66,7 +46,6 @@
   <div class="d-flex justify-space-between align-center ma-2 mt-4 mb-4">
 
     <span class="titulo">{{ editorStore.recursoSelecionado.Nome  }}</span>
-    <!-- sá bosta tem que fechar junto <<<<<<<<<<<<< -->
     <v-btn
     @click="fecharComponentes()"
     icon
@@ -133,14 +112,6 @@ let editorStore = useEditorStore()
 const { xlAndUp } = useDisplay()
 let drawer = ref(true)
 let recursos = Recursos
-let indiceSelecionado = ref(null)
-let itensRecurso = reactive([])
-// let opcaoIndiceSelecionadoComp = ref(null)
-// let recursos = [
-//   {nome: 'Componentes', nomeRecurso: 'Componentes', icone:'mdi-plus-box-outline' },
-//   {nome: 'Moldes', nomeRecurso: 'Moldes', icone:'mdi-group' },
-//   {nome: 'Formulários', nomeRecurso: 'Formularios', icone:'mdi-form-select' },
-// ]
 
 function fecharComponentes() {
   editorStore.recursoSelecionado = false

@@ -3,7 +3,7 @@
     <v-container>
         <!-- Linhas -->
 
-        <component v-for="Linha in Linhas" :key="Linha[_cmsProps.id]" :is="componenteNome(Linha.nome)" :dados="Linha" ></component>
+        <component v-for="Linha in Linhas" :key="Linha[this._cmsProps.id]" :is="componenteNome(Linha[_cmsProps.name])" :dados="Linha" ></component>
     </v-container>
     </template>
     

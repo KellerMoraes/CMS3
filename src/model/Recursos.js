@@ -44,7 +44,7 @@ const Recursos =  [
             Componentes: 
             [
                 {
-                    nome: "Titulo",
+                    [_cmsProps.name]: "Titulo",
                     [_cmsProps.id]: "h1-",
                     icone: 'mdi-format-title',
                     atributos: [], 
@@ -52,7 +52,7 @@ const Recursos =  [
                     conteudo: "Titulo 1"
                 },
                 {
-                    nome: "Paragrafo",
+                    [_cmsProps.name]: "Paragrafo",
                     [_cmsProps.id]: "p-",
                     icone: 'mdi-format-paragraph',
                     atributos: [], 
@@ -69,7 +69,7 @@ const Recursos =  [
 //             Componentes: 
 //             [
 //                 {  
-//                     nome: "Card",
+//                     [_cmsProps.name]: "Card",
 //                     [_cmsProps.id]: "card-" + id, 
 //                     atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
 //                     classe: "", 
@@ -93,7 +93,7 @@ const Recursos =  [
 //             Componentes: 
 //             [
 //                 {
-//                     nome: "Titulo",
+//                     [_cmsProps.name]: "Titulo",
 //                     [_cmsProps.id]: "h1-" + id,
 //                     icone: 'mdi-format-title',
 //                     atributos: [], 
@@ -101,7 +101,7 @@ const Recursos =  [
 //                     conteudo: "Titulo 1"
 //                 },
 //                 {
-//                     nome: "Paragrafo",
+//                     [_cmsProps.name]: "Paragrafo",
 //                     [_cmsProps.id]: "p-" + id,
 //                     icone: 'mdi-format-paragraph',
 //                     atributos: [], 
@@ -126,7 +126,7 @@ const Recursos =  [
             Componentes: 
             [
                 {
-                    nome: "Campo",
+                    [_cmsProps.name]: "Campo",
                     [_cmsProps.id]: "Campo-",
                     configuracoes:["Input","Dimensoes"],
                     icone: 'mdi-form-textbox',
@@ -134,7 +134,7 @@ const Recursos =  [
                     conteudo: ""
                 },
                 {
-                    nome: "Selecionavel",
+                    [_cmsProps.name]: "Selecionavel",
                     [_cmsProps.id]: "Selecionavel-",
                     configuracoes:["GridMaker"],
                     icone: 'mdi-radiobox-marked',
@@ -150,7 +150,7 @@ const Recursos =  [
         //     Componentes: 
         //     [
         //         {
-        //             nome: "BotaoSimples",
+        //             [_cmsProps.name]: "BotaoSimples",
         //             [_cmsProps.id]: "BotaoSimples-" + id,
         //             icone: 'mdi-button-cursor',
         //             atributos: [],
@@ -168,7 +168,7 @@ const Recursos =  [
                 {
 
       conteudo: {},
-      nome: "Formulario",
+      [_cmsProps.name]: "Formulario",
       [_cmsProps.id]: "Formulario-",
       atributos: [],
       configuracoes:[""],
@@ -183,7 +183,7 @@ const Recursos =  [
       filhos: [
         new ListaDeElementos.Linha(),
         new ListaDeElementos.Linha({
-            nome: "Botao",
+            [_cmsProps.name]: "Botao",
             [_cmsProps.id]: "btn-1243124124",
             atributos: { estilo: { }, definicoes: {variante: "tonal", tipo: "Submit" } }, 
             classe: "", 
@@ -191,16 +191,16 @@ const Recursos =  [
         })
         // {
         //     [_cmsProps.id]: "linha-" + id(),
-        //     nome: "Linha",
+        //     [_cmsProps.name]: "Linha",
         //     atributos: { estilo: { 'background': '#ffffff','min-height': 105 }, tipoFundo: 'Cor sólida' },
         //     filhos: [
         //         {
-        //             nome: "Coluna",
+        //             [_cmsProps.name]: "Coluna",
         //             [_cmsProps.id]: "coluna-" + id(),
         //             estrutura: 12,
         //             filhos: [
         //                 {
-        //                     nome: "Titulo",
+        //                     [_cmsProps.name]: "Titulo",
         //                     [_cmsProps.id]: "h1-" + id(),
         //                     icone: 'mdi-format-title',
         //                     atributos: [], 

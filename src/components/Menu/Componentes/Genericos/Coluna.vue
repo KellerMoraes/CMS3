@@ -6,18 +6,18 @@
     :list="dados.filhos"
     tag="div"
     style="transition: all 0.3s ease-out;"
-    :class="`v-col cols-${dados.estrutura} coluna ${ferramentaStore.itemSelecionado[_cmsProps.id] == dados[_cmsProps.id] ? 'ativa' : ''}`"
+    :class="`v-col cols-${dados.estrutura} coluna ${ferramentaStore.itemSelecionado[this._cmsProps.id] == dados[this._cmsProps.id] ? 'ativa' : ''}`"
     :style="geraEstilos(dados)"
-    :item-key="_cmsProps.id"
+    :item-key="this._cmsProps.id"
     :group="{ name: 'componentes' }"
     @click.self.exact="selecionarColuna(dados)"
   >
     <template #item="{ element,index}">
       <component
         v-if="element"
-        :is="'Comp'+element.nome"
+        :is="'Comp'+element[_cmsProps.name]"
         v-model="dados.filhos[index]"
-        :key="element[_cmsProps.id]"
+        :key="element[this._cmsProps.id]"
       />
     </template>
   </Draggable>

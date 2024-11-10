@@ -19,11 +19,11 @@
           <v-window v-model="model">
             <v-window-item
               v-for=" (subpagina, i) in paginaStore.pagina.filhos"
-              :key="`subPagina-${subpagina[_cmsProps.id]}`"
+              :key="`subPagina-${subpagina[this._cmsProps.id]}`"
               :value="i"
             >
               <span class="text-h4 text-white">
-                {{ subpagina.nome }}
+                {{ subpagina[_cmsProps.name] }}
               </span>
             </v-window-item>
           </v-window>
@@ -70,7 +70,7 @@
           >  
             <v-item
               v-for="(subPagina, i) in paginaStore.pagina.filhos"
-              :key="subPagina[_cmsProps.id]"
+              :key="subPagina[this._cmsProps.id]"
               v-slot="{ isSelected }"
               :value="i"
             >
@@ -79,7 +79,7 @@
                 :variant="isSelected ? 'outlined' : 'text'"
                 @click="MudarSubPaginaAtiva(i)"
               >
-                {{ subPagina.nome }}
+                {{ subPagina[_cmsProps.name] }}
               </v-btn>
             </v-item>
             <v-btn

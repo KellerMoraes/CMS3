@@ -20,7 +20,7 @@
                 <v-tooltip
           activator="parent"
           location="top"
-        ><span :class="theme.name.value == 'dark'? 'text-black' : 'text-white' "  style="color: black;">{{ item.nome }}</span></v-tooltip>
+        ><span :class="theme.name.value == 'dark'? 'text-black' : 'text-white' "  style="color: black;">{{ item[_cmsProps.name] }}</span></v-tooltip>
               </v-btn>
               </v-btn-toggle>
             </div>
@@ -40,12 +40,12 @@
                 variant="outlined"
                 v-model="ferramentaStore.itemSelecionado.atributos.estilo['flex-direction']"
                             >
-              <v-btn v-for="item in direction" :key="item.nome" :value="item.propriedade" @click="defineDirection(item.propriedade)"  size="small">
+              <v-btn v-for="item in direction" :key="item[_cmsProps.name]" :value="item.propriedade" @click="defineDirection(item.propriedade)"  size="small">
                 <v-icon size="26">{{ theme.name.value == 'dark' ? '$'+item.icone+"Light" : '$'+item.icone+"Dark" }}</v-icon>
                 <v-tooltip
           activator="parent"
           location="top"
-        ><span :class="theme.name.value == 'dark'? 'text-black' : 'text-white' "  style="color: black;">{{ item.nome }}</span></v-tooltip>
+        ><span :class="theme.name.value == 'dark'? 'text-black' : 'text-white' "  style="color: black;">{{ item[_cmsProps.name] }}</span></v-tooltip>
               </v-btn>
               </v-btn-toggle>
             </div>
@@ -60,12 +60,12 @@
                 variant="outlined"
                 v-model="ferramentaStore.itemSelecionado.atributos.estilo['align-items']"
               >
-              <v-btn v-for="item in align" :key="item.nome" :value="item.propriedade" @click="defineAlign(item.propriedade)"  size="small">
+              <v-btn v-for="item in align" :key="item[_cmsProps.name]" :value="item.propriedade" @click="defineAlign(item.propriedade)"  size="small">
                 <v-icon :size="item.size ?? '26'" >{{ theme.name.value == 'dark' ? '$'+item.icone+(ferramentaStore.itemSelecionado?.atributos?.estilo?.['flex-direction'] == 'row' ? 'V': '' ) +"Light" : '$'+item.icone+(ferramentaStore.itemSelecionado?.atributos?.estilo?.['flex-direction'] == 'row' ? 'V': '')+"Dark" }}</v-icon>
                 <v-tooltip
           activator="parent"
           location="top"
-        ><span :class="theme.name.value == 'dark'? 'text-black' : 'text-white' "  style="color: black;">{{ item.nome }}</span></v-tooltip>
+        ><span :class="theme.name.value == 'dark'? 'text-black' : 'text-white' "  style="color: black;">{{ item[_cmsProps.name] }}</span></v-tooltip>
               </v-btn>
               </v-btn-toggle>
             </div>
@@ -80,12 +80,12 @@
                 variant="outlined"
                 v-model="ferramentaStore.itemSelecionado.atributos.estilo['justify-content']"
               >
-              <v-btn v-for="item in justify" :value="item.propriedade" :key="item.nome" @click="defineJustify(item.propriedade)"  size="small">
+              <v-btn v-for="item in justify" :value="item.propriedade" :key="item[_cmsProps.name]" @click="defineJustify(item.propriedade)"  size="small">
                 <v-icon  :size="item.size ?? '26'">{{ theme.name.value == 'dark' ? '$'+item.icone+(ferramentaStore.itemSelecionado?.atributos?.estilo?.['flex-direction'] == 'row' ? 'V': '' )+"Light" : '$'+item.icone+(ferramentaStore.itemSelecionado?.atributos?.estilo?.['flex-direction'] == 'row' ? 'V': '')+"Dark" }}</v-icon>
                 <v-tooltip
           activator="parent"
           location="top"
-        ><span :class="theme.name.value == 'dark'? 'text-black' : 'text-white' "  style="color: black;">{{ item.nome }}</span></v-tooltip>
+        ><span :class="theme.name.value == 'dark'? 'text-black' : 'text-white' "  style="color: black;">{{ item[_cmsProps.name] }}</span></v-tooltip>
               </v-btn>
               </v-btn-toggle>
             </div>
@@ -103,12 +103,12 @@
                 variant="outlined"
                 v-model="ferramentaStore.itemSelecionado.atributos.estilo['flex-wrap']"
               >
-              <v-btn v-for="item in children" :value="item.propriedade" :key="item.nome" @click="defineWrap(item.propriedade)"  size="small">
+              <v-btn v-for="item in children" :value="item.propriedade" :key="item[_cmsProps.name]" @click="defineWrap(item.propriedade)"  size="small">
                 <v-icon size="26">{{ theme.name.value == 'dark' ? '$'+item.icone+"Light" : '$'+item.icone+"Dark" }}</v-icon>
                 <v-tooltip
           activator="parent"
           location="top"
-        ><span :class="theme.name.value == 'dark'? 'text-black' : 'text-white' "  style="color: black;">{{ item.nome }}</span></v-tooltip>
+        ><span :class="theme.name.value == 'dark'? 'text-black' : 'text-white' "  style="color: black;">{{ item[_cmsProps.name] }}</span></v-tooltip>
               </v-btn>
               </v-btn-toggle>
             </div>
@@ -123,12 +123,12 @@
                 variant="outlined"
                 v-model="ferramentaStore.itemSelecionado.atributos.estilo['align-content']"
               >
-              <v-btn v-for="item in alignContent" :value="item.propriedade" :key="item.nome" @click="defineAlignContent(item.propriedade)"  size="x-small">
+              <v-btn v-for="item in alignContent" :value="item.propriedade" :key="item[_cmsProps.name]" @click="defineAlignContent(item.propriedade)"  size="x-small">
                 <v-icon size="24">{{ theme.name.value == 'dark' ? '$'+item.icone+"Light" : '$'+item.icone+"Dark" }}</v-icon>
                 <v-tooltip
           activator="parent"
           location="top"
-        ><span :class="theme.name.value == 'dark'? 'text-black' : 'text-white' "  style="color: black;">{{ item.nome }}</span></v-tooltip>
+        ><span :class="theme.name.value == 'dark'? 'text-black' : 'text-white' "  style="color: black;">{{ item[_cmsProps.name] }}</span></v-tooltip>
               </v-btn>
               </v-btn-toggle>
             </div>

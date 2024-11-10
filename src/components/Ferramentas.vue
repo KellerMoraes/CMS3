@@ -10,7 +10,7 @@
       </v-btn>
       <div
         class="d-inline"
-        v-if="ferramentaStore.ferramentaSelecionada.nome == 'Linha'"
+        v-if="ferramentaStore.ferramentaSelecionada[_cmsProps.name] == 'Linha'"
       >
         <v-btn 
           
@@ -21,12 +21,12 @@
           <v-icon class="mr-2">
             {{ botao.icone }}
           </v-icon>
-          {{ botao.nome }}
+          {{ botao[_cmsProps.name] }}
         </v-btn>
       </div>
       <div
         class="d-inline"
-        v-if="ferramentaStore.ferramentaSelecionada.nome == 'Coluna'"
+        v-if="ferramentaStore.ferramentaSelecionada[_cmsProps.name] == 'Coluna'"
       >
         <v-btn
           
@@ -36,12 +36,12 @@
           <v-icon class="mr-2">
             {{ botao.icone }}
           </v-icon>
-          {{ botao.nome }}
+          {{ botao[_cmsProps.name] }}
         </v-btn>
       </div>
       <div
         class="d-inline"
-        v-if="ferramentaStore.ferramentaSelecionada.nome == 'Componente'"
+        v-if="ferramentaStore.ferramentaSelecionada[_cmsProps.name] == 'Componente'"
       >
         <v-btn
           
@@ -51,7 +51,7 @@
           <v-icon class="mr-2">
             {{ botao.icone }}
           </v-icon>
-          {{ botao.nome }}
+          {{ botao[_cmsProps.name] }}
         </v-btn>
       </div>
     </v-col>

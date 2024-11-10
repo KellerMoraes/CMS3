@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
       <v-card rounded
-      :class="`mx-auto my-6 form ${ ferramentaStore.itemSelecionado[_cmsProps.id] == dados[_cmsProps.id] ? 'ativo' : '' } `" 
+      :class="`mx-auto my-6 form ${ ferramentaStore.itemSelecionado[this._cmsProps.id] == dados[this._cmsProps.id] ? 'ativo' : '' } `" 
     :link="false"  >
       <v-card-item class="handHover" @click.exact="ferramentaStore.selecionarFormulario(dados)" append-icon="mdi-outlined-check" prepend-icon="mdi-list-box-outline" subtitle="Simples" title="Formulário">
       </v-card-item>
@@ -14,9 +14,9 @@
         :list="dados.filhos"
         tag="div"
         class="v-container v-container--fluid pr-10"
-        :class="ferramentaStore?.formularioSelecionado[_cmsProps.id] == dados[_cmsProps.id] ? 'FormAtivo' : 'FormInativo'"
+        :class="ferramentaStore?.formularioSelecionado[this._cmsProps.id] == dados[this._cmsProps.id] ? 'FormAtivo' : 'FormInativo'"
         style="transition: all 0.3s ease-out;"
-        :item-key="_cmsProps.id"
+        :item-key="this._cmsProps.id"
         :group="{ name: 'linhas', pull: false }"
         >
         <!-- Grupo Arrumar: o problema é que, o grupo é o "Linhas" que no caso é o mesmo de todas as linhas, lá dentro tem o grupo colunas, que carrega os componentes, 
@@ -24,10 +24,10 @@
         <template #item="{ element,index}">
           <component
           v-if="element"
-          :is="'Comp'+element.nome"
+          :is="'Comp'+element[_cmsProps.name]"
           v-model="dados.filhos[index]"
           
-          :key="element[_cmsProps.id]"
+          :key="element[this._cmsProps.id]"
           />
         </template>
       </Draggable> 

@@ -1,13 +1,17 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <v-row :style="geraEstilos()" class="linha">
-    <component v-for="dado in dados.filhos" :key="dado[_cmsProps.id]" :is="componenteNome(dado.nome)" v-model="infoModel" :dados="dado" ></component>
+    <component v-for="dado in dados.filhos" :key="dado[this._cmsProps.id]" :is="componenteNome(dado[_cmsProps.name])" v-model="infoModel" :dados="dado" ></component>
   </v-row>
   </template>
   
   <script setup>
   const props = defineProps(['dados'])
   const infoModel = defineModel()
+  onMounted(()=>{
+    console.log(import.meta.env.V_ID)
+
+  })
     function geraEstilos() {
       let dados = props.dados
       let atributos = dados.atributos
@@ -19,7 +23,6 @@
       
       }
       function componenteNome(nome){return defineAsyncComponent(() => import(`./${nome}.vue`))}
-  
   </script>
   <style>
   </style>

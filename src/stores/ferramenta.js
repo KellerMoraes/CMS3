@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ListaDeElementos } from '@/model/Elementos';
 import { reactive, ref } from 'vue';
+import _cmsProps from "../../config"
 export const useFerramentaStore = defineStore('ferramenta', { 
     state: () => ({
         // Ferramentas
@@ -25,22 +26,22 @@ export const useFerramentaStore = defineStore('ferramenta', {
         selecionarLinha(linha) {
           this.itemSelecionado = linha
           this.ferramentaSelecionada.cor = "green"
-          this.ferramentaSelecionada.nome = "Linha"
+          this.ferramentaSelecionada[_cmsProps.name] = "Linha"
         },
         selecionarFormulario(formulario) {
           this.itemSelecionado = formulario
           this.formularioSelecionado = formulario
           this.ferramentaSelecionada.cor = "#ffd900"
-          this.ferramentaSelecionada.nome = "Formulário"
+          this.ferramentaSelecionada[_cmsProps.name] = "Formulário"
         },
         selecionarColuna(coluna) {
           this.itemSelecionado = coluna
-          this.ferramentaSelecionada.nome = "Coluna"
+          this.ferramentaSelecionada[_cmsProps.name] = "Coluna"
           this.ferramentaSelecionada.cor = "blue"
         },
         selecionarComponente(componente) {
           this.itemSelecionado = componente
-          this.ferramentaSelecionada.nome = "Componente"
+          this.ferramentaSelecionada[_cmsProps.name] = "Componente"
           this.ferramentaSelecionada.cor = "purple"
         },
         selecionarCelula(componente) {
@@ -60,7 +61,7 @@ export const useFerramentaStore = defineStore('ferramenta', {
         configuracaoCabecalho() {
     
           this.itemSelecionado = this.subpaginaAtiva
-          this.ferramentaSelecionada.nome = "Cabecalho"
+          this.ferramentaSelecionada[_cmsProps.name] = "Cabecalho"
           this.ferramentaSelecionada.cor = "#830909"
         }
       },

@@ -2,8 +2,8 @@
 <template>
     
     <v-form @submit.prevent="submit" :style="geraEstilos()"
-      :id="dados[_cmsProps.id]">
-      <component v-for="dado in dados.filhos" :key="dado[_cmsProps.id]" :is="componenteNome(dado.nome)" v-model="dados.conteudo" :dados="dado" ></component>
+      :id="dados[this._cmsProps.id]">
+      <component v-for="dado in dados.filhos" :key="dado[this._cmsProps.id]" :is="componenteNome(dado[_cmsProps.name])" v-model="dados.conteudo" :dados="dado" ></component>
     <!-- passar por model nao por props -->
     </v-form>
   

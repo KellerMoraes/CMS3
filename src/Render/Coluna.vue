@@ -3,7 +3,7 @@
 
 <template>
     <v-col :style="geraEstilos()" :cols="dados.estrutura">
-      <component v-for="dado in dados.filhos" :key="dado[_cmsProps.id]" :is="componenteNome(dado.nome)" v-model="infoModel" :dados="dado" ></component>
+      <component v-for="dado in dados.filhos" :key="dado[this._cmsProps.id]" :is="componenteNome(dado[_cmsProps.name])" v-model="infoModel" :dados="dado" ></component>
     </v-col>
   </template>
   

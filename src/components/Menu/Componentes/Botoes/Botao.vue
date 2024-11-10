@@ -6,7 +6,7 @@
         #edicao
       >
         <v-btn
-          :id="dados[_cmsProps.id] ?? ''"
+          :id="dados[this._cmsProps.id] ?? ''"
           :variant="dados.atributos?.definicoes?.variante ?? 'outlined'"
           :type="dados.atributos?.definicoes?.tipo ?? ''"
           @dblclick="habilitarEditavel(dados.conteudo)"

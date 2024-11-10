@@ -12,20 +12,20 @@
       class="mx-auto"
       rel="noopener"
       
-      :subtitle="ferramentaStore.ferramentaSelecionada.nome ? 'Configuração' : '' "
+      :subtitle="ferramentaStore.ferramentaSelecionada[_cmsProps.name] ? 'Configuração' : '' "
       :color="ferramentaStore.ferramentaSelecionada.cor"
       :rounded="0"
-      :title="!paginaAtual.filhos ? ferramentaStore.ferramentaSelecionada.nome ?? 'Configuração Inicial' : ferramentaStore.ferramentaSelecionada.nome "
+      :title="!paginaAtual.filhos ? ferramentaStore.ferramentaSelecionada[_cmsProps.name] ?? 'Configuração Inicial' : ferramentaStore.ferramentaSelecionada[_cmsProps.name] "
     >
       <v-divider />
       <v-spacer />
     </v-card>
     <v-sheet class="configuracoesComponentes" />
     <v-sheet>
-      <MenuConfigCabecalho v-if="ferramentaStore.ferramentaSelecionada.nome == 'Cabecalho'" />
-      <MenuConfigLinha v-if="ferramentaStore.ferramentaSelecionada.nome == 'Linha'" />
-      <MenuConfigColuna v-if="ferramentaStore.ferramentaSelecionada.nome == 'Coluna'" />
-      <MenuConfigComponente v-if="ferramentaStore.ferramentaSelecionada.nome == 'Componente'" />
+      <MenuConfigCabecalho v-if="ferramentaStore.ferramentaSelecionada[_cmsProps.name] == 'Cabecalho'" />
+      <MenuConfigLinha v-if="ferramentaStore.ferramentaSelecionada[_cmsProps.name] == 'Linha'" />
+      <MenuConfigColuna v-if="ferramentaStore.ferramentaSelecionada[_cmsProps.name] == 'Coluna'" />
+      <MenuConfigComponente v-if="ferramentaStore.ferramentaSelecionada[_cmsProps.name] == 'Componente'" />
       <!-- {{ ferramentaStore.itemSelecionado.atributos }} -->
     </v-sheet>
   </v-sheet>

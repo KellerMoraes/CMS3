@@ -5,15 +5,15 @@
     style="position: relative; transition: all 0.2s ease-out;"
     :list="dados.filhos"
     :style="geraEstilos(dados)"
-    :class="`v-row linha ${ ferramentaStore.itemSelecionado[_cmsProps.id] == dados[_cmsProps.id] ? 'ativo' : '' } `" 
-    :item-key="_cmsProps.id"
+    :class="`v-row linha ${ ferramentaStore.itemSelecionado[this._cmsProps.id] == dados[this._cmsProps.id] ? 'ativo' : '' } `" 
+    :item-key="this._cmsProps.id"
     :group="{ name: 'colunas' }"
     @click.ctrl.exact="selecionarLinha(dados)"
     @click.self.exact="selecionarLinha(dados)"
   >
     <template #item="{ element,index }">
       <component
-        :is="'Comp'+element.nome"
+        :is="'Comp'+element[_cmsProps.name]"
         v-model="dados.filhos[index]"
         :estrutura="element.estrutura"
       />

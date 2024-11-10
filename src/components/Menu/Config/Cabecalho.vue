@@ -10,7 +10,7 @@
         class="pb-0"
       >
         <v-text-field
-          v-model="subpagina.nome"
+          v-model="subpagina[_cmsProps.name]"
           placeholder="Nome"
           variant="outlined"
         />

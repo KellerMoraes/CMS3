@@ -35,7 +35,7 @@
                     <v-tooltip
         activator="parent"
         location="top"
-      ><span :class="theme.name.value == 'dark'? 'text-black' : 'text-white' "  >{{ coluna[_cmsProps.name] }}</span></v-tooltip>
+      ><span :class="theme.name.value == 'dark'? 'text-black' : 'text-white' "  >{{ coluna.nome }}</span></v-tooltip>
                       <v-scroll-y-transition>
                         <div
                           class="flex-grow-1 text-center font-weight-bold"
@@ -43,7 +43,7 @@
                         <v-icon :class="coluna.classe ?? '' " size="55">{{ theme.name.value == 'dark' ? '$'+coluna.icone+"Light" : '$'+coluna.icone+"Dark" }}</v-icon>
                           <small>
                           
-                            <!-- {{ coluna[_cmsProps.name] }} -->
+                            <!-- {{ coluna.nome }} -->
                           </small>
                         </div>
                       </v-scroll-y-transition>
@@ -68,7 +68,7 @@
             <v-icon class="my-1">
               {{ botao.icone }}
             </v-icon>
-            <span v-html="botao[_cmsProps.name]" />
+            <span v-html="botao.nome" />
           </v-btn>
         </v-expansion-panel-text>
       </v-expansion-panel> -->

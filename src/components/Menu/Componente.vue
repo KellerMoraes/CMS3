@@ -85,7 +85,7 @@
     <template #item="{ element }">
           <v-card color="#f5f5f5" width="85px" height="105px" class="mx-1 my-1 d-flex flex-column justify-center align-center">
               <v-icon size="35"  class="my-4">{{ element.icone }}</v-icon>
-            <div style="font-size: 12px;">{{ element[_cmsProps.name] }}</div>
+            <div style="font-size: 12px;">{{ element.nome }}</div>
           </v-card>
        
         </template>

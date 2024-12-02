@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <v-row :style="geraEstilos()" class="linha">
-    <component v-for="dado in dados.filhos" :key="dado[this._cmsProps.id]" :is="componenteNome(dado[_cmsProps.name])" v-model="infoModel" :dados="dado" ></component>
+    <component v-for="dado in dados.filhos" :key="dado[this._cmsProps.id]" :is="componenteNome(dado.nome)" v-model="infoModel" :dados="dado" ></component>
   </v-row>
   </template>
   

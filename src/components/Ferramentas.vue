@@ -1,84 +1,44 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <v-row>
-    <v-col cols="8">
-      <v-btn size="large">
-        <v-icon class="mr-2">
-          mdi-eye-off
-        </v-icon>
-        Desabilitar
-      </v-btn>
-      <div
-        class="d-inline"
-        v-if="ferramentaStore.ferramentaSelecionada[_cmsProps.name] == 'Linha'"
-      >
-        <v-btn 
-          
-          v-for="(botao, i) in botoesLinha" 
-          :key="i"
-          size="large"
-        >
-          <v-icon class="mr-2">
-            {{ botao.icone }}
-          </v-icon>
-          {{ botao[_cmsProps.name] }}
-        </v-btn>
-      </div>
-      <div
-        class="d-inline"
-        v-if="ferramentaStore.ferramentaSelecionada[_cmsProps.name] == 'Coluna'"
-      >
-        <v-btn
-          
-          v-for="(botao, i) in botoesColuna"
-          :key="i"
-        >
-          <v-icon class="mr-2">
-            {{ botao.icone }}
-          </v-icon>
-          {{ botao[_cmsProps.name] }}
-        </v-btn>
-      </div>
-      <div
-        class="d-inline"
-        v-if="ferramentaStore.ferramentaSelecionada[_cmsProps.name] == 'Componente'"
-      >
-        <v-btn
-          
-          v-for="(botao, i) in botoes"
-          :key="i"
-        >
-          <v-icon class="mr-2">
-            {{ botao.icone }}
-          </v-icon>
-          {{ botao[_cmsProps.name] }}
-        </v-btn>
-      </div>
-    </v-col>
-    <v-col
-      cols="4"
-      class="pr-2"
-    >
-      <v-btn size="large">
-        <v-icon class="mr-2">
-          mdi-content-save
-        </v-icon>
-        Salvar
-      </v-btn>
-      <v-btn size="large">
-        <v-icon class="mr-2">
-          mdi-upload
-        </v-icon>
-        Publicar
-      </v-btn>
-      <v-btn size="large" to="/visualizacao">
-        <v-icon class="mr-2">
-          mdi-eye
-        </v-icon>
-        Visualizar
-      </v-btn>
-    </v-col>
-  </v-row>
+<div class="itensMenu" style="width: 100%;">
+  <v-btn color="#003d7c" style="border-radius: 5px; " class="px-3"  size="70">
+    <v-icon class="mr-2">
+      mdi-arrow-left
+    </v-icon>
+  </v-btn>
+  <div class="d-flex justify-start align-center">
+    
+    <v-list-item
+    subtitle="SubPágina 1"
+    title="Pagina Teste and ceta and ceta"
+    ></v-list-item>
+  </div>
+  <v-divider vertical inset ></v-divider>
+  <div class="d-flex justify-start align-center">
+    Teste
+  </div>
+  <div class="d-flex justify-end align-center mr-8">
+    <v-btn color="#003d7c" style="border-radius: 5px;" class="px-3"  variant="flat"  height="45px" size="">
+      <v-icon class="mr-2">
+        mdi-content-save
+      </v-icon>
+      Salvar
+    </v-btn>
+    <v-btn color="green"  variant="flat" size="" style="border-radius: 5px;" height="45px" class="px-2 mx-2">
+      <v-icon class="mr-2">
+        mdi-upload
+      </v-icon>
+      Publicar
+    </v-btn>
+    <v-btn color="primary"  variant="flat" size="" style="border-radius: 5px;" height="45px" class="px-2" to="/visualizacao">
+      <v-icon class="mr-2">
+        mdi-play
+      </v-icon>
+      Visualizar
+    </v-btn>
+  </div>
+
+  </div>
 </template>
 <script>
 import { useFerramentaStore } from '@/stores/ferramenta.js';
@@ -105,3 +65,10 @@ export default {
   }
 }
 </script>
+<style scoped>
+.itensMenu{
+display: grid;
+grid-template-columns: 3% 12% auto 45% 30%;
+}
+
+</style>

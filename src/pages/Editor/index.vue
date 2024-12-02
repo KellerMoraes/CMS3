@@ -15,8 +15,7 @@
     
     <MenuComponente />
   </div>
-  <MenuConfiguracao />
-    <main :class="pan ? 'panOn': '' " >
+    <main style="display: flex; height: 100vh;" :class="pan ? 'panOn': '' " >
       <zoompinch
   ref="zoompinchRef"
   v-model:transform="transform"
@@ -40,7 +39,7 @@
     >
     <template #item="{ element, index }">
       <component
-      :is="'Comp'+element[_cmsProps.name]"
+      :is="'Comp'+element.nome"
       :key="element[this._cmsProps.id]"
       v-model="subpaginaAtiva.filhos[index]"
       />
@@ -67,7 +66,9 @@
     </svg>
   </template>
   </zoompinch>
+  <MenuConfiguracao />
     </main>
+
   </template>
   
   <script setup>

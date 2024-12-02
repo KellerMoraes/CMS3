@@ -24,7 +24,7 @@
         <template #item="{ element,index}">
           <component
           v-if="element"
-          :is="'Comp'+element[_cmsProps.name]"
+          :is="'Comp'+element.nome"
           v-model="dados.filhos[index]"
           
           :key="element[this._cmsProps.id]"

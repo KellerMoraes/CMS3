@@ -23,7 +23,7 @@
               :value="i"
             >
               <span class="text-h4 text-white">
-                {{ subpagina[_cmsProps.name] }}
+                {{ subpagina.nome }}
               </span>
             </v-window-item>
           </v-window>
@@ -79,7 +79,7 @@
                 :variant="isSelected ? 'outlined' : 'text'"
                 @click="MudarSubPaginaAtiva(i)"
               >
-                {{ subPagina[_cmsProps.name] }}
+                {{ subPagina.nome }}
               </v-btn>
             </v-item>
             <v-btn

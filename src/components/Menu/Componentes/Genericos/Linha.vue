@@ -13,7 +13,7 @@
   >
     <template #item="{ element,index }">
       <component
-        :is="'Comp'+element[_cmsProps.name]"
+        :is="'Comp'+element.nome"
         v-model="dados.filhos[index]"
         :estrutura="element.estrutura"
       />

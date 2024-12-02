@@ -26,26 +26,26 @@ export const useFerramentaStore = defineStore('ferramenta', {
         selecionarLinha(linha) {
           this.itemSelecionado = linha
           this.ferramentaSelecionada.cor = "green"
-          this.ferramentaSelecionada[_cmsProps.name] = "Linha"
+          this.ferramentaSelecionada.nome = "Linha"
         },
         selecionarFormulario(formulario) {
           this.itemSelecionado = formulario
           this.formularioSelecionado = formulario
           this.ferramentaSelecionada.cor = "#ffd900"
-          this.ferramentaSelecionada[_cmsProps.name] = "Formulário"
+          this.ferramentaSelecionada.nome = "Formulário"
         },
         selecionarColuna(coluna) {
           this.itemSelecionado = coluna
-          this.ferramentaSelecionada[_cmsProps.name] = "Coluna"
+          this.ferramentaSelecionada.nome = "Coluna"
           this.ferramentaSelecionada.cor = "blue"
         },
         selecionarComponente(componente) {
           this.itemSelecionado = componente
-          this.ferramentaSelecionada[_cmsProps.name] = "Componente"
+          this.ferramentaSelecionada.nome = "Componente"
           this.ferramentaSelecionada.cor = "purple"
         },
         selecionarCelula(componente) {
-          let indexCelula = this.celulasSelecionadas.findIndex((celula)=>{return celula[this._cmsProps.id] == componente[this._cmsProps.id]})
+          let indexCelula = this.celulasSelecionadas.findIndex((celula)=>{return celula[_cmsProps.id] == componente[_cmsProps.id]})
           if(indexCelula == -1){
             this.celulasSelecionadas.push(componente)
             return
@@ -54,14 +54,14 @@ export const useFerramentaStore = defineStore('ferramenta', {
         },
         combinarCelulas() {
           console.log(this.celulasSelecionadas[1])
-          let i = this.itemSelecionado.filhos.findIndex((cell)=>{return cell[this._cmsProps.id] == this.celulasSelecionadas[1][this._cmsProps.id]})
+          let i = this.itemSelecionado.filhos.findIndex((cell)=>{return cell[_cmsProps.id] == this.celulasSelecionadas[1][_cmsProps.id]})
           this.itemSelecionado.filhos.splice(i,1)
           this.celulasSelecionadas[0].estrutura = 2
         },
         configuracaoCabecalho() {
     
           this.itemSelecionado = this.subpaginaAtiva
-          this.ferramentaSelecionada[_cmsProps.name] = "Cabecalho"
+          this.ferramentaSelecionada.nome = "Cabecalho"
           this.ferramentaSelecionada.cor = "#830909"
         }
       },

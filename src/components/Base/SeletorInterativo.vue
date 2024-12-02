@@ -2,7 +2,7 @@
   <v-row >
             <v-col cols="4" class="d-flex justify-center">
               <v-card class="tracos" rounded="6" height="100" width="100">
-                <v-icon v-for="item in itens" :key="item[_cmsProps.name]" @click="item.selecionado = !item.selecionado" :color="item.selecionado ? 'blue' : ''"  :disabled="itensHabilitados ? !itensHabilitados?.find( x => { return x == item[_cmsProps.name]} ) : false" size="30" :class="item[_cmsProps.name] == 'centro' ? 'traco pontoCentro' : 'traco '+item[_cmsProps.name]">{{ item.icone }}</v-icon>
+                <v-icon v-for="item in itens" :key="item.nome" @click="item.selecionado = !item.selecionado" :color="item.selecionado ? 'blue' : ''"  :disabled="itensHabilitados ? !itensHabilitados?.find( x => { return x == item.nome} ) : false" size="30" :class="item.nome == 'centro' ? 'traco pontoCentro' : 'traco '+item.nome">{{ item.icone }}</v-icon>
 
               </v-card>
             </v-col>

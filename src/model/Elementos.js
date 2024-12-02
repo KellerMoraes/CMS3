@@ -23,15 +23,15 @@ const ListaDeElementos = {
         return {
 
             [_cmsProps.id]: "subpagina-" + PaginaId,
-            [_cmsProps.name]: "Subpágina",
-            atributos: { visibilidade: { [_cmsProps.name]: 'display', valor: 'block', extensao: null }, imagem: { mostrar: false, desktop: '', mobile: '', pontoFocal: '' } },
+            nome: "Subpágina",
+            atributos: { visibilidade: { nome: 'display', valor: 'block', extensao: null }, imagem: { mostrar: false, desktop: '', mobile: '', pontoFocal: '' } },
             filhos: [
 
             ]
         };
     },
     Linha: function (componente = {
-        [_cmsProps.name]: "Titulo",
+        nome: "Titulo",
         [_cmsProps.id]: "h1-" + gerarId(),
         icone: 'mdi-format-title',
         atributos: [], 
@@ -41,13 +41,13 @@ const ListaDeElementos = {
         // Temporariamente...
         const linhaId = gerarId();
         return {
-            [_cmsProps.name]: "Linha",
+            nome: "Linha",
             [_cmsProps.id]: "linha-" + linhaId,
             atributos: { estilo: { 'background': '#ffffff','min-height': 105 }, tipoFundo: 'Cor sólida' },
             filhos: [
                 {
                     [_cmsProps.id]: "coluna-" + gerarId(),
-                    [_cmsProps.name]: "Coluna",
+                    nome: "Coluna",
                     estrutura: 12,
                     filhos: [
                         componente ?? ""
@@ -60,7 +60,7 @@ const ListaDeElementos = {
     Coluna: function () {
         return {
             [_cmsProps.id]: "coluna-" + gerarId(),
-            [_cmsProps.name]: "Coluna",
+            nome: "Coluna",
             estrutura: 12,
             filhos: [],
             atributos: { estilo: { 'background': '#ffffff' }, tipoFundo: 'Cor sólida'  }
@@ -69,7 +69,7 @@ const ListaDeElementos = {
     Celula: function (indice) {
         return {
             [_cmsProps.id]: "cell-" + indice,
-            [_cmsProps.name]: "GridCell",
+            nome: "GridCell",
             estrutura: 1,
             filhos: []
         };
@@ -123,7 +123,7 @@ const ListaDeElementos = {
                 Componentes: 
                 [
                     {
-                        [_cmsProps.name]: "Titulo",
+                        nome: "Titulo",
                         [_cmsProps.id]: "h1-",
                         icone: 'mdi-format-title',
                         atributos: [], 
@@ -131,7 +131,7 @@ const ListaDeElementos = {
                         conteudo: "Titulo 1"
                     },
                     {
-                        [_cmsProps.name]: "Paragrafo",
+                        nome: "Paragrafo",
                         [_cmsProps.id]: "p-",
                         icone: 'mdi-format-paragraph',
                         atributos: [], 
@@ -146,7 +146,7 @@ const ListaDeElementos = {
                 Componentes: 
                 [
                     {  
-                        [_cmsProps.name]: "Card",
+                        nome: "Card",
                         [_cmsProps.id]: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
@@ -169,7 +169,7 @@ const ListaDeElementos = {
                 Componentes: 
                 [
                     {
-                        [_cmsProps.name]: "Titulo",
+                        nome: "Titulo",
                         [_cmsProps.id]: "h1-",
                         icone: 'mdi-format-title',
                         atributos: [], 
@@ -177,7 +177,7 @@ const ListaDeElementos = {
                         conteudo: "Titulo 1"
                     },
                     {
-                        [_cmsProps.name]: "Paragrafo",
+                        nome: "Paragrafo",
                         [_cmsProps.id]: "p-",
                         icone: 'mdi-format-paragraph',
                         atributos: [], 
@@ -192,7 +192,7 @@ const ListaDeElementos = {
                 Componentes: 
                 [
                     {  
-                        [_cmsProps.name]: "Card",
+                        nome: "Card",
                         [_cmsProps.id]: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
@@ -207,7 +207,7 @@ const ListaDeElementos = {
                 Componentes: 
                 [
                     {  
-                        [_cmsProps.name]: "Card",
+                        nome: "Card",
                         [_cmsProps.id]: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
@@ -222,7 +222,7 @@ const ListaDeElementos = {
                 Componentes: 
                 [
                     {  
-                        [_cmsProps.name]: "Card",
+                        nome: "Card",
                         [_cmsProps.id]: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
@@ -245,7 +245,7 @@ const ListaDeElementos = {
                 Componentes: 
                 [
                     {
-                        [_cmsProps.name]: "Titulo",
+                        nome: "Titulo",
                         [_cmsProps.id]: "h1-",
                         icone: 'mdi-format-title',
                         atributos: [], 
@@ -253,7 +253,7 @@ const ListaDeElementos = {
                         conteudo: "Titulo 1"
                     },
                     {
-                        [_cmsProps.name]: "Paragrafo",
+                        nome: "Paragrafo",
                         [_cmsProps.id]: "p-",
                         icone: 'mdi-format-paragraph',
                         atributos: [], 
@@ -268,7 +268,7 @@ const ListaDeElementos = {
                 Componentes: 
                 [
                     {  
-                        [_cmsProps.name]: "Card",
+                        nome: "Card",
                         [_cmsProps.id]: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 
@@ -283,7 +283,7 @@ const ListaDeElementos = {
                 Componentes: 
                 [
                     {  
-                        [_cmsProps.name]: "Card",
+                        nome: "Card",
                         [_cmsProps.id]: "card-", 
                         atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
                         classe: "", 

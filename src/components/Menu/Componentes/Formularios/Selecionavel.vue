@@ -17,7 +17,6 @@
       <BaseGridCell v-if="element" :key="element[this._cmsProps.id]" v-model="dados.filhos[index]" ></BaseGridCell>
     </template>
   </Draggable>
-  <div style="position: absolute; top: 1%;" :style="ferramentaStore.celulasSelecionadas.length > 1 ? 'display: block': 'display: none'"><v-btn @click="ferramentaStore.combinarCelulas()">Merge</v-btn></div>
     </template>
   </BaseComponenteItem>
 </template>

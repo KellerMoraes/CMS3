@@ -20,11 +20,8 @@ export const usePaginaStore = defineStore('pagina', () => {
     pagina.value.filhos.push(new ListaDeElementos.SubPagina())
   }
   async function adicionarLinhaStore() {
-    // count.value.n++
     let linha = new ListaDeElementos.Linha();
-    // await nextTick()
     subpaginaAtiva.value.filhos.push(linha)
-    // console.log(history)
   }
   function MudarSubPaginaAtiva(indice) {
     subpaginaAtiva.value = pagina.value.filhos[indice]

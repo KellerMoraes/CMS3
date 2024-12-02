@@ -4,32 +4,44 @@
   </v-card-title>
   <v-card-text class="pa-5">
     <div class="d-flex">
-
-      <v-card v-for="type in pageTypes" :key="type.color" :color="type.color" variant="outlined" class="d-flex justify-center align-center ma-2" height="70" width="140">
-        <v-icon class="mr-2">{{ type.icon }}</v-icon>
+      <v-chip-group>
+        <v-chip  v-for="type in pageTypes" :key="type.color" :bgColor="type.color" :color="type.color">
+          <v-icon class="mr-2" :color="type.color">{{ type.icon }}</v-icon>
         <span style="font-size: 16px; font-weight: 500;"> {{ type.name }}</span>
-      </v-card>
+        </v-chip>
+      </v-chip-group>
     </div>
 
       <v-data-table
     :headers="headers"
     :items="paginas"
-    :sort-by="[{ key: 'calories', order: 'asc' }]"
+    
+      height="680"
+    :sort-by="[{ key: 'dataModificado', order: 'asc' }]"
   >
     <template v-slot:top>
-      <v-toolbar color="#f5f2f2" class="pr-6"
+      <v-toolbar color="white" class="pr-6"
         flat
       >
-        <v-toolbar-title>
+        <v-toolbar-title class="ml-1">
 
           <div class="d-flex justify-start align-center" style="font-size: 16px;">
-            <v-icon>mdi-clock</v-icon>Recentes
+            <v-icon class="mr-2">mdi-clock</v-icon>Recentes
             
           </div>
         </v-toolbar-title>
         <div class="d-flex justify-center align-center">
-          <div style="width: 250px;" class="mt-5 mr-10">
-            <v-text-field variant="outlined" density="compact"></v-text-field>
+          <div style="width: 250px;" class="mr-10">
+            <v-text-field
+        :loading="loading"
+        append-inner-icon="mdi-magnify"
+        density="compact"
+        label="Buscar Páginas"
+        variant="outlined"
+        hide-details
+        single-line
+        @click:append-inner="onClick"
+      ></v-text-field>
           </div>
           <v-dialog
           v-model="dialog"
@@ -74,6 +86,14 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <v-btn
+              variant="flat"
+              class="ml-2"
+            color="blue"
+              >
+              <v-icon>mdi-plus</v-icon>
+              Nova Página
+            </v-btn>
       </div>
 
 
@@ -104,14 +124,11 @@
       <v-chip color="blue">{{ item.tipo }}</v-chip>
     </template>
     <template v-slot:item.configs="{ item }">
-    <v-icon
-      class="mx-4"
-      size="large"
-      color="blue"
-      @click="editItem(item)"
-      >
-      mdi-cog
-    </v-icon>
+      <v-btn  class="mx-4" variant="plain"
+          color="blue"
+          :to="`configuracao/${item.id}`" icon="mdi-cog">
+        
+    </v-btn>
     </template>
     <template v-slot:item.editar="{ item }">
       <v-icon
@@ -156,7 +173,7 @@
       ],
       paginas: [],
       pageTypes: [
-  {name: "Graduação" , icon: "mdi-school", color: "blue" },
+  {name: "Cursos" , icon: "mdi-school", color: "blue" },
   {name: "Notícias" , icon: "mdi-newspaper", color: "green" },
   {name: "Provas" , icon: "mdi-head-lightbulb", color: "orange" },
 ],
@@ -200,10 +217,12 @@
       initialize () {
         this.paginas = [
           {
+            id: 1,
             dataModificado: '30/11/2024',
             nome: "Direito",
             data: "29/11/2024",
             tipo: "Página de Curso",
+            caminho: "direito",
             publicado: false,
           },
           

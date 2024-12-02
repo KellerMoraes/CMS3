@@ -5,7 +5,7 @@
 
         <v-list>
           <v-list-item class="mb-4">
-            <v-list-item-title style="font-weight: 800; font-size: 22px;">
+            <v-list-item-title style="font-weight: 800;  font-size: 22px;" >
               <v-icon style="vertical-align: top;">mdi-vector-square</v-icon><span class="ma-2" >CMS</span>
             </v-list-item-title>
           </v-list-item>
@@ -26,7 +26,8 @@ import { useTheme } from 'vuetify'
 
 const theme = useTheme()
 const opcoes = [
-  {nome: "Páginas", link: "/",icon: "mdi-file"},
+  {nome: "Inicial", link: "/",icon: "mdi-home"},
+  {nome: "Páginas", link: "/paginas",icon: "mdi-file"},
   {nome: "Templates", link: "/templates",icon: "mdi-newspaper-variant"},
 ]
 

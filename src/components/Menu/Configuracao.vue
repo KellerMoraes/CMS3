@@ -1,8 +1,9 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <v-sheet
-    style="transition: 0.2s; margin-top: 65px; overflow-y: auto; z-index: 1000;"
+    style="transition: 0.2s;border-left: 1px #ededed solid; margin-top: 65px; overflow-y: auto; z-index: 1000;"
     :width="'22vw'"
+    height="100%"
 
   >
     <v-card

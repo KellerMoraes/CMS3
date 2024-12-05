@@ -1,4 +1,8 @@
 <template>
+  <v-breadcrumbs
+      :items="items"
+      divider="/"
+    ></v-breadcrumbs>
     <v-card-title class="px-5 pt-5 pb-1">
       Páginas
     </v-card-title>
@@ -21,14 +25,12 @@
                 <div style="width: 350px;" class="ma-2">
                     
       <v-text-field
-        :loading="loading"
         append-inner-icon="mdi-magnify"
         density="compact"
         label="Buscar Páginas"
         variant="outlined"
         hide-details
         single-line
-        @click:append-inner="onClick"
       ></v-text-field>
             </div>
               
@@ -118,7 +120,7 @@
       <template v-slot:item.configs="{ item }">
         <v-btn  class="mx-4" variant="plain"
             color="blue"
-            :to="`configuracao/${item.id}`" icon="mdi-cog">
+            :to="`paginas/configuracao/${item.id}`" icon="mdi-cog">
           
       </v-btn>
       </template>
@@ -149,6 +151,17 @@
       data: () => ({
         dialog: false,
         dialogDelete: false,
+         items:[
+        {
+          title: 'Inicial',
+          disabled: false,
+          href: '/',
+        },
+        {
+          title: 'Páginas',
+          disabled: true
+        }
+    ],
         headers: [
           {
             title: 'Nome',

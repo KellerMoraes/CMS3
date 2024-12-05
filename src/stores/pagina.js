@@ -12,6 +12,7 @@ export const usePaginaStore = defineStore('pagina', () => {
   const subpaginaAtiva = ref(null)
   const subpaginaAtivaAtual = computed(() => {return subpaginaAtiva.value.filhos})
   criarSubPagina()
+  criarSubPagina()
   MudarSubPaginaAtiva(0)
   // SubPagina
   // const { history,undo,redo } = useRefHistory(pagina, {deep: true, flush: 'sync'})
@@ -25,6 +26,7 @@ export const usePaginaStore = defineStore('pagina', () => {
   }
   function MudarSubPaginaAtiva(indice) {
     subpaginaAtiva.value = pagina.value.filhos[indice]
+    console.log(subpaginaAtiva.value)
    }
    function deletarLinha(){
     subpaginaAtiva.value.filhos.pop()

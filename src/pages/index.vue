@@ -5,347 +5,195 @@
   <v-card-text class="pa-5">
     <div class="d-flex">
       <v-chip-group>
-        <v-chip  v-for="type in pageTypes" :key="type.color" :bgColor="type.color" :color="type.color">
+        <v-chip v-for="type in pageTypes" :key="type.color" :bgColor="type.color" :color="type.color">
           <v-icon class="mr-2" :color="type.color">{{ type.icon }}</v-icon>
-        <span style="font-size: 16px; font-weight: 500;"> {{ type.name }}</span>
+          <span style="font-size: 16px; font-weight: 500;"> {{ type.name }}</span>
         </v-chip>
       </v-chip-group>
     </div>
 
-      <v-data-table
-    :headers="headers"
-    :items="paginas"
-    
-      height="680"
-    :sort-by="[{ key: 'dataModificado', order: 'asc' }]"
-  >
-    <template v-slot:top>
-      <v-toolbar color="white" class="pr-6"
-        flat
-      >
-        <v-toolbar-title class="ml-1">
+    <v-data-table :headers="headers" :items="paginas" height="680" :sort-by="[{ key: 'dataModificado', order: 'asc' }]">
+      <template v-slot:top>
+        <v-toolbar color="white" class="pr-6" flat>
+          <v-toolbar-title class="ml-1">
 
-          <div class="d-flex justify-start align-center" style="font-size: 16px;">
-            <v-icon class="mr-2">mdi-clock</v-icon>Recentes
-            
+            <div class="d-flex justify-start align-center" style="font-size: 16px;">
+              <v-icon class="mr-2">mdi-clock</v-icon>Recentes
+
+            </div>
+          </v-toolbar-title>
+          <div class="d-flex justify-center align-center">
+            <div style="width: 250px;" class="mr-10">
+              <v-text-field append-inner-icon="mdi-magnify" density="compact" label="Buscar Páginas"
+                variant="outlined" hide-details single-line ></v-text-field>
+            </div>
+
+            <v-dialog v-model="dialogImportar" max-width="500px">
+              <template v-slot:activator="{ props }">
+                <v-btn color="black" variant="flat" v-bind="props">
+                  Importar
+                </v-btn>
+              </template>
+              <v-card color="#e9e9e9">
+                <v-card-title>
+                  Importar Página
+                </v-card-title>
+                <v-card-text>
+                  <v-container v-if="paginaImportadaCarregada">
+                    <v-sheet style="border: 1px dashed grey; border-radius: 8px;" height="300" class="d-flex flex-column align-center justify-center">
+                      <v-icon size="80">mdi-code-json</v-icon>
+                      <span style="font-weight: 900;  font-size: 18px; font-family: 'Roboto';">
+                        Arraste e Solte ou<br> 
+                      </span>
+                      <input type="file" id="fileInput" style="display: none;" onchange="mostrarArquivoSelecionado(event)" />
+                      <strong @click="selecionarArquivo" style="cursor: pointer;" class="text-blue" >Selecione</strong>
+                      <small>Arquivos Suportados: JSON</small>
+                    </v-sheet>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue-darken-1" variant="text" @click="dialogImportar = false">
+                    Cancelar
+                  </v-btn>
+                  <v-btn color="blue-darken-1" variant="text" @click="confirmarImportacao">
+                    Confirmar
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+
+            <v-dialog v-model="dialog" max-width="900px">
+              <template v-slot:activator="{ props }">
+                <v-btn variant="flat" class="ml-2" v-bind="props" color="blue">
+                  <v-icon>mdi-plus</v-icon>
+                  Nova Página
+                </v-btn>
+              </template>
+              <v-card width="900" height="700">
+                <v-card-title class="pa-5">
+                  <span class="text-h5">Selecionar tipo de página</span>
+                </v-card-title>
+
+                <v-card-text class="d-flex flex-grow-1 pa-8">
+                  <v-row>
+                    <v-col  v-for="tipo in pageTypes" :key="tipo.name" class="pr-1 pl-0" cols="4">
+                      <router-link style="text-decoration: none;" :to="`paginas/novo/${tipo.tipoPagina}`">
+                      <v-hover v-slot="{ isHovering, props }">
+                          <v-sheet :to="`paginas/novo/${tipo.tipoPagina}`" v-bind="props" :class="{ 'on-hover': isHovering }"  height="100%" :color="tipo.color" class="d-flex flex-column justify-center align-center selecionavelHover">
+                            <v-icon size="90" color="white">{{ tipo.icon }}</v-icon>
+                            <h2 style="color: white;"> {{ tipo.name }} </h2>
+                          </v-sheet>
+                        </v-hover>
+                      </router-link>
+                      </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
+
           </div>
-        </v-toolbar-title>
-        <div class="d-flex justify-center align-center">
-          <div style="width: 250px;" class="mr-10">
-            <v-text-field
-        :loading="loading"
-        append-inner-icon="mdi-magnify"
-        density="compact"
-        label="Buscar Páginas"
-        variant="outlined"
-        hide-details
-        single-line
-        @click:append-inner="onClick"
-      ></v-text-field>
-          </div>
-          <v-dialog
-          v-model="dialog"
-          max-width="500px"
-          >
-          <template v-slot:activator="{ props }">
-            <v-btn
-            color="black"
-            variant="flat"
-            v-bind="props"
-            >
-            Importar
-          </v-btn>
-        </template>
-        <v-card>
-          <v-card-title>
-            <span class="text-h5">{{ formTitle }}</span>
-          </v-card-title>
-          
-          <v-card-text>
-            <v-container>
-              
-    </v-container>
+        </v-toolbar>
+      </template>
+      <template v-slot:item.publicado="{ item }">
+        <v-icon class="mx-4" size="large" :color="item.publicado ? 'green' : 'grey'">
+          mdi-upload
+        </v-icon>
+      </template>
+      <template v-slot:item.tipo="{ item }">
+        <v-chip color="blue">{{ item.tipo }}</v-chip>
+      </template>
+      <template v-slot:item.configs="{ item }">
+        <v-btn class="mx-4" variant="plain" color="blue" :to="`paginas/configuracao/${item.id}`" icon="mdi-cog">
+        </v-btn>
+      </template>
+      <template v-slot:item.editar="{ item }">
+        <v-btn class="mx-4" variant="plain" color="blue" :to="`editor/${item.id}`" icon="mdi-application-edit">
+        </v-btn>
+      </template>
+      <template v-slot:no-data>
+        <v-btn color="primary" @click="initialize">
+          Reset
+        </v-btn>
+      </template>
+    </v-data-table>
   </v-card-text>
-  
-  <v-card-actions>
-    <v-spacer></v-spacer>
-    <v-btn
-    color="blue-darken-1"
-    variant="text"
-                @click="close"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="save"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-btn
-              variant="flat"
-              class="ml-2"
-            color="blue"
-              >
-              <v-icon>mdi-plus</v-icon>
-              Nova Página
-            </v-btn>
-      </div>
 
 
-
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancel</v-btn>
-              <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">OK</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-    </template>
-    <template v-slot:item.publicado="{ item }">
-      <v-icon
-        class="mx-4"
-        size="large"
-        :color="item.publicado ? 'green' : 'grey' "
-        >
-        mdi-upload
-      </v-icon>
-    </template>
-    <template v-slot:item.tipo="{ item }">
-      <v-chip color="blue">{{ item.tipo }}</v-chip>
-    </template>
-    <template v-slot:item.configs="{ item }">
-      <v-btn  class="mx-4" variant="plain"
-          color="blue"
-          :to="`configuracao/${item.id}`" icon="mdi-cog">
-        
-    </v-btn>
-    </template>
-    <template v-slot:item.editar="{ item }">
-      <v-icon
-      size="large"
-      color="blue"
-        @click="deleteItem(item)"
-      >
-        mdi-application-edit
-      </v-icon>
-    </template>
-    <template v-slot:no-data>
-      <v-btn
-        color="primary"
-        @click="initialize"
-      >
-        Reset
-      </v-btn>
-    </template>
-  </v-data-table>
-  </v-card-text>
-  
-  
 </template>
 <script>
-  export default {
-    data: () => ({
-      dialog: false,
-      dialogDelete: false,
-      headers: [
+export default {
+  data: () => ({
+    dialog: false,
+    dialogImportar: false,
+    paginaImportadaCarregada: true,
+    headers: [
+      {
+        title: 'Nome',
+        align: 'start',
+        sortable: false,
+        key: 'nome',
+      },
+      { title: 'Publicado', key: 'publicado', sortable: false },
+      { title: 'Última Modificação', key: 'dataModificado' },
+      { title: 'Data de Criação', key: 'data' },
+      { title: 'Tipo', key: 'tipo' },
+      { title: 'Configurações', key: 'configs', sortable: false, align: 'center', },
+      { title: 'Editar', key: 'editar', sortable: false, align: 'center', },
+    ],
+    paginas: [],
+    pageTypes: [
+      { name: "Cursos", icon: "mdi-school", color: "blue", tipoPagina: "curso" },
+      { name: "Notícias", icon: "mdi-newspaper", color: "green" , tipoPagina: "noticia" },
+      { name: "Provas", icon: "mdi-head-lightbulb", color: "orange", tipoPagina: "prova" },
+    ],
+    editedIndex: -1,
+  }),
+
+  created() {
+    this.initialize()
+  },
+
+  methods: {
+    initialize() {
+      this.paginas = [
         {
-          title: 'Nome',
-          align: 'start',
-          sortable: false,
-          key: 'nome',
+          id: 1,
+          dataModificado: '30/11/2024',
+          nome: "Direito",
+          data: "29/11/2024",
+          tipo: "Página de Curso",
+          caminho: "direito",
+          publicado: false,
         },
-        { title: 'Publicado', key: 'publicado', sortable: false },
-        { title: 'Última Modificação', key: 'dataModificado' },
-        { title: 'Data de Criação', key: 'data' },
-        { title: 'Tipo', key: 'tipo' },
-        { title: 'Configurações', key: 'configs', sortable: false, align: 'center', },
-        { title: 'Editar', key: 'editar', sortable: false, align: 'center', },
-      ],
-      paginas: [],
-      pageTypes: [
-  {name: "Cursos" , icon: "mdi-school", color: "blue" },
-  {name: "Notícias" , icon: "mdi-newspaper", color: "green" },
-  {name: "Provas" , icon: "mdi-head-lightbulb", color: "orange" },
-],
-      editedIndex: -1,
-      editedItem: {
-        name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
-      },
-      defaultItem: {
-        name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
-      },
-    }),
 
-    computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      },
-    },
-
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-      dialogDelete (val) {
-        val || this.closeDelete()
-      },
-    },
-
-    created () {
-      this.initialize()
-    },
-
-    methods: {
-      initialize () {
-        this.paginas = [
-          {
-            id: 1,
-            dataModificado: '30/11/2024',
-            nome: "Direito",
-            data: "29/11/2024",
-            tipo: "Página de Curso",
-            caminho: "direito",
-            publicado: false,
-          },
-          
-        ]
-      },
-
-      editItem (item) {
-        this.editedIndex = this.paginas.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-      deleteItem (item) {
-        this.editedIndex = this.paginas.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
-      },
-
-      deleteItemConfirm () {
-        this.paginas.splice(this.editedIndex, 1)
-        this.closeDelete()
-      },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.paginas[this.editedIndex], this.editedItem)
-        } else {
-          this.paginas.push(this.editedItem)
-        }
-        this.close()
-      },
-    },
-  }
-</script>
-
-<!-- <script setup>
-import { useFerramentaStore } from '@/stores/ferramenta.js';
-
-let ferramentaStore = useFerramentaStore()
-const pageTypes = [
-  {name: "Graduação" , icon: "mdi-school", color: "blue" },
-  {name: "Notícias" , icon: "mdi-newspaper", color: "green" },
-  {name: "Provas" , icon: "mdi-head-lightbulb", color: "orange" },
-]
-    const dialog = ref(false)
-      const dialogDelete = ref(false)
-      const headers = [
-        {
-          title: 'Dessert (100g serving)',
-          align: 'start',
-          sortable: false,
-          key: 'name',
-        },
-        { title: 'Calories', key: 'calories' },
-        { title: 'Fat (g)', key: 'fat' },
-        { title: 'Carbs (g)', key: 'carbs' },
-        { title: 'Protein (g)', key: 'protein' },
-        { title: 'Actions', key: 'actions', sortable: false },
       ]
-      const paginas = ref([])
-      const editedIndex = ref(-1)
-      const editedItem = {
-        name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
-      }
-      const defaultItem = {
-        name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
-      }
-      const formTitle = computed(()=>{
-        return editedIndex.value === -1 ? 'New Item' : 'Edit Item'
-
-      })
-      watch(dialog, )
-      watch(dialog, async (newQuestion, oldQuestion) => {
-  if (newQuestion.includes('?')) {
-    loading.value = true
-    answer.value = 'Thinking...'
-    try {
-      const res = await fetch('https://yesno.wtf/api')
-      answer.value = (await res.json()).answer
-    } catch (error) {
-      answer.value = 'Error! Could not reach the API. ' + error
-    } finally {
-      loading.value = false
+    },
+    selecionarArquivo(){
+    document.getElementById('fileInput').click();
+    },
+    mostrarArquivoSelecionado(event) {
+    const arquivo = event.target.files[0];
+    if (arquivo) {
+        console.log("Arquivo selecionado:", arquivo);
     }
+}
+
+
+  },
+}
+</script>
+<style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+.selecionavelHover {
+    transition: opacity .4s ease-in-out;
   }
-})
-      computed
 
+  .selecionavelHover:not(.on-hover) {
+    opacity: 0.4;
+  }
 
-
-
-</script> -->
-<style scoped>
-/* *{
-  <!-- <v-toolbar
-  style="z-index: 1005;background-color:  rgb(var(--v-theme-surface));"
-  >
-  Oque/onde é/está
-  </v-toolbar> -->
-  color: #ececec;
-} */
+  .show-btns {
+    color: rgba(255, 255, 255, 1) !important;
+  }
 </style>

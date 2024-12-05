@@ -6,7 +6,7 @@
       #edicao
     >
       <h1
-        :id="dados[this._cmsProps.id] ?? ''"
+        :id="dados[_cmsProps.id] ?? ''"
         @dblclick="habilitarEditavel(dados.conteudo)"
       >
         <BaseConteudoEditavel

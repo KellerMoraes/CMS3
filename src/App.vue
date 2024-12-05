@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+    <v-app v-if="!route.fullPath.includes('/editor')">
     <v-main :class="theme.global.name.value" >
       <v-navigation-drawer permanent style="background-color: #ececec; border: none;">
 
@@ -14,24 +14,25 @@
             </v-list-item-title></v-list-item>
         </v-list>
       </v-navigation-drawer>
-      <v-card class="ma-2" height="98vh">
+      <v-card class="ma-0" height="100vh">
         <router-view />
       </v-card>
     </v-main>
+  </v-app>
+  <v-app v-else>
+      <router-view />
   </v-app>
 </template>
 
 <script setup>
 import { useTheme } from 'vuetify'
-
+const route = useRoute()
 const theme = useTheme()
 const opcoes = [
   {nome: "Inicial", link: "/",icon: "mdi-home"},
   {nome: "Páginas", link: "/paginas",icon: "mdi-file"},
   {nome: "Templates", link: "/templates",icon: "mdi-newspaper-variant"},
 ]
-
-  //
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');

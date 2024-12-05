@@ -1,10 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-    <v-container>
         <!-- Linhas -->
-
-        <component v-for="Linha in Linhas" :key="Linha[this._cmsProps.id]" :is="componenteNome(Linha.nome)" :dados="Linha" ></component>
-    </v-container>
+             <component v-for="Linha in Linhas" :key="Linha[this._cmsProps.id]" :is="componenteNome(Linha.nome)" :dados="Linha" ></component>
+            
     </template>
     
     <script setup>

@@ -19,17 +19,6 @@
         <div class="pa-4">Padding</div>
         <BaseSeletorInterativo tipo="padding" ></BaseSeletorInterativo>
       </v-expansion-panel-text>
-      <!-- <v-expansion-panel-text>
-        <v-row>
-          <v-col cols="7">
-            <div class="pa-2 pl-4">Largura</div>
-          </v-col>
-          <v-col cols="5">
-            <v-number-input v-model="ferramentaStore.itemSelecionado.atributos.estilo['width']" width="150" suffix="%" rounded="5" flat variant="outlined" inset density="compact" control-variant="stacked"></v-number-input>
-
-          </v-col>
-        </v-row>
-      </v-expansion-panel-text> -->
     </v-expansion-panel>
   </v-expansion-panels>
 </template>

@@ -5,7 +5,7 @@
     style="position: relative; transition: all 0.2s ease-out;"
     :list="dados.filhos"
     :style="geraEstilos(dados)"
-    :class="`v-row linha ${ ferramentaStore.itemSelecionado[_cmsProps.id] == dados[_cmsProps.id] ? 'ativo' : '' } `" 
+    :class="`v-row linha ${ferramentaStore?.itemSelecionado[_cmsProps.id] == dados[_cmsProps.id] ? 'ativo' : '' } `" 
     :item-key="_cmsProps.id"
     :group="{ name: 'colunas' }"
     @click.ctrl.exact="selecionarLinha(dados)"

@@ -11,7 +11,10 @@
     <v-list-item
     subtitle="SubPágina 1"
     title="Pagina Teste and ceta and ceta"
-    ></v-list-item>
+    >
+  <template #append>
+    <v-btn icon="mdi-cog" variant="text" @click="ferramentaStore.selecionarCabecalho()"></v-btn>
+  </template></v-list-item>
   </div>
   <v-divider vertical inset ></v-divider>
   <div class="d-flex justify-start align-center">
@@ -40,30 +43,26 @@
 
   </div>
 </template>
-<script>
+<script setup>
 import { useFerramentaStore } from '@/stores/ferramenta.js';
-export default {
-  data() {
-    return {
-      botoesLinha: [
-        { nome: "Colar coluna", icone: "mdi-clipboard-file-outline", funcao: this.colarColuna },
-        { nome: `Copiar linha`, icone: "mdi-content-copy", funcao: this.copiarLinha },
-        { nome: "Excluir", icone: "mdi-delete", funcao: this.excluirLinha },
-      ],
-      botoesColuna: [
-        { nome: "Colar componente", icone: "mdi-clipboard-file-outline", funcao: this.colarColuna },
-        { nome: `Copiar coluna`, icone: "mdi-content-copy", funcao: this.copiarLinha },
-        { nome: "Excluir", icone: "mdi-delete", funcao: this.excluirLinha },
-      ],
-      ferramentaStore: useFerramentaStore(),
-    }
-  },
-  methods: {
-    salvar() {
-      console.log(this.ferramentaStore.itemSelecionado)
-    }
-  }
-}
+import { storeToRefs } from 'pinia';
+let ferramentaStore = useFerramentaStore()
+const { selecionarCabecalho } = storeToRefs(ferramentaStore)
+
+const botoesLinha = [
+        { nome: "Colar coluna", icone: "mdi-clipboard-file-outline"},
+        { nome: `Copiar linha`, icone: "mdi-content-copy"},
+        { nome: "Excluir", icone: "mdi-delete" },
+      ]
+const botoesColuna = [
+        { nome: "Colar componente", icone: "mdi-clipboard-file-outline"},
+        { nome: `Copiar coluna`, icone: "mdi-content-copy" },
+        { nome: "Excluir", icone: "mdi-delete" },
+      ]
+      function salvar() {
+        console.log(this.ferramentaStore.itemSelecionado)
+      }
+
 </script>
 <style scoped>
 .itensMenu{

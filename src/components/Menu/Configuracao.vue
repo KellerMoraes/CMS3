@@ -2,7 +2,7 @@
 <template>
   <v-sheet
     style="transition: 0.2s;border-left: 1px #ededed solid; margin-top: 65px; overflow-y: auto; z-index: 1000;"
-    :width="'22vw'"
+    :width="'30vw'"
     height="100%"
 
   >

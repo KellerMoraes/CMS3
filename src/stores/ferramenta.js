@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ListaDeElementos } from '@/model/Elementos';
 import { reactive, ref } from 'vue';
+import { usePaginaStore } from '@/stores/pagina.js';
 import _cmsProps from "../../config"
 export const useFerramentaStore = defineStore('ferramenta', { 
     state: () => ({
@@ -9,7 +10,8 @@ export const useFerramentaStore = defineStore('ferramenta', {
         celulasSelecionadas: reactive([]),
         ferramentaSelecionada: reactive({nome: "" , cor: "white" }),
         colunaSelecionada: ref(""),
-        formularioSelecionado: reactive({})
+        formularioSelecionado: reactive({}),
+        paginaStore: usePaginaStore()
     
       }),
       actions: {
@@ -58,9 +60,9 @@ export const useFerramentaStore = defineStore('ferramenta', {
           this.itemSelecionado.filhos.splice(i,1)
           this.celulasSelecionadas[0].estrutura = 2
         },
-        configuracaoCabecalho() {
+        selecionarCabecalho() {
     
-          this.itemSelecionado = this.subpaginaAtiva
+          this.itemSelecionado = this.paginaStore.pagina[_cmsProps.id]
           this.ferramentaSelecionada.nome = "Cabecalho"
           this.ferramentaSelecionada.cor = "#830909"
         }

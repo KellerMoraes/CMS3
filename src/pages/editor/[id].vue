@@ -22,7 +22,7 @@
  :width="tamanho.largura"
  :height="tamanho.altura"
  :offset="{ top: 10, right: 10, bottom: 10, left: 10 }"
- :min-scale="0.4"
+ :min-scale="0.2"
  :max-scale="2.0"
  :bounds="false"
  :mouse="pan"
@@ -30,20 +30,14 @@
  
  >
  <template #canvas>
-   <div class="board">
+   <div class="board" :style="ferramentaStore.ferramentaSelecionada.nome == 'Cabecalho' ? `border: 2px ${ferramentaStore.ferramentaSelecionada.cor} solid`: ''">
     <div class="abas flutuante bg-grey-darken-3">
-
-      <Draggable
-      :list="pagina.filhos"
-      item-key="id"
-      tag="div"
-      class="abaWrap"
-      :group="{ name: 'abas' }"
-      >
-      <template #item="{ element , index}">
-        <v-tab @click="paginaStore.MudarSubPaginaAtiva(index)" class="tab" :class="element.id == subpaginaAtiva.id ? 'selecionado': ''" >{{ element.nome + index }}</v-tab>
-      </template>
-    </Draggable>
+      <v-tabs class="abaWrap" slider-color="white"
+      show-arrows >
+        <v-tab @click="paginaStore.MudarSubPaginaAtiva(index)" v-for="(element,index) in paginaStore.pagina.filhos" :key="element[_cmsProps.id]" class="abaSubpages" >
+          {{ element.nome + index }}
+        </v-tab>
+      </v-tabs>
   </div>
 
    <Draggable :style="pan ? 'pointer-events: none' : ''"
@@ -89,6 +83,7 @@
  <script setup>
  import Draggable from "vuedraggable";
  import { usePaginaStore } from '@/stores/pagina.js';
+ import { useFerramentaStore } from '@/stores/ferramenta.js';
  import { computed, ref } from 'vue';
  import { Zoompinch } from '@/libs/zoompinch/index';
  import '@/libs/zoompinch/style.css';
@@ -119,6 +114,8 @@ draggable.components = { ...draggable.components, VTabs };
    }
  })
  let paginaStore = usePaginaStore();
+ let ferramentaStore = useFerramentaStore()
+ const { selecionarCabecalho } = storeToRefs(ferramentaStore)
  const {pagina,subpaginaAtiva, paginaAtual,subpaginaAtivaAtual, adicionarLinhaStore,deletarLinha, MudarSubPaginaAtiva,criarSubPagina } = storeToRefs(paginaStore)
  
  
@@ -183,11 +180,14 @@ draggable.components = { ...draggable.components, VTabs };
   width: 100%;
   border-radius: 12px 12px 0px 0px;
  }
- .abaWrap > .tab{
+ .abaSubpages{
   height: 50px;
   &.selecionado{
     border-bottom: white 1px solid
   }
+ }
+ .abaWrap{
+  width: 95%;
  }
  .flutuante{
   top: 0;

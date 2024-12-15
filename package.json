@@ -9,12 +9,14 @@
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
+    "@panzoom/panzoom": "^4.5.1",
     "@tinymce/tinymce-vue": "^5.1.1",
     "core-js": "^3.34.0",
     "lodash": "^4.17.21",
     "maska": "^3.0.0",
     "roboto-fontface": "*",
     "vue": "^3.4.0",
+    "vue-interactjs": "^0.1.10",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {

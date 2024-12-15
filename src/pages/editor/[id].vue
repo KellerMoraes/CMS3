@@ -1,11 +1,4 @@
 <template>
-    <!-- <v-app-bar
-     flat
-     color="#2e211a"
-   >T
-     Cabecalho
-   </v-app-bar> -->
-   <!-- <MenuConfiguracao></MenuConfiguracao> -->
    <v-toolbar
    style="z-index: 1005;border-bottom: 1px #e1e1e1 solid;  position: fixed; background-color:  rgb(var(--v-theme-surface));"
    >
@@ -15,98 +8,33 @@
    
    <MenuComponente />
  </div>
-   <main style="display: flex; height: 93vh;" :class="pan ? 'panOn': '' " >
-     <zoompinch
- ref="zoompinchRef"
- v-model:transform="transform"
- :width="tamanho.largura"
- :height="tamanho.altura"
- :offset="{ top: 10, right: 10, bottom: 10, left: 10 }"
- :min-scale="0.2"
- :max-scale="2.0"
- :bounds="false"
- :mouse="pan"
- wheel
- 
- >
- <template #canvas>
-   <div class="board" :style="ferramentaStore.ferramentaSelecionada.nome == 'Cabecalho' ? `border: 2px ${ferramentaStore.ferramentaSelecionada.cor} solid`: ''">
-    <div class="abas flutuante bg-grey-darken-3">
-      <v-tabs class="abaWrap" slider-color="white"
-      show-arrows >
-        <v-tab @click="paginaStore.MudarSubPaginaAtiva(index)" v-for="(element,index) in paginaStore.pagina.filhos" :key="element[_cmsProps.id]" class="abaSubpages" >
-          {{ element.nome + index }}
-        </v-tab>
-      </v-tabs>
-  </div>
-
-   <Draggable :style="pan ? 'pointer-events: none' : ''"
-   :list="subpaginaAtiva.filhos"
-   :item-key="_cmsProps.id"
-   class="v-container v-container--fluid pr-10 containerSpace"
-   :group="{ name: 'linhas' }"
-   >
-   <template #item="{ element, index }">
-     <component
-     :is="'Comp'+element.nome"
-     :key="element[_cmsProps.id]"
-     v-model="subpaginaAtiva.filhos[index]"
-     />
-   </template>
-   </Draggable>
-   <v-btn :style="pan ? 'pointer-events: none' : ''"
-   location="bottom"
-   class="mt-6 "
-   icon="mdi-plus"
-   @click.exact="adicionarLinha()"
-   />
-   <v-btn
-   location="bottom"
-   class="mt-6 ml-10 "
-   icon="mdi-minus"
-   @click.exact="refaz()"
-   />
-   </div>
- </template>
- <template v-slot:matrix="{ composePoint }">
-   <svg xmlns="http://www.w3.org/2000/svg" @click="handleClickOnLayer">
-     <!-- This circle will stick to the center of the canvas -->
-     <circle :cx="composePoint(0.5, 0.5)[0]" :cy="composePoint(0.5, 0.5)[1]" r="5" style="opacity: 0;" />
-   </svg>
- </template>
- </zoompinch>
+   <main style="display: flex; height: 93vh;" :class="pan ? 'canvas panOn': 'canvas' " >
+    <div ref="viewportContainer" :style="`width: ${tamanho.largura}; height: ${tamanho.altura}`"   class="viewport-container">
+        
+   <BaseBoard
+   v-model="paginaStore.pagina.filhos"
+   :style="pan ? 'pointer-events: none' : ''"
+   :initialX="100"
+   :initialY="50"
+   :scale="panzoomInstance"
+   @onMove="handleMove"></BaseBoard>
+</div>
  <MenuConfiguracao />
    </main>
 
  </template>
  
  <script setup>
- import Draggable from "vuedraggable";
  import { usePaginaStore } from '@/stores/pagina.js';
  import { useFerramentaStore } from '@/stores/ferramenta.js';
- import { computed, ref } from 'vue';
- import { Zoompinch } from '@/libs/zoompinch/index';
- import '@/libs/zoompinch/style.css';
- import { useRefHistory } from '@vueuse/core'
- import { VTabs } from 'vuetify/components/VTabs';
-import draggable from 'vuedraggable';
 import { storeToRefs } from 'pinia';
+import Panzoom from "@panzoom/panzoom";
 
-draggable.components = { ...draggable.components, VTabs };
- 
  const pan = ref(false)
- const zoompinchRef = ref();
  const route = useRoute()
  const tab = ref(0)
- console.log(route.params.id)
- const transform = ref({
-   x: 0,
-   y: 0,
-   scale: 0.1,
- });
- function teste(){
-  console.log(tab.value)
- }
+ const viewportContainer = ref(null);
+const panzoomInstance = ref(null);
  const tamanho = computed(()=>{
    return {
      largura: window.innerWidth,
@@ -119,18 +47,31 @@ draggable.components = { ...draggable.components, VTabs };
  const {pagina,subpaginaAtiva, paginaAtual,subpaginaAtivaAtual, adicionarLinhaStore,deletarLinha, MudarSubPaginaAtiva,criarSubPagina } = storeToRefs(paginaStore)
  
  
- const { history,undo,redo } = useRefHistory(ref(subpaginaAtivaAtual), {deep: true})
  function adicionarLinha() {
    paginaStore.adicionarLinhaStore()
    console.log(history)
- 
  }
+ 
  function refaz(){
    undo()
    console.log(history)
  }
  
  onMounted(() => {
+  panzoomInstance.value = Panzoom(viewportContainer.value, {
+    maxScale: 2, // Zoom máximo
+    minScale: 0.2, // Zoom mínimo
+    disablePan: true, // Pan desativado por padrão
+    cursor: "default",
+    excludeClass: "board", // Exclui os boards do Panzoom
+  });
+
+  // Ativa o zoom com o scroll do mouse
+  viewportContainer.value.addEventListener(
+    "wheel",
+      panzoomInstance.value.zoomWithWheel
+    
+  );
    document.addEventListener('keydown', handleKeyDown);
    document.addEventListener('keyup', handleKeyUp);
    
@@ -141,16 +82,18 @@ draggable.components = { ...draggable.components, VTabs };
    document.removeEventListener('keyup', handleKeyUp);
  });
  function handleKeyDown(event) {
-   if (event.code === 'Space') {
-     pan.value = true;
-   }
- }
- 
- function handleKeyUp(event) {
-   if (event.code === 'Space') {
-     pan.value = false;
-   }
- }
+  if (event.code === "Space") {
+    pan.value = true;
+    panzoomInstance.value.setOptions({ disablePan: false, cursor: "grab" });
+  }
+}
+
+function handleKeyUp(event) {
+  if (event.code === "Space") {
+    pan.value = false;
+    panzoomInstance.value.setOptions({ disablePan: true, cursor: "default" });
+  }
+}
  
  function handleClickOnLayer(event) {
    const [x, y] = zoompinchRef.value?.normalizeMatrixCoordinates(event.clientX, event.clientY);
@@ -164,18 +107,6 @@ draggable.components = { ...draggable.components, VTabs };
    width: 100%;
  }
  
- .board {
-   background: #b6b6b6c0;
-   height: auto;
-   min-height: 90vh;
-   width: 71vw;
-   border: 2px #aeaeaec0 solid;
-   border-radius:15px ;
-   margin-top: 15vh;
-   margin-left: 5vw;
-   position: relative;
-   padding: 1em;
- }
  .abas{
   width: 100%;
   border-radius: 12px 12px 0px 0px;

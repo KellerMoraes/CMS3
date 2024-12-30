@@ -1,19 +1,25 @@
 <template>
-  <div class="board" ref="draggable" :style="{ transform: `translate(${position.x}px, ${position.y}px)` }"  >
-      
-    <!-- <v-icon class="d-flex justify-center" size="40">mdi-drag-horizontal</v-icon> -->
-    
+  <div class="board" ref="draggable" :style="{ transform: `translate(${position.x}px, ${position.y}px)` }"  >    
     <div class="abas flutuante bg-grey-darken-3">
-      <v-tabs class="abaWrap"  slider-color="white"
+      <div class="abaWrap d-flex">
+        <div :id="element[_cmsProps.id]" v-for="(element,index) in board.subpaginas" :key="element[_cmsProps.id]" @click="board.subPaginaAtiva = index" ref="subpagina" class="abaSubpages subpage mr-1 pa-3">
+        <div>
+          <span class="nomeSubPagina">
+            {{ element.nome }}
+          </span>
+        </div>
+        </div>
+      </div>
+      <!-- <v-tabs class="abaWrap"  slider-color="white"
       show-arrows >
-        <v-tab @click="paginaStore.MudarSubPaginaAtiva(index)" v-for="(element,index) in filhos" :key="element[_cmsProps.id]" class="abaSubpages" >
+        <v-tab @click="paginaStore.MudarSubPaginaAtiva(index)" v-for="(element,index) in board.subpaginas" :key="element[_cmsProps.id]" ref="subpagina" class="abaSubpages subpage" >
           {{ element.nome + index }}
         </v-tab>
-      </v-tabs>
+      </v-tabs> -->
   </div>
 
    <Draggable
-   :list="subpaginaAtiva.filhos"
+   :list="board.subpaginas[board.subpaginaAtiva].filhos"
    :item-key="_cmsProps.id"
    class="v-container v-container--fluid pr-10 containerSpace content"
    :group="{ name: 'linhas' }"
@@ -22,7 +28,7 @@
      <component
      :is="'Comp'+element.nome"
      :key="element[_cmsProps.id]"
-     v-model="subpaginaAtiva.filhos[index]"
+     v-model="board.subpaginas[board.subpaginaAtiva].filhos[index]"
      />
    </template>
    </Draggable>
@@ -41,25 +47,27 @@ import interact from "interactjs";
 import { useFerramentaStore } from '@/stores/ferramenta.js';
 import { usePaginaStore } from '@/stores/pagina.js';
 import Draggable from "vuedraggable";
-const filhos = defineModel()
+const board = defineModel()
+const subpagina = ref(null)
 let ferramentaStore = useFerramentaStore()
 let paginaStore = usePaginaStore();
 import { storeToRefs } from 'pinia';
-const {pagina,subpaginaAtiva, paginaAtual,subpaginaAtivaAtual, adicionarLinhaStore,deletarLinha, MudarSubPaginaAtiva,criarSubPagina } = storeToRefs(paginaStore)
+import { ListaDeElementos } from "@/model/Elementos";
+const {pagina,subpaginaAtiva, paginaAtual,subpaginaAtivaAtual,deletarLinha, MudarSubPaginaAtiva,criarSubPagina } = storeToRefs(paginaStore)
 const props = defineProps({
 initialX: { type: Number, default: 0 },
 initialY: { type: Number, default: 0 },
 scale:{type: Object},
 onMove: { type: Function, default: null },
 });
-
-const position = ref({ x: props.initialX, y: props.initialY });
+const position = board.value.posicao
 const draggable = ref(null);
 function adicionarLinha() {
-   paginaStore.adicionarLinhaStore()
-   console.log(history)
+  let linha = new ListaDeElementos.Linha();
+  board.value.subpaginas[board.value.subpaginaAtiva].filhos.push(linha)
  }
 onMounted(() => {
+// move o board livremente (DRAGGABLE)
 interact(draggable.value).draggable({
   ignoreFrom: '.abaSubpages, .content', 
   inertia: {
@@ -83,8 +91,8 @@ listeners: {
     const adjusted_dy = event.dy / scale;
     
     // Aplica o deslocamento ajustado na posição
-    position.value.x += adjusted_dx;
-    position.value.y += adjusted_dy;
+    position.x += adjusted_dx;
+    position.y += adjusted_dy;
     draggable.value.style.translateX = position.x
     draggable.value.style.translateY = position.y
 
@@ -93,6 +101,63 @@ if (props.onMove) props.onMove(position.value);
   },
 },
 });
+
+// wraper das subpaginas, determina o que está agrupado e o que não está (DROPZONE)
+interact('.board').dropzone({
+  accept: '.subpage',
+  // overlap: 0.75,
+  
+  ondragenter: function (event) {
+    var dropzoneElement = event.target
+    var target = event.relatedTarget
+    target.classList.remove("boardFace")
+    target.classList.add("mx-1")
+    target.classList.add("pa-3")
+    target.childNodes[0].classList.remove("bg-grey-darken-3")
+    target.childNodes[0].classList.remove("py-3")
+    target.childNodes[0].classList.remove("mx-0")
+    target.childNodes[0].classList.remove("borderRadius")
+    dropzoneElement.childNodes[0].classList.add('highlight')
+  },
+  ondragleave: function (event) {
+    event.target.classList.remove('highlight')
+    event.target.childNodes[0].classList.remove('highlight')
+  },
+  ondrop: function (event) {
+    event.target.classList.remove('highlight')
+    event.target.childNodes[0].classList.remove('highlight')
+  },
+  ondropdeactivate: function (event) {
+    event.target.classList.remove('drop-active')
+  }
+})
+// move cada aba individualmente (DRAGGABLE)
+interact('.subpage')
+  .draggable({
+    modifiers: [
+      interact.modifiers.restrictRect({
+        endOnly: true
+      })
+    ],
+    autoScroll: true,
+    
+    listeners: { move: dragMoveListener }
+    
+  })
+
+
+  function dragMoveListener (event) {
+  var target = event.target
+  let scale = props.scale.getScale();
+
+  var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx / scale
+  var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy / scale
+
+  target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+
+  target.setAttribute('data-x', x)
+  target.setAttribute('data-y', y)
+}
 });
 </script>
 
@@ -100,8 +165,8 @@ if (props.onMove) props.onMove(position.value);
 .board {
    background: #b6b6b6c0;
    height: auto;
-   min-height: 90vh;
-   width: 75vw;
+   min-height: 700px;
+   width: 1400px;
    border: 2px #aeaeaec0 solid;
    border-radius:15px ;
    position: relative;
@@ -111,12 +176,6 @@ if (props.onMove) props.onMove(position.value);
   width: 100%;
   border-radius: 12px 12px 0px 0px;
  }
-//  .abaSubpages{
-//   height: 50px;
-//   &.selecionado{
-//     border-bottom: white 1px solid
-//   }
-//  }
  .abaWrap{
   width: 95%;
  }
@@ -134,6 +193,37 @@ if (props.onMove) props.onMove(position.value);
  .panOn:hover{
    cursor: grab;
  
+ }
+ .highlight{
+  background: rgba(60, 122, 255, 0.699) !important;
+  transition: 0.3s;
+ }
+ .subpage:hover{
+  cursor: grab !important;
+}
+ .subpage{
+  background-color: rgb(0, 0, 0);
+  &:first-child{
+   border-radius: 15px 0px 0px 0px;
+  }
+}
+.nomeSubPagina{
+  background-color: black;
+  border-radius: 15px 0px 0px 0px;
+   padding: 12px;
+ }
+ .borderRadius{
+   border-radius: 15px 15px 0px 0px;
+  }
+  .boardFace{
+    height: 700px;
+    width: 1400px;
+    background: #b6b6b6c0;
+    border-radius: 15px ;
+  border: 2px #aeaeaec0 solid; 
+  position: absolute;
+  z-index: 15000;
+
  }
  
  </style>

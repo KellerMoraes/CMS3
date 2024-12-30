@@ -9,6 +9,8 @@ export const usePaginaStore = defineStore('pagina', () => {
   const paginaAtual = computed(() => pagina)
   // Pagina
   // SubPagina
+  const boards = ref([{nome:"principal", posicao: { x: 300, y: 250 }, subpaginas: pagina.value.filhos, subpaginaAtiva: 0}])
+  // boards.value[0].subpaginas.push(pagina.value.filhos)
   const subpaginaAtiva = ref(null)
   const subpaginaAtivaAtual = computed(() => {return subpaginaAtiva.value.filhos})
   criarSubPagina()
@@ -20,10 +22,10 @@ export const usePaginaStore = defineStore('pagina', () => {
   function criarSubPagina() {
     pagina.value.filhos.push(new ListaDeElementos.SubPagina())
   }
-  async function adicionarLinhaStore() {
-    let linha = new ListaDeElementos.Linha();
-    subpaginaAtiva.value.filhos.push(linha)
-  }
+  // async function adicionarLinhaStore() {
+  //   let linha = new ListaDeElementos.Linha();
+  //   subpaginaAtiva.value.filhos.push(linha)
+  // }
   function MudarSubPaginaAtiva(indice) {
     subpaginaAtiva.value = pagina.value.filhos[indice]
     console.log(subpaginaAtiva.value)
@@ -40,6 +42,6 @@ export const usePaginaStore = defineStore('pagina', () => {
    }
 
    
-  return {pagina , subpaginaAtiva, paginaAtual,deletarLinha,subpaginaAtivaAtual, adicionarLinhaStore, criarSubPagina, MudarSubPaginaAtiva,desfaz }
+  return {pagina ,boards, subpaginaAtiva, paginaAtual,deletarLinha,subpaginaAtivaAtual, criarSubPagina, MudarSubPaginaAtiva,desfaz }
 
 })

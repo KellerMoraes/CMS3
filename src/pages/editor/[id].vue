@@ -8,16 +8,22 @@
    
    <MenuComponente />
  </div>
-   <main style="display: flex; height: 93vh;" :class="pan ? 'canvas panOn': 'canvas' " >
-    <div ref="viewportContainer" :style="`width: ${tamanho.largura}; height: ${tamanho.altura}`"   class="viewport-container">
+   <main ref="mainContainer"  style="display: flex; height: 100vh;" :class="pan ? 'canvas panOn': 'canvas' " >
+    <div ref="viewportContainer"  class="viewport-container">
         
-   <BaseBoard
+   <!-- <BaseBoard v-for="board in paginaStore.pagina.boards"
    v-model="paginaStore.pagina.filhos"
    :style="pan ? 'pointer-events: none' : ''"
-   :initialX="100"
-   :initialY="50"
+   :initialX="300"
+   :initialY="250"
    :scale="panzoomInstance"
-   @onMove="handleMove"></BaseBoard>
+   ></BaseBoard> -->
+   <BaseBoard v-for="(board , i) in paginaStore.boards"
+   v-model="paginaStore.boards[i]"
+   :key="board.nome"
+   :style="pan ? 'pointer-events: none' : ''"
+   :scale="panzoomInstance"
+   ></BaseBoard>
 </div>
  <MenuConfiguracao />
    </main>
@@ -29,33 +35,18 @@
  import { useFerramentaStore } from '@/stores/ferramenta.js';
 import { storeToRefs } from 'pinia';
 import Panzoom from "@panzoom/panzoom";
+import interact from "interactjs";
 
  const pan = ref(false)
- const route = useRoute()
- const tab = ref(0)
  const viewportContainer = ref(null);
+ const mainContainer = ref(null);
 const panzoomInstance = ref(null);
- const tamanho = computed(()=>{
-   return {
-     largura: window.innerWidth,
-     altura: window.innerHeight,
-   }
- })
+
  let paginaStore = usePaginaStore();
  let ferramentaStore = useFerramentaStore()
  const { selecionarCabecalho } = storeToRefs(ferramentaStore)
- const {pagina,subpaginaAtiva, paginaAtual,subpaginaAtivaAtual, adicionarLinhaStore,deletarLinha, MudarSubPaginaAtiva,criarSubPagina } = storeToRefs(paginaStore)
+ const {pagina,subpaginaAtiva, boards, paginaAtual,subpaginaAtivaAtual, adicionarLinhaStore,deletarLinha, MudarSubPaginaAtiva,criarSubPagina } = storeToRefs(paginaStore)
  
- 
- function adicionarLinha() {
-   paginaStore.adicionarLinhaStore()
-   console.log(history)
- }
- 
- function refaz(){
-   undo()
-   console.log(history)
- }
  
  onMounted(() => {
   panzoomInstance.value = Panzoom(viewportContainer.value, {
@@ -63,11 +54,77 @@ const panzoomInstance = ref(null);
     minScale: 0.2, // Zoom mínimo
     disablePan: true, // Pan desativado por padrão
     cursor: "default",
+    canvas: true ,
     excludeClass: "board", // Exclui os boards do Panzoom
   });
+  
+interact('.canvas').dropzone({
+  accept: '.subpage',
+  ondragenter: function (event) {
+    var dropzoneElement = event.target
+    var target = event.relatedTarget
+    target.classList.add("boardFace")
+    target.classList.remove("mx-1")
+    target.classList.remove("pa-3")
+    target.childNodes[0].classList.add("bg-grey-darken-3")
+    target.childNodes[0].classList.add("py-3")
+    target.childNodes[0].classList.add("mx-0")
+    target.childNodes[0].classList.add("borderRadius")
+    dropzoneElement.classList.add('highlight')
+    
+  },
+  ondragleave: function (event) {
+    event.target.classList.remove('highlight')
+  },
+  ondrop: function (event) {
+    let subPaginaArrastada = event.relatedTarget.id;
+  let indexBoard;
+  let indexSubpagina;
 
-  // Ativa o zoom com o scroll do mouse
-  viewportContainer.value.addEventListener(
+  // Ajustando a posição com base no pan e zoom
+  const { clientX, clientY } = event.dragEvent;
+  const scale = panzoomInstance.value.getScale(); // Fator de zoom
+  const offsetX = viewportContainer.value.getBoundingClientRect().left;
+  const offsetY = viewportContainer.value.getBoundingClientRect().top;
+
+  const boardHeight = event.relatedTarget.clientHeight + 25; 
+
+  let adjustedX = (clientX - offsetX) / scale;
+  let adjustedY = (clientY - offsetY) / scale - (boardHeight / scale);
+
+
+  paginaStore.boards.forEach((board, index) => {
+    indexBoard = index;
+    indexSubpagina = board.subpaginas.findIndex(item => item.id === subPaginaArrastada);
+  });
+
+  if (paginaStore.boards[indexBoard].subpaginas.length <= 1) {
+    return;
+  }
+
+  // Remover a subpágina arrastada
+  let subpaginaDesattached = paginaStore.boards[indexBoard].subpaginas.splice(indexSubpagina, 1);
+  // Adicionar o novo "board" na posição ajustada
+  paginaStore.boards.push({
+    nome: subpaginaDesattached[0].id,
+    posicao: { x: adjustedX - 20, y: adjustedY * scale + 0.1 },
+    subpaginas: subpaginaDesattached,
+    subpaginaAtiva: 0
+  });
+
+  // Remover a classe de destaque da zona de drop
+  event.target.classList.remove('highlight');
+  },
+  ondropdeactivate: function (event) {
+    // remove active dropzone feedback
+    event.target.classList.remove('drop-active')
+  }
+})
+
+
+
+  
+  mainContainer.value.addEventListener(
     "wheel",
       panzoomInstance.value.zoomWithWheel
     
@@ -82,7 +139,9 @@ const panzoomInstance = ref(null);
    document.removeEventListener('keyup', handleKeyUp);
  });
  function handleKeyDown(event) {
-  if (event.code === "Space") {
+   if (event.code === "Space") {
+    event.preventDefault()
+    
     pan.value = true;
     panzoomInstance.value.setOptions({ disablePan: false, cursor: "grab" });
   }
@@ -90,18 +149,18 @@ const panzoomInstance = ref(null);
 
 function handleKeyUp(event) {
   if (event.code === "Space") {
+    event.preventDefault()
     pan.value = false;
     panzoomInstance.value.setOptions({ disablePan: true, cursor: "default" });
   }
 }
  
- function handleClickOnLayer(event) {
-   const [x, y] = zoompinchRef.value?.normalizeMatrixCoordinates(event.clientX, event.clientY);
- }
  </script>
  
  <style scoped lang="scss">
- 
+ .viewport-container{
+  width: 85vw;
+ }
  main {
    height: 100%;
    width: 100%;
@@ -132,4 +191,9 @@ function handleKeyUp(event) {
    cursor: grab;
  
  }
+ .highlight{
+  background: rgba(60, 122, 255, 0.699) ;
+  transition: 0.3s;
+ }
+ 
  </style>

@@ -9,13 +9,14 @@ export const usePaginaStore = defineStore('pagina', () => {
   const paginaAtual = computed(() => pagina)
   // Pagina
   // SubPagina
-  const boards = ref([{nome:"principal", posicao: { x: 300, y: 250 }, subpaginas: pagina.value.filhos, subpaginaAtiva: 0}])
   // boards.value[0].subpaginas.push(pagina.value.filhos)
   const subpaginaAtiva = ref(null)
   const subpaginaAtivaAtual = computed(() => {return subpaginaAtiva.value.filhos})
   criarSubPagina()
   criarSubPagina()
   MudarSubPaginaAtiva(0)
+  const boards = ref([{nome:pagina.value.filhos[0].id, posicao: { x: 300, y: 250 }, subpaginas: pagina.value.filhos, subpaginaAtiva: 0}])
+  // criarSubPagina()
   // SubPagina
   // const { history,undo,redo } = useRefHistory(pagina, {deep: true, flush: 'sync'})
 

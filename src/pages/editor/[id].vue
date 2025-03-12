@@ -63,15 +63,18 @@ interact('.canvas').dropzone({
   ondragenter: function (event) {
     var dropzoneElement = event.target
     var target = event.relatedTarget
-    target.classList.add("boardFace")
-    target.classList.remove("mx-1")
-    target.classList.remove("pa-3")
-    target.childNodes[0].classList.add("bg-grey-darken-3")
-    target.childNodes[0].classList.add("py-3")
-    target.childNodes[0].classList.add("mx-0")
-    target.childNodes[0].classList.add("borderRadius")
-    dropzoneElement.classList.add('highlight')
-    
+    if(target.parentNode.children.length > 1){
+
+      target.classList.add("boardFace")
+      target.classList.remove("mx-1")
+      target.classList.remove("pa-3")
+      target.childNodes[0].classList.add("bg-grey-darken-3")
+      target.childNodes[0].classList.add("py-3")
+      target.childNodes[0].classList.add("mx-0")
+      target.childNodes[0].classList.add("borderRadius")
+      dropzoneElement.classList.add('highlight')
+    }
+      
   },
   ondragleave: function (event) {
     event.target.classList.remove('highlight')

@@ -1,8 +1,26 @@
 <template>
-  <v-breadcrumbs
-      :items="items"
-      divider="/"
+  <v-toolbar>
+    <v-row>
+      <v-col cols="4">
+        <v-card-title class="pr-5 pl-3  pt-5 pb-1">
+          <div style="width: 400px;" class="ml-2">
+            <v-text-field append-inner-icon="mdi-magnify" density="compact" label="Buscar em todo o sistema"
+            variant="outlined" hide-details single-line ></v-text-field>
+          </div>
+          
+        </v-card-title>
+
+      </v-col>
+      <v-col class=" d-flex justify-end" cols="8">
+
+    <v-breadcrumbs class="mt-3 mr-4"
+    :items="items"
+    divider="/"
     ></v-breadcrumbs>
+
+      </v-col>
+    </v-row>
+  </v-toolbar>
     <v-card-title class="px-5 pt-5 pb-1">
       Páginas
     </v-card-title>
@@ -12,7 +30,7 @@
       :headers="headers"
       :ondragover="teste"
       :items="paginas"
-      height="720"
+      height="620" class=""
       :sort-by="[{ key: 'dataModificado', order: 'asc' }]"
     >
       <template v-slot:top>
@@ -42,6 +60,7 @@
             max-width="500px"
             >
             <template v-slot:activator="{ props }">
+
               <v-btn
               color="black"
               variant="flat"

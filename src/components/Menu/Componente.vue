@@ -28,6 +28,7 @@
           <v-icon size="30">
             {{ recurso.Icone }}
           </v-icon>
+          
         </v-btn>
     </v-sheet>
   </v-navigation-drawer>

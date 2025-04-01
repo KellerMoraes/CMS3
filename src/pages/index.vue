@@ -1,99 +1,106 @@
 <template>
-  <v-card-title class="px-5 pt-5 pb-1">
-    Páginas
-  </v-card-title>
-  <v-card-text class="pa-5">
-    <div class="d-flex">
+  
+  <!-- <v-card-title class="pr-5 pl-3  pt-5 pb-1">
+    <div style="width: 400px;" class="mr-10">
+              <v-text-field append-inner-icon="mdi-magnify" density="compact" label="Buscar em todo o sistema"
+                variant="outlined" hide-details single-line ></v-text-field>
+            </div>
+          </v-card-title> -->
+          <v-card-subtitle class="pr-5 pl-2  py-5" style="font-size: 24px; font-family: Poppins;">
+    Dashboard
+
+  </v-card-subtitle>
+  <v-card-text class="pa-5 pl-2 pt-0">
+    <!-- <div class="d-flex">
       <v-chip-group>
         <v-chip v-for="type in pageTypes" :key="type.color" :bgColor="type.color" :color="type.color">
           <v-icon class="mr-2" :color="type.color">{{ type.icon }}</v-icon>
           <span style="font-size: 16px; font-weight: 500;"> {{ type.name }}</span>
         </v-chip>
       </v-chip-group>
-    </div>
+    </div> -->
+      <v-card class="d-flex" flat height="800px">
+      <v-toolbar color="white" class="pr-6" flat>
+        <v-toolbar-title class="ml-4">
 
-    <v-data-table :headers="headers" :items="paginas" height="680" :sort-by="[{ key: 'dataModificado', order: 'asc' }]">
-      <template v-slot:top>
-        <v-toolbar color="white" class="pr-6" flat>
-          <v-toolbar-title class="ml-1">
-
-            <div class="d-flex justify-start align-center" style="font-size: 16px;">
-              <v-icon class="mr-2">mdi-clock</v-icon>Recentes
-
-            </div>
-          </v-toolbar-title>
-          <div class="d-flex justify-center align-center">
-            <div style="width: 250px;" class="mr-10">
-              <v-text-field append-inner-icon="mdi-magnify" density="compact" label="Buscar Páginas"
-                variant="outlined" hide-details single-line ></v-text-field>
-            </div>
-
-            <v-dialog v-model="dialogImportar" max-width="500px">
-              <template v-slot:activator="{ props }">
-                <v-btn color="black" variant="flat" v-bind="props">
-                  Importar
-                </v-btn>
-              </template>
-              <v-card color="#e9e9e9">
-                <v-card-title>
-                  Importar Página
-                </v-card-title>
-                <v-card-text>
-                  <v-container v-if="paginaImportadaCarregada">
-                    <v-sheet style="border: 1px dashed grey; border-radius: 8px;" height="300" class="d-flex flex-column align-center justify-center">
-                      <v-icon size="80">mdi-code-json</v-icon>
-                      <span style="font-weight: 900;  font-size: 18px; font-family: 'Roboto';">
-                        Arraste e Solte ou<br> 
-                      </span>
-                      <input type="file" id="fileInput" style="display: none;" onchange="mostrarArquivoSelecionado(event)" />
-                      <strong @click="selecionarArquivo" style="cursor: pointer;" class="text-blue" >Selecione</strong>
-                      <small>Arquivos Suportados: JSON</small>
-                    </v-sheet>
-                  </v-container>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue-darken-1" variant="text" @click="dialogImportar = false">
-                    Cancelar
-                  </v-btn>
-                  <v-btn color="blue-darken-1" variant="text" @click="confirmarImportacao">
-                    Confirmar
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-
-            <v-dialog v-model="dialog" max-width="900px">
-              <template v-slot:activator="{ props }">
-                <v-btn variant="flat" class="ml-2" v-bind="props" color="blue">
-                  <v-icon>mdi-plus</v-icon>
-                  Nova Página
-                </v-btn>
-              </template>
-              <v-card width="900" height="700">
-                <v-card-title class="pa-5">
-                  <span class="text-h5">Selecionar tipo de página</span>
-                </v-card-title>
-
-                <v-card-text class="d-flex flex-grow-1 pa-8">
-                  <v-row>
-                    <v-col  v-for="tipo in pageTypes" :key="tipo.name" class="pr-1 pl-0" cols="4">
-                      <router-link style="text-decoration: none;" :to="`paginas/novo/${tipo.tipoPagina}`">
-                      <v-hover v-slot="{ isHovering, props }">
-                          <v-sheet :to="`paginas/novo/${tipo.tipoPagina}`" v-bind="props" :class="{ 'on-hover': isHovering }"  height="100%" :color="tipo.color" class="d-flex flex-column justify-center align-center selecionavelHover">
-                            <v-icon size="90" color="white">{{ tipo.icon }}</v-icon>
-                            <h2 style="color: white;"> {{ tipo.name }} </h2>
-                          </v-sheet>
-                        </v-hover>
-                      </router-link>
-                      </v-col>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-            </v-dialog>
+          <div class="d-flex justify-start align-center" style="font-size: 16px;">
+            <v-icon class="mr-2">mdi-clock</v-icon>Recentes
 
           </div>
-        </v-toolbar>
+        </v-toolbar-title>
+        <div class="d-flex justify-center align-center">
+         
+
+          <v-dialog v-model="dialogImportar" max-width="500px">
+            <template v-slot:activator="{ props }">
+              <v-btn color="black" variant="flat" v-bind="props">
+                Importar
+              </v-btn>
+            </template>
+            <v-card color="#e9e9e9">
+              <v-card-title>
+                Importar Página
+              </v-card-title>
+              <v-card-text>
+                <v-container v-if="paginaImportadaCarregada">
+                  <v-sheet style="border: 1px dashed grey; border-radius: 8px;" height="300" class="d-flex flex-column align-center justify-center">
+                    <v-icon size="80">mdi-code-json</v-icon>
+                    <span style="font-weight: 900;  font-size: 18px; font-family: 'Roboto';">
+                      Arraste e Solte ou<br> 
+                    </span>
+                    <input type="file" id="fileInput" style="display: none;" onchange="mostrarArquivoSelecionado(event)" />
+                    <strong @click="selecionarArquivo" style="cursor: pointer;" class="text-blue" >Selecione</strong>
+                    <small>Arquivos Suportados: JSON</small>
+                  </v-sheet>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue-darken-1" variant="text" @click="dialogImportar = false">
+                  Cancelar
+                </v-btn>
+                <v-btn color="blue-darken-1" variant="text" @click="confirmarImportacao">
+                  Confirmar
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
+          <v-dialog v-model="dialog" max-width="900px">
+            <template v-slot:activator="{ props }">
+              <v-btn variant="flat" class="ml-2" v-bind="props" color="blue">
+                <v-icon>mdi-plus</v-icon>
+                Nova Página
+              </v-btn>
+            </template>
+            <v-card width="900" height="700">
+              <v-card-title class="pa-5">
+                <span class="text-h5">Selecionar tipo de página</span>
+              </v-card-title>
+
+              <v-card-text class="d-flex flex-grow-1 pa-8">
+                <v-row>
+                  <v-col  v-for="tipo in pageTypes" :key="tipo.name" class="pr-1 pl-0" cols="4">
+                    <router-link style="text-decoration: none;" :to="`site/paginas/novo/${tipo.tipoPagina}`">
+                    <v-hover v-slot="{ isHovering, props }">
+                        <v-sheet :to="`site/paginas/novo/${tipo.tipoPagina}`" v-bind="props" :class="{ 'on-hover': isHovering }"  height="100%" :color="tipo.color" class="d-flex flex-column justify-center align-center selecionavelHover">
+                          <v-icon size="90" color="white">{{ tipo.icon }}</v-icon>
+                          <h2 style="color: white;"> {{ tipo.name }} </h2>
+                        </v-sheet>
+                      </v-hover>
+                    </router-link>
+                    </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+
+        </div>
+      </v-toolbar>
+    </v-card>
+
+    <!-- <v-data-table :headers="headers" :items="paginas" height="680" :sort-by="[{ key: 'dataModificado', order: 'asc' }]">
+      <template v-slot:top>
       </template>
       <template v-slot:item.publicado="{ item }">
         <v-icon class="mx-4" size="large" :color="item.publicado ? 'green' : 'grey'">
@@ -116,7 +123,8 @@
           Reset
         </v-btn>
       </template>
-    </v-data-table>
+    </v-data-table> -->
+
   </v-card-text>
 
 

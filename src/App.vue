@@ -9,7 +9,7 @@
             <router-link to="/" style="text-decoration: none;">
             <v-list-item :ripple="false" class="mb-8 mt-2 px-16">
                 <v-list-item-title style="font-weight: 800;  font-size: 26px; color: #1167b1;" >
-                  <v-icon style="vertical-align: top;">mdi-vector-square</v-icon><span class="ma-1" style="font-family: Poppins;" >CMS</span>
+                  <v-icon style="vertical-align: top;">mdi-webhook</v-icon><span class="ma-1" style="font-family: Poppins;" >CMS</span>
                 </v-list-item-title>
               </v-list-item>
             </router-link>
@@ -88,6 +88,9 @@ const opcoes = [
   {nome: "Notícias", link: "/site/noticias"},
   {nome: "Destaques", link: "/site/destaques"},
   {nome: "Menus", link: "/site/menus"},
+  {nome: "Rádio", link: "/site/radio"},
+  {nome: "Tv", link: "/site/tv"},
+  {nome: "Templates", link: "/site/templates"},
   ], 
   
   id: 0},
@@ -105,9 +108,6 @@ const opcoes = [
   
   subgrupos:
   [
-  {nome: "Rádio", link: "/ferramentas/radio"},
-  {nome: "Tv", link: "/ferramentas/tv"},
-  {nome: "Templates", link: "/ferramentas/templates"},
   {nome: "Provas", link: "/ferramentas/provas"},
   ], 
   

@@ -359,7 +359,7 @@ input[type="color"] {
   flex: 1 0;
 
   &:not(:last-child) {
-    margin-right: 4px;
+    border-right: 2px solid grey;
 
   }
 

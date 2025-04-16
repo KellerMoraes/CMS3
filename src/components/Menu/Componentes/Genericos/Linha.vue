@@ -16,7 +16,7 @@
       <component
         :is="'Comp'+element.nome"
         v-model="dados.filhos[index]"
-        :estrutura="element.estrutura"
+        :estrutura="dados.filhos.length"
       />
     </template>
   </Draggable>

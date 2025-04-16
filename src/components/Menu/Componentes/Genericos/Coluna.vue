@@ -4,12 +4,13 @@
 <template>
   <Draggable
     :list="dados.filhos"
-    tag="div"
+    tag="VCol"
     style="transition: all 0.3s ease-out;"
-    :class="`v-col cols-${dados.estrutura} coluna ${ferramentaStore.itemSelecionado[_cmsProps.id] == dados[_cmsProps.id] ? 'ativa' : ''}`"
+    :class="`coluna ${ferramentaStore.itemSelecionado[idKey] == dados[idKey] ? 'ativa' : ''}`"
     :style="geraEstilos(dados)"
-    :item-key="_cmsProps.id"
+    :item-key="idKey"
     :group="{ name: 'componentes' }"
+    :component-data="{cols: dados.estrutura}"
     @click.self.exact="selecionarColuna(dados)"
   >
     <template #item="{ element,index}">
@@ -17,7 +18,7 @@
         v-if="element"
         :is="'Comp'+element.nome"
         v-model="dados.filhos[index]"
-        :key="element[_cmsProps.id]"
+        :key="element[idKey]"
       />
     </template>
   </Draggable>
@@ -27,6 +28,11 @@
 import Draggable from "vuedraggable";
 import { useFerramentaStore } from '@/stores/ferramenta.js';
 import { defineModel } from 'vue';
+import useCms from '@/composables/useCms';
+// VARIAVEIS TEMPLATE
+const $cms = useCms();
+const idKey = $cms('id')
+// VARIAVEIS TEMPLATE
 let dados = defineModel()
 const ferramentaStore = useFerramentaStore()
   function selecionarColuna(coluna) {

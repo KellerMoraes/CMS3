@@ -21,6 +21,12 @@
     Teste
   </div>
   <div class="d-flex justify-end align-center mr-8">
+    <v-btn @click="exportar" color="white" style="border-radius: 5px;" class="px-4"  variant="flat"  height="45px" size="">
+      <v-icon class="mr-2">
+        mdi-export
+      </v-icon>
+      Exportar
+    </v-btn>
     <v-btn color="#003d7c" style="border-radius: 5px;" class="px-3"  variant="flat"  height="45px" size="">
       <v-icon class="mr-2">
         mdi-content-save
@@ -45,24 +51,34 @@
 </template>
 <script setup>
 import { useFerramentaStore } from '@/stores/ferramenta.js';
+import { usePaginaStore } from '@/stores/pagina.js';
 import { storeToRefs } from 'pinia';
 let ferramentaStore = useFerramentaStore()
+let paginaStore = usePaginaStore()
 const { selecionarCabecalho } = storeToRefs(ferramentaStore)
-
 const botoesLinha = [
-        { nome: "Colar coluna", icone: "mdi-clipboard-file-outline"},
-        { nome: `Copiar linha`, icone: "mdi-content-copy"},
-        { nome: "Excluir", icone: "mdi-delete" },
-      ]
+  { nome: "Colar coluna", icone: "mdi-clipboard-file-outline"},
+  { nome: `Copiar linha`, icone: "mdi-content-copy"},
+  { nome: "Excluir", icone: "mdi-delete" },
+]
 const botoesColuna = [
-        { nome: "Colar componente", icone: "mdi-clipboard-file-outline"},
-        { nome: `Copiar coluna`, icone: "mdi-content-copy" },
-        { nome: "Excluir", icone: "mdi-delete" },
-      ]
-      function salvar() {
-        console.log(this.ferramentaStore.itemSelecionado)
-      }
+  { nome: "Colar componente", icone: "mdi-clipboard-file-outline"},
+  { nome: `Copiar coluna`, icone: "mdi-content-copy" },
+  { nome: "Excluir", icone: "mdi-delete" },
+]
+function salvar() {
+  console.log(this.ferramentaStore.itemSelecionado)
+}
 
+function exportar(){
+  console.log(paginaStore.pagina)
+ let anchor = document.createElement("a")
+anchor.href = `data:text/json;charset=utf-8,${encodeURIComponent(
+  JSON.stringify(paginaStore.pagina)
+  )}`
+anchor.download = paginaStore.pagina.nomePagina + ".json"
+anchor.click()
+}
 </script>
 <style scoped>
 .itensMenu{

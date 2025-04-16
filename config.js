@@ -1,5 +1,10 @@
 const properties = {
-    id: "id",
+id: 'id',
+  nome: 'nome',
+  tipo: 'tipo',
+  atributos: 'atributos',
+  filhos: 'filhos',
+  meta: 'meta',
 };
 
 export default properties;

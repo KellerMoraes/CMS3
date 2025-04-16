@@ -29,19 +29,22 @@ import ConfigDimensoes from '@/components/Menu/Config/Componentes/Dimensoes.vue'
 import Linha from '@/components/Menu/Componentes/Genericos/Linha.vue'
 import Coluna from '@/components/Menu/Componentes/Genericos/Coluna.vue'
 import Formulario from '@/components/Menu/Componentes/Formularios/Formulario.vue'
+import { injectVuetifyToDraggable } from '@/plugins/vuetifyCompsToDraggable'
+injectVuetifyToDraggable()
 // Components
 import App from './App.vue'
 
 // Composables
 import { createApp } from 'vue'
-
 const app = createApp(App)
-app.config.globalProperties._cmsProps = properties
+const cmsHelper = (key) => properties[key];
+
 let prefixoComp = "Comp"
 let prefixoConfig = "Config"
 let prefixoCampo = "Campo"
 registerPlugins(app)
 // nome do "Comp" precisa ser sucedido do nome definido no JSON, igual o valor da propriedade "nome"
+app.provide('$cms', cmsHelper);
 app.component(prefixoComp+'Linha', Linha);
 app.component(prefixoComp+'Coluna', Coluna);
 app.component(prefixoComp+'Formulario', Formulario);

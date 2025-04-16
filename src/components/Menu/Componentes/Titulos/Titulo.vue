@@ -6,7 +6,7 @@
       #edicao
     >
       <h1
-        :id="dados[_cmsProps.id] ?? ''"
+        :id="dados[idKey] ?? ''"
         @dblclick="habilitarEditavel(dados.conteudo)"
       >
         <BaseConteudoEditavel
@@ -29,6 +29,11 @@
 <script setup>
 import { useEditorStore } from '@/stores/editor.js';
 import { defineModel,ref } from 'vue';
+import useCms from '@/composables/useCms';
+// VARIAVEIS TEMPLATE
+const $cms = useCms();
+const idKey = $cms('id')
+// VARIAVEIS TEMPLATE
 let dados = defineModel()
 let editavel = ref(false)
 const editorStore = useEditorStore()

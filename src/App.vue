@@ -77,6 +77,11 @@
 
 <script setup>
 import { useTheme } from 'vuetify'
+import { provide } from 'vue';
+import properties from '../config';
+const cmsHelper = (key) => properties[key];
+
+provide('$cms', cmsHelper);
 const route = useRoute()
 const theme = useTheme()
 const opcoes = [

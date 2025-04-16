@@ -3,7 +3,7 @@
 <template>
   <div 
     @click.self.exact="dados ? selecionarComponente() : ''"  
-    :style="dados ? ferramentaStore.itemSelecionado[_cmsProps.id] == dados[_cmsProps.id] ? 'border: 4px pink solid; border-top: 12px pink solid' : '' : ''"  
+    :style="dados ? ferramentaStore.itemSelecionado[idKey] == dados[idKey] ? 'border: 4px pink solid; border-top: 12px pink solid' : '' : ''"  
     class="componente-item"
   >
     <slot name="edicao" />
@@ -13,9 +13,14 @@
 <script setup>
 import { useFerramentaStore } from '@/stores/ferramenta.js';
 import { defineModel} from 'vue';
+import useCms from '@/composables/useCms';
 let dados = defineModel()
 // let visibilidade = desabilitado == true ? "componente-desabilitado" : ""
 const ferramentaStore = useFerramentaStore()
+// VARIAVEIS TEMPLATE
+const $cms = useCms();
+const idKey = $cms('id')
+// VARIAVEIS TEMPLATE
   function selecionarComponente() {
     ferramentaStore.selecionarComponente(dados.value)
   }

@@ -5,8 +5,9 @@
     style="position: relative; transition: all 0.2s ease-out;"
     :list="dados.filhos"
     :style="geraEstilos(dados)"
-    :class="`v-row linha ${ferramentaStore?.itemSelecionado[_cmsProps.id] == dados[_cmsProps.id] ? 'ativo' : '' } `" 
-    :item-key="_cmsProps.id"
+    :class="`linha ${ferramentaStore?.itemSelecionado[idKey] == dados[idKey] ? 'ativo' : '' } `"
+    tag="VRow" 
+    :item-key="idKey"
     :group="{ name: 'colunas' }"
     @click.ctrl.exact="selecionarLinha(dados)"
     @click.self.exact="selecionarLinha(dados)"
@@ -25,6 +26,11 @@
 import Draggable from "vuedraggable";
 import { useFerramentaStore } from '@/stores/ferramenta.js';
 import { defineModel } from 'vue';
+import useCms from '@/composables/useCms';
+// VARIAVEIS TEMPLATE
+const $cms = useCms();
+const idKey = $cms('id')
+// VARIAVEIS TEMPLATE
 let dados = defineModel()
 
 const ferramentaStore = useFerramentaStore()

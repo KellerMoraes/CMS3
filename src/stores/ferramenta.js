@@ -11,7 +11,8 @@ export const useFerramentaStore = defineStore('ferramenta', {
         ferramentaSelecionada: reactive({nome: "" , cor: "white" }),
         colunaSelecionada: ref(""),
         formularioSelecionado: reactive({}),
-        paginaStore: usePaginaStore()
+        paginaStore: usePaginaStore(),
+        dragPayload: ref(null)
     
       }),
       actions: {
@@ -65,6 +66,17 @@ export const useFerramentaStore = defineStore('ferramenta', {
           this.itemSelecionado = this.paginaStore.pagina[_cmsProps.id]
           this.ferramentaSelecionada.nome = "Cabecalho"
           this.ferramentaSelecionada.cor = "#830909"
+        },
+        iniciarDrag(payload) {
+          this.dragPayload = payload
+        },
+        
+        limparDrag() {
+          this.dragPayload = null
+        },
+        
+        getDragPayload() {
+          return this.dragPayload
         }
       },
 })

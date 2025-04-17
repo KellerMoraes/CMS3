@@ -17,7 +17,7 @@
       class="v-container v-container--fluid pr-10 containerSpace content" :group="{ name: 'linhas' }">
       <template #item="{ element, index }">
         <component :is="'Comp' + element.nome" :key="element[idKey]"
-          v-model="board.subpaginas[board.subpaginaAtiva].filhos[index]" />
+          v-model="board.subpaginas[board.subpaginaAtiva].filhos[index]" :path="[{tipo: element.tipo, index, id: element[idKey]}]" />
       </template>
     </Draggable>
     <v-btn location="bottom" class="mt-6 " icon="mdi-plus" @click.exact="adicionarLinha()" />

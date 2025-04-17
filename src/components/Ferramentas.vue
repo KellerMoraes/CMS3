@@ -21,6 +21,12 @@
     Teste
   </div>
   <div class="d-flex justify-end align-center mr-8">
+    <v-btn @click="teste" color="white" style="border-radius: 5px;" class="px-4"  variant="flat"  height="45px" size="">
+      <v-icon class="mr-2">
+        mdi-arrow-left
+      </v-icon>
+      undo/redo cet
+    </v-btn>
     <v-btn @click="exportar" color="white" style="border-radius: 5px;" class="px-4"  variant="flat"  height="45px" size="">
       <v-icon class="mr-2">
         mdi-export
@@ -52,8 +58,10 @@
 <script setup>
 import { useFerramentaStore } from '@/stores/ferramenta.js';
 import { usePaginaStore } from '@/stores/pagina.js';
+import { useCommandStore } from '@/stores/command.js';
 import { storeToRefs } from 'pinia';
 let ferramentaStore = useFerramentaStore()
+const commandStore = useCommandStore()
 let paginaStore = usePaginaStore()
 const { selecionarCabecalho } = storeToRefs(ferramentaStore)
 const botoesLinha = [
@@ -68,6 +76,9 @@ const botoesColuna = [
 ]
 function salvar() {
   console.log(this.ferramentaStore.itemSelecionado)
+}
+function teste() {
+commandStore.desfazer()
 }
 
 function exportar(){

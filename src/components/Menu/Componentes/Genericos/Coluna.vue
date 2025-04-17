@@ -12,6 +12,7 @@
     :group="{ name: 'componentes' }"
     :component-data="{cols: dados.estrutura}"
     @click.self.exact="selecionarColuna(dados)"
+    
   >
     <template #item="{ element,index}">
       <component
@@ -34,6 +35,15 @@ const $cms = useCms();
 const idKey = $cms('id')
 // VARIAVEIS TEMPLATE
 let dados = defineModel()
+const props = defineProps(
+  {
+    path: 
+    {
+    type: Array,
+    required: true
+  }
+})
+// onMounted(()=>{console.log(props.path)})
 const ferramentaStore = useFerramentaStore()
   function selecionarColuna(coluna) {
       ferramentaStore.selecionarColuna(coluna)
@@ -47,5 +57,14 @@ const ferramentaStore = useFerramentaStore()
       return estiloCSS;
     
     }
+    function aoMover(evento) {
+      console.log(evento)
+  // const { oldIndex, newIndex } = evento;
+
+  // if (oldIndex === newIndex) return; // nada foi movido
+
+  // const comando = new MoverElementoCommand(dados.value.filhos, oldIndex, newIndex);
+  // manager.executar(comando);
+}
 </script>
 

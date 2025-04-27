@@ -6,10 +6,10 @@ export class ElementoBase {
   static criarEstrutura({ tipo, nome = '', filhos = [], atributos = {}, meta = {} }) {
     return {
       [$cms('id')]: `${tipo}-${gerarId()}`,
-      [$cms('nome')]: nome,
-      [$cms('tipo')]: tipo,
-      [$cms('atributos')]: atributos,
-      [$cms('filhos')]: filhos,
+      [$cms('name')]: nome,
+      [$cms('type')]: tipo,
+      [$cms('attrs')]: atributos,
+      [$cms('container')]: filhos,
       [$cms('meta')]: meta,
     };
   }

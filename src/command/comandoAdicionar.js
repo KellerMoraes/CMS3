@@ -1,23 +1,32 @@
-import { navegarPorPath } from './navegadorDePath.js'
+import { encontrarItemPorPath } from '@/helpers/pathUtil.js';
 
 export default class AdicionarElementoCommand {
-  constructor({ item, destino }) {
-    this.item = item; // o item novo precisa ser clonado (não é referência de outro lugar)
-    this.destino = destino; // path + index
+  constructor(info) {
+    this.elemento = info.elemento;
+    this.destino = {
+      path: info.destino.path,
+      index: info.destino.index ?? null,
+    };
+    this.eventoNativo = info.eventoNativo || false;
   }
 
-  executar(dadosRaiz) {
-    const destinoInfo = navegarPorPath(dadosRaiz, this.destino.path);
-    if (!destinoInfo) return;
+  executar(dados) {
+    if (!this.eventoNativo) {
+      const listaDestino = encontrarItemPorPath(dados, this.destino.path).filhos;
 
-    destinoInfo.alvo.splice(this.destino.index, 0, this.item);
+      if (this.destino.index === null || this.destino.index > listaDestino.length) {
+        listaDestino.push(this.elemento);
+      } else {
+        listaDestino.splice(this.destino.index, 0, this.elemento);
+      }
+    }
   }
 
-  desfazer(dadosRaiz) {
-    const destinoInfo = navegarPorPath(dadosRaiz, this.destino.path);
-    if (!destinoInfo) return;
-
-    const index = destinoInfo.alvo.findIndex(el => el.id === this.item.id);
-    if (index !== -1) destinoInfo.alvo.splice(index, 1);
+  desfazer(dados) {
+    const listaDestino = encontrarItemPorPath(dados, this.destino.path).filhos;
+    const index = listaDestino.findIndex(e => e.id === this.elemento.id);
+    if (index !== -1) {
+      listaDestino.splice(index, 1);
+    }
   }
 }

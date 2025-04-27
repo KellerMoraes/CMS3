@@ -79,14 +79,22 @@
     class="listaDeComponentes v-sheet d-flex flex-wrap ma-2"
     tag="div"
     :clone="clonar"
+    @end="teste"
     :sort="false"
-    :item-key="this._cmsProps.id"
+    :item-key="idKey"
     :group="{ name: elemento.Grupo, pull: 'clone', put: false, }"
     >
     <template #item="{ element }">
-          <v-card color="#f5f5f5" width="85px" height="105px" class="mx-1 my-1 d-flex flex-column justify-center align-center">
-              <v-icon size="35"  class="my-4">{{ element.icone }}</v-icon>
-            <div style="font-size: 12px;">{{ element.nome }}</div>
+          <v-card color="#f5f5f5" width="85px" height="105px" class="mx-1 my-1 ">
+            <v-card-title class="text-center pb-0">
+              <v-icon size="40">{{ element.icone }}</v-icon>
+            </v-card-title>
+            <v-card-text style="height: 28px;" class="pa-1">
+              <div class="text-center">{{ element.nome }}</div>
+            </v-card-text>
+            <div class="d-flex justify-center">
+              <v-icon size="32" class="d-flex justify-center" color="#d9d9d9">mdi-drag-horizontal</v-icon>
+            </div>
           </v-card>
        
         </template>
@@ -109,7 +117,12 @@ import { useDisplay } from 'vuetify'
 import { useEditorStore } from '@/stores/editor.js';
 import _ from 'lodash'
 import { Recursos } from "@/model/Recursos";
-import $properties from "../../../config"
+import { criarElemento } from "@/model/Elementos";
+// VARIAVEIS TEMPLATE
+import useCms from '@/composables/useCms';
+const $cms = useCms();
+const idKey = $cms('id')
+// VARIAVEIS TEMPLATE
 let editorStore = useEditorStore()
 const { xlAndUp } = useDisplay()
 let drawer = ref(true)
@@ -118,11 +131,12 @@ let recursos = Recursos
 function fecharComponentes() {
   editorStore.recursoSelecionado = false
 }
+function teste(e){
+  console.log(e)
+}
 function clonar(item) {
-  let elemento = _.cloneDeep(item)
-  elemento[this._cmsProps.id] = elemento[this._cmsProps.id] + gerarId()
-  delete elemento?.icone
-  return elemento
+  console.log(item)
+  return criarElemento(item.nome)
   
 }
 function gerarId() {
@@ -137,9 +151,7 @@ function selecionar(recurso) {
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 .listaDeComponentes > div:first-child {
   margin: 10px;
-  padding: 4px;
   border-radius: 5px;
-  border: 2px pink solid !important;
 }
 .listaDeComponentes .componente-item:hover{
     opacity: 0.7;

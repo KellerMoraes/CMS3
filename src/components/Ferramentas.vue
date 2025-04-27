@@ -33,7 +33,7 @@
       </v-icon>
       Exportar
     </v-btn>
-    <v-btn color="#003d7c" style="border-radius: 5px;" class="px-3"  variant="flat"  height="45px" size="">
+    <v-btn color="#003d7c" @click="salvar" style="border-radius: 5px;" class="px-3"  variant="flat"  height="45px" size="">
       <v-icon class="mr-2">
         mdi-content-save
       </v-icon>
@@ -45,7 +45,7 @@
       </v-icon>
       Publicar
     </v-btn>
-    <v-btn color="primary"  variant="flat" size="" style="border-radius: 5px;" height="45px" class="px-2" to="/editor/visualizacao">
+    <v-btn color="primary"  variant="flat" size="" style="border-radius: 5px;" height="45px" class="px-2" target="_blank" to="/editor/visualizacao">
       <v-icon class="mr-2">
         mdi-play
       </v-icon>
@@ -60,8 +60,12 @@ import { useFerramentaStore } from '@/stores/ferramenta.js';
 import { usePaginaStore } from '@/stores/pagina.js';
 import { useCommandStore } from '@/stores/command.js';
 import { storeToRefs } from 'pinia';
+import channel from '@/helpers/broadCast';
 let ferramentaStore = useFerramentaStore()
 const commandStore = useCommandStore()
+function teste() {
+commandStore.desfazer()
+}
 let paginaStore = usePaginaStore()
 const { selecionarCabecalho } = storeToRefs(ferramentaStore)
 const botoesLinha = [
@@ -75,10 +79,10 @@ const botoesColuna = [
   { nome: "Excluir", icone: "mdi-delete" },
 ]
 function salvar() {
-  console.log(this.ferramentaStore.itemSelecionado)
-}
-function teste() {
-commandStore.desfazer()
+  channel.postMessage({
+    tipo: 'atualizar-pagina',
+    payload: JSON.stringify(paginaStore.pagina),
+  });
 }
 
 function exportar(){

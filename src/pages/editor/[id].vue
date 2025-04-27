@@ -11,19 +11,13 @@
    <main ref="mainContainer"  style="display: flex; height: 100vh;" :class="pan ? 'canvas panOn': 'canvas' " >
     <div ref="viewportContainer"  class="viewport-container">
         
-   <!-- <BaseBoard v-for="board in paginaStore.pagina.boards"
-   v-model="paginaStore.pagina.filhos"
-   :style="pan ? 'pointer-events: none' : ''"
-   :initialX="300"
-   :initialY="250"
-   :scale="panzoomInstance"
-   ></BaseBoard> -->
    <BaseBoard v-for="(board , i) in paginaStore.boards"
    v-model="paginaStore.boards[i]"
    :key="board.nome"
    :style="pan ? 'pointer-events: none' : ''"
    :scale="panzoomInstance"
-   ></BaseBoard>
+   :path="[{tipo: 'subpagina', index: i, id: board[$cms('id')]}]" ></BaseBoard>
+   
 </div>
  <MenuConfiguracao />
    </main>
@@ -32,10 +26,14 @@
  
  <script setup>
  import { usePaginaStore } from '@/stores/pagina.js';
- import { useFerramentaStore } from '@/stores/ferramenta.js';
-import { storeToRefs } from 'pinia';
 import Panzoom from "@panzoom/panzoom";
 import interact from "interactjs";
+import useCms from '@/composables/useCms';
+
+
+// VARIAVEIS TEMPLATE
+const $cms = useCms();
+// const idKey = $cms('id')
 
  const pan = ref(false)
  const viewportContainer = ref(null);
@@ -43,10 +41,6 @@ import interact from "interactjs";
 const panzoomInstance = ref(null);
 
  let paginaStore = usePaginaStore();
- let ferramentaStore = useFerramentaStore()
- const { selecionarCabecalho } = storeToRefs(ferramentaStore)
- const {pagina,subpaginaAtiva, boards, paginaAtual,subpaginaAtivaAtual, adicionarLinhaStore,deletarLinha, MudarSubPaginaAtiva,criarSubPagina } = storeToRefs(paginaStore)
- 
  
  onMounted(() => {
   panzoomInstance.value = Panzoom(viewportContainer.value, {
@@ -130,7 +124,6 @@ interact('.canvas').dropzone({
   mainContainer.value.addEventListener(
     "wheel",
       panzoomInstance.value.zoomWithWheel
-    
   );
    document.addEventListener('keydown', handleKeyDown);
    document.addEventListener('keyup', handleKeyUp);

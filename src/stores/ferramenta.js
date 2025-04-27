@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ListaDeElementos } from '@/model/Elementos';
+import { criarElemento } from '@/model/Elementos';
 import { reactive, ref } from 'vue';
 import { usePaginaStore } from '@/stores/pagina.js';
 import _cmsProps from "../../config"
@@ -20,7 +20,7 @@ export const useFerramentaStore = defineStore('ferramenta', {
           console.log(opcao)
           this.itemSelecionado.filhos.pop()
           for (let i = 0; i < qtdColunas; i++) {
-            let coluna = new ListaDeElementos.Coluna()
+            let coluna = criarElemento("Coluna")
             coluna.estrutura = opcao[i]
             this.itemSelecionado.filhos.push(coluna)
     

@@ -10,8 +10,9 @@
     :style="geraEstilos(dados)"
     :item-key="idKey"
     :group="{ name: 'componentes' }"
-    :component-data="{cols: dados.estrutura}"
+    :component-data="{cols: estrutura}"
     @click.self.exact="selecionarColuna(dados)"
+    @end="itemMoved" @update="itemSort($event,path)" @remove="itemRemove($event,path)" @add="itemAdd($event,path)"
     
   >
     <template #item="{ element,index}">
@@ -20,6 +21,7 @@
         :is="'Comp'+element.nome"
         v-model="dados.filhos[index]"
         :key="element[idKey]"
+        :path="[...path, { tipo: element.tipo, index, id: element[idKey] }]"
       />
     </template>
   </Draggable>
@@ -29,8 +31,11 @@
 import Draggable from "vuedraggable";
 import { useFerramentaStore } from '@/stores/ferramenta.js';
 import { defineModel } from 'vue';
-import useCms from '@/composables/useCms';
+// Command-pattern imports 
+import { itemAdd, itemRemove, itemSort, itemMoved } from "@/command/command";
+// Command-pattern imports 
 // VARIAVEIS TEMPLATE
+import useCms from '@/composables/useCms';
 const $cms = useCms();
 const idKey = $cms('id')
 // VARIAVEIS TEMPLATE
@@ -41,6 +46,11 @@ const props = defineProps(
     {
     type: Array,
     required: true
+  },
+    estrutura: 
+    {
+    type: Number,
+    required: true
   }
 })
 // onMounted(()=>{console.log(props.path)})
@@ -48,6 +58,7 @@ const ferramentaStore = useFerramentaStore()
   function selecionarColuna(coluna) {
       ferramentaStore.selecionarColuna(coluna)
   }
+
   function geraEstilos(dados) {
     let atributos = dados.atributos
     let estiloCSS = '';

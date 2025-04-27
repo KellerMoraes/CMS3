@@ -5,7 +5,7 @@
       <fieldset class="tituloPagina">
         <legend class="pr-12" style="text-transform: uppercase;">{{ tituloPagina }}</legend>
       </fieldset>
-        <Pagina>
+        <Pagina v-if="pagina" v-model="pagina" >
       </Pagina>
     </div>
     <v-footer
@@ -36,18 +36,28 @@
 
 <script setup>
 import Pagina from "@/Render/Pagina.vue"
-import { usePaginaStore } from "@/stores/pagina";
-const paginaStore = usePaginaStore()
+import { $cms } from '@/helpers/cmsProviderHelper';
+import channel from '@/helpers/broadCast';
+const pagina = ref(null)
+const tituloPagina = ref(null)
+const imagemDesktop = ref(null)
+channel.onmessage = (event) => {
+  if (event.data.tipo === 'atualizar-pagina') {
+    console.log(JSON.parse(event.data.payload))
+    pagina.value = JSON.parse(event.data.payload)
+    tituloPagina.value = pagina.value[$cms('name')]
+    // // Atualize sua visualização com os novos dados
+  }
+};
 const icons = [
         'mdi-facebook',
         'mdi-twitter',
         'mdi-linkedin',
         'mdi-instagram',
       ]
-const tituloPagina = paginaStore.pagina.nomePagina
-const imagemDesktop = paginaStore.pagina.atributos['imagem'].desktop
-const imagemMobile = paginaStore.pagina.atributos['imagem'].mobile
-const mostrarCabecalho = paginaStore.pagina.atributos['imagem'].mostrar
+// const imagemDesktop = paginaStore.pagina.atributos['imagem'].desktop
+// const imagemMobile = paginaStore.pagina.atributos['imagem'].mobile
+// const mostrarCabecalho = paginaStore.pagina.atributos['imagem'].mostrar
 </script>
 
 <style lang="scss">

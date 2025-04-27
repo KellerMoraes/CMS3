@@ -1,26 +1,31 @@
-import { navegarPorPath } from './navegadorDePath.js'
+import { encontrarItemPorPath } from '@/helpers/pathUtil.js';
 
 export default class RemoverElementoCommand {
-  constructor({ itemId, origem }) {
-    this.itemId = itemId;
-    this.origem = origem; // path + index
-    this.item = null;     // vamos salvar o item completo só na execução
+  constructor(info) {
+    this.itemId = info.itemId;
+    this.origem = {
+      path: info.origem.path,
+      index: info.origem.index
+    };
+    this.itemRemovido = null; // será preenchido no momento da execução
   }
 
-  executar(dadosRaiz) {
-    const origemInfo = navegarPorPath(dadosRaiz, this.origem.path);
-    if (!origemInfo) return;
+  executar(dados) {
+    const listaOrigem = encontrarItemPorPath(dados, this.origem.path).filhos;
 
-    const index = origemInfo.alvo.findIndex(el => el.id === this.itemId);
-    if (index === -1) return;
+    if (!this.itemRemovido) {
+      // Guarda o item só na primeira execução
+      this.itemRemovido = listaOrigem[this.origem.index];
+    }
 
-    [this.item] = origemInfo.alvo.splice(index, 1);
+    listaOrigem.splice(this.origem.index, 1); // Remove o item
   }
 
-  desfazer(dadosRaiz) {
-    const origemInfo = navegarPorPath(dadosRaiz, this.origem.path);
-    if (!origemInfo || !this.item) return;
+  desfazer(dados) {
+    const listaOrigem = encontrarItemPorPath(dados, this.origem.path).filhos;
 
-    origemInfo.alvo.splice(this.origem.index, 0, this.item);
+    if (this.itemRemovido) {
+      listaOrigem.splice(this.origem.index, 0, this.itemRemovido); // Reinsere no lugar original
+    }
   }
 }

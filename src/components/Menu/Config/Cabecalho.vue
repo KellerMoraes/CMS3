@@ -115,7 +115,7 @@ cols="12"
   <v-tooltip location="bottom">
             <template #activator="{ props }">
               <div class="d-flex justify-end mx-7 my-2">
-    <v-btn v-bind="props" variant="text" size="40" icon="mdi-plus-circle" @click="paginaStore.criarSubPagina()" style="font-size: 18px;"></v-btn>
+    <v-btn v-bind="props" variant="text" size="40" icon="mdi-plus-circle"  style="font-size: 18px;"></v-btn>
   </div>
 </template>
 <span>Nova subpágina</span>
@@ -137,7 +137,7 @@ const idKey = $cms('id')
 // VARIAVEIS TEMPLATE
 const panel = ref([1, 2, 3])
 let paginaStore = usePaginaStore()
-const { pagina, criarSubPagina } = storeToRefs(paginaStore)
+const { pagina } = storeToRefs(paginaStore)
 console.log(pagina)
 // let subpagina = computed(() => { 
 //   return paginaStore.p

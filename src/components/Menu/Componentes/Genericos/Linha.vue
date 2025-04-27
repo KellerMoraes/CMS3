@@ -1,32 +1,29 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
 
-  <Draggable 
-  style="position: relative; transition: all 0.2s ease-out;" :list="dados.filhos" 
-  :style="geraEstilos(dados)"
-   :class="`linha ${ferramentaStore?.itemSelecionado[idKey] == dados[idKey] ? 'ativo' : ''} `" 
-   tag="VRow"
-   :item-key="idKey" 
-   :group="{ name: 'colunas' }" 
-   @click.ctrl.exact="selecionarLinha(dados)"
-   @click.self.exact="selecionarLinha(dados)"
-   @start="aoMoverComponente"
-   @remove="colunaRemovida($event,dados)"
-   @add="colunaAdicionada">
+  <Draggable style="position: relative; transition: all 0.2s ease-out;" :list="dados.filhos" :style="geraEstilos(dados)"
+    :class="`linha ${ferramentaStore?.itemSelecionado[idKey] == dados[idKey] ? 'ativo' : ''} `" tag="VRow"
+    :item-key="idKey" :group="{ name: 'colunas' }" @click.ctrl.exact="selecionarLinha(dados)"
+    @click.self.exact="selecionarLinha(dados)" @end="itemMoved" @udpdate="itemSort($event,path)" @remove="itemRemove($event,path)" @add="itemAdd($event,path)">
     <template #item="{ element, index }">
-      <component :is="'Comp' + element.nome" v-model="dados.filhos[index]" :path="[...path, { tipo: element.tipo, index, id: element[idKey] }]"  :estrutura="dados.filhos.length" />
+      <component :is="'Comp' + element.nome" v-model="dados.filhos[index]"
+        :path='[...path, { tipo: element.tipo, index, id: element[idKey] }]' 
+        :estrutura="dados[$cms('structure')]"
+        />
     </template>
   </Draggable>
 </template>
 
 <script setup>
+
 import Draggable from "vuedraggable";
 import { useFerramentaStore } from '@/stores/ferramenta.js';
-import { useCommandStore } from '@/stores/command.js';
 import { defineModel } from 'vue';
 import useCms from '@/composables/useCms';
-const comandoTemp = ref(null)
-import MoverElementoCommand from '@/command/comandoMover.js'
+// Command-pattern imports 
+import { itemAdd, itemRemove, itemSort, itemMoved } from "@/command/command";
+// Command-pattern imports 
+
 
 // VARIAVEIS TEMPLATE
 const $cms = useCms();
@@ -39,46 +36,9 @@ const props = defineProps({
   }
 })
 let dados = defineModel()
-// const manager = new CommandManager()
-// onMounted(()=>{ console.log(props.path)})
 const ferramentaStore = useFerramentaStore()
-const commandStore = useCommandStore()
-
 function selecionarLinha(elemento) {
   ferramentaStore.selecionarLinha(elemento)
-}
-function aoMoverComponente(evt){
-  const index = evt.oldIndex
-  ferramentaStore.iniciarDrag({
-    path: props.path,  // ex: [{ tipo: 'linha', index: 0, id: 'linha-xyz' }, { tipo: 'coluna', index: 2, id: 'coluna-abc' }]
-    index,
-  })
-}
-function colunaRemovida(evento) {
-  const item = evento.item._underlying_vm_;
-  if (!item) return;
-
-  comandoTemp.value = {
-    itemId: item[idKey],
-    origem: {
-      path: [...props.path], // importante: não inclui o próprio item aqui
-      index: evento.oldIndex
-    }
-  };
-  
-}
-function colunaAdicionada(evento) {
-  const item = evento.item._underlying_vm_;
-  if (!item || !comandoTemp.value) return;
-
-  comandoTemp.value.destino = {
-    path: [...props.path],
-    index: evento.newIndex
-  };
-
-  const comando = new MoverElementoCommand(comandoTemp.value);
-  commandStore.executar(comando);
-  comandoTemp.value = null;
 }
 
 function geraEstilos(dados) {
@@ -98,13 +58,6 @@ function geraEstilos(dados) {
   return estiloCSS;
 
 }
-// function geraEstilos(dados) {
-//   ferramentaStore.itemSelecionado?.filhos?.forEach((coluna) => {
-//     console.log(coluna)
-//     coluna.atributos.cor.valor = dados.atributos?.cor?.valor ?? ''
-//    })
-// }
-
 
 </script>
 <style></style>

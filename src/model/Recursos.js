@@ -1,224 +1,82 @@
-import { ListaDeElementos } from "./Elementos";
-import _cmsProps from "../../config"
+import { criarElemento } from "@/model/Elementos";
+import RecursoBase from "@/model/Base/BaseRecurso";
+import { $cms } from '@/helpers/cmsProviderHelper';
 function id() {
     return Math.random().toString(36).slice(2);
 }
+const Estruturais = new RecursoBase("Estruturais","linhas","estruturais", "mdi-view-dashboard-outline")
+Estruturais.adicionarGrupo("Genéricos","linhas", //Componentes
+    [
+        {
+            [$cms("name")]: "Linha",
+            [$cms("id")]: "linha-",
+            [$cms("icon")]: 'mdi-view-sequential',
+        },
+    ]
+)
+Estruturais.adicionarGrupo("Genéricos","colunas", //Componentes
+    [
+        {
+            [$cms("name")]: "Coluna",
+            [$cms("id")]: "coluna-",
+            [$cms("icon")]: 'mdi-view-column',
+        },
+    ]
+)
+const Componentes = new RecursoBase("Componentes","componentes","Componentes", "mdi-plus-box-outline")
+Componentes.adicionarGrupo("Textos","componentes", //Componentes
+    [
+        {
+            [$cms("name")]: "Titulo",
+            [$cms("id")]: "h1-",
+            [$cms("icon")]: 'mdi-format-title'
+        },
+        {
+            [$cms("name")]: "Parágrafo",
+            [$cms("id")]: "p-",
+            [$cms("icon")]: 'mdi-format-paragraph'
+        },
+    ]
+)
+const Agrupamentos = new RecursoBase("Agrupamentos","componentes","Agrupamentos", "mdi-group")
+Agrupamentos.adicionarGrupo("Cards","componentes", //Componentes
+    [
+        {
+            [$cms("name")]: "Card",
+            [$cms("id")]: "card-",
+            [$cms("icon")]: 'mdi-card-text'
+        },
+    ]
+)
+const Formularios = new RecursoBase("Formularios","componentes","Formularios", "mdi-form-select")
+Formularios.adicionarGrupo("Campos","componentes", //Componentes
+    [
+        {
+            [$cms("name")]: "Campo",
+            [$cms("id")]: "Campo-",
+            [$cms("icon")]: 'mdi-form-textbox'
+        },
+        {
+            [$cms("name")]: "Selecionavel",
+            [$cms("id")]: "Selecionavel-",
+            [$cms("icon")]: 'mdi-radiobox-marked'
+        },
+    ]
+)
+Formularios.adicionarGrupo("Formulários","linhas", //Componentes
+    [
+        {
+            [$cms("name")]: "Formulario",
+            [$cms("id")]: "Formulario-",
+            [$cms("icon")]: 'mdi-list-box-outline'
+        },
+    ]
+)
 const Recursos =  [
-    // {
-//     Nome:"Estruturais",
-//     NomeRecurso:"Estruturais",
-//     NomeGrupo:"linhas",
-//     Icone: "mdi-view-dashboard-outline",
-//     Itens: [
-//         {
-//             Nome: "Genéricos",
-//             Grupo: "linhas", 
-//             Componentes: 
-//             [
-                
-//                 new ListaDeElementos.Linha()
-                
-//             ]
-//         },
-//         {
-//             Nome: "Genéricos",
-//             Grupo: "colunas", 
-//             Componentes: 
-//             [
-                
-//                 new ListaDeElementos.Coluna()
-            
-//             ]
-//         },
-//     ]
-// },
-{
-    Nome:"Componentes",
-    NomeRecurso:"Componentes",
-    NomeGrupo:"componentes",
-    Icone: "mdi-plus-box-outline",
-    Itens: [
-        {
-            Nome: "Textos",
-            Grupo: "componentes",  
-            Componentes: 
-            [
-                {
-                    nome: "Titulo",
-                    [_cmsProps.id]: "h1-",
-                    icone: 'mdi-format-title',
-                    atributos: [], 
-                    classe: "", 
-                    conteudo: "Titulo 1"
-                },
-                {
-                    nome: "Paragrafo",
-                    [_cmsProps.id]: "p-",
-                    icone: 'mdi-format-paragraph',
-                    atributos: [], 
-                    classe: "", 
-                    conteudo: "Paragrafo 1",
-                    
-                }   
-            ]
-        },
-    ]
-    },
-//         {
-//             Nome: "Agrupamentos", 
-//             Componentes: 
-//             [
-//                 {  
-//                     nome: "Card",
-//                     [_cmsProps.id]: "card-" + id, 
-//                     atributos: [{ 'max-width': '344px', 'border-left': 'solid 4px #ffb30c', 'border-radius': '0px' }], 
-//                     classe: "", 
-//                     conteudo: { "titulo": "Título", "subtitulo": "Sub Título", "texto": "Lorem ipsum dolor, sit amet consectetur adipisicing elit." },
-//                     icone: 'mdi-card-text',
-                    
-//                 } 
-//             ]
-//         },
-//     ]
-// },
-// {
-//     Nome:"Moldes",
-//     NomeRecurso:"Moldes",
-//     NomeGrupo:"linhas",
-//     Icone: "mdi-group",
-//     Itens: [
-//         {
-//             Nome: "Página",
-//             Grupo: "componentes", 
-//             Componentes: 
-//             [
-//                 {
-//                     nome: "Titulo",
-//                     [_cmsProps.id]: "h1-" + id,
-//                     icone: 'mdi-format-title',
-//                     atributos: [], 
-//                     classe: "", 
-//                     conteudo: "Titulo 1"
-//                 },
-//                 {
-//                     nome: "Paragrafo",
-//                     [_cmsProps.id]: "p-" + id,
-//                     icone: 'mdi-format-paragraph',
-//                     atributos: [], 
-//                     classe: "", 
-//                     conteudo: "Paragrafo 1",
-                    
-//                 }   
-//             ]
-//         }
-        
-//     ]
-// },
-{
-    Nome:"Formulários",
-    NomeRecurso:"Formularios",
-    NomeGrupo:"componentes",
-    Icone: "mdi-form-select",
-    Itens: [
-        {
-            Nome: "Campos",
-            Grupo: "componentes", 
-            Componentes: 
-            [
-                {
-                    nome: "Campo",
-                    [_cmsProps.id]: "Campo-",
-                    configuracoes:["Input","Dimensoes"],
-                    icone: 'mdi-form-textbox',
-                    atributos: { estilo: { 'background': '#ffffff' }, definicoes: {variante: "outlined", densidade: 'comfortable', tipo: "Blank" } },
-                    conteudo: ""
-                },
-                {
-                    nome: "Selecionavel",
-                    [_cmsProps.id]: "Selecionavel-",
-                    configuracoes:["GridMaker"],
-                    icone: 'mdi-radiobox-marked',
-                    atributos: { estilo: {}, definicoes: { tipo: "Blank", grid: [1,1] } },
-                    filhos: [],
-                    conteudo: "",
-                    
-                }   
-            ]
-        },
-        // {
-        //     Nome: "Botões", 
-        //     Componentes: 
-        //     [
-        //         {
-        //             nome: "BotaoSimples",
-        //             [_cmsProps.id]: "BotaoSimples-" + id,
-        //             icone: 'mdi-button-cursor',
-        //             atributos: [],
-        //             conteudo: { "label": "Botão", "Icone": "mdi-check" }
-                    
-        //         }   
-        //     ]
-        // },
-        {
-            Nome: "Formulários",
-            Grupo: "linhas", 
-            Componentes:
-            [ 
-            
-                {
-
-      conteudo: {},
-      nome: "Formulario",
-      [_cmsProps.id]: "Formulario-",
-      atributos: [],
-      configuracoes:[""],
-      tiposCampo: [
-        "Nome",
-        "CPF",
-        "Telefone",
-        "Email",
-        "Descricao"
-      ],
-      icone: 'mdi-list-box-outline',
-      filhos: [
-        new ListaDeElementos.Linha(),
-        new ListaDeElementos.Linha({
-            nome: "Botao",
-            [_cmsProps.id]: "btn-1243124124",
-            atributos: { estilo: { }, definicoes: {variante: "tonal", tipo: "Submit" } }, 
-            classe: "", 
-            conteudo: "Titulo 1"
-        })
-        // {
-        //     [_cmsProps.id]: "linha-" + id(),
-        //     nome: "Linha",
-        //     atributos: { estilo: { 'background': '#ffffff','min-height': 105 }, tipoFundo: 'Cor sólida' },
-        //     filhos: [
-        //         {
-        //             nome: "Coluna",
-        //             [_cmsProps.id]: "coluna-" + id(),
-        //             estrutura: 12,
-        //             filhos: [
-        //                 {
-        //                     nome: "Titulo",
-        //                     [_cmsProps.id]: "h1-" + id(),
-        //                     icone: 'mdi-format-title',
-        //                     atributos: [], 
-        //                     classe: "", 
-        //                     conteudo: "Titulo 1"
-        //                 },
-        //             ],
-        //             atributos: { estilo: { 'background': '#ffffff' }, tipoFundo: 'Cor sólida'  }
-        //         }
-        //     ]
-        // }
-      ],
-                },
-        ]
-        }
-    ]
-},
-
+    Estruturais,
+    Componentes,
+    Agrupamentos,
+    Formularios
 ]
 
 export { Recursos };

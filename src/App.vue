@@ -79,8 +79,9 @@
 import { useTheme } from 'vuetify'
 import { provide } from 'vue';
 import properties from '../config';
+import atalhosTecladoIniciador from '@/composables/atalhosTeclado'
+atalhosTecladoIniciador()
 const cmsHelper = (key) => properties[key];
-
 provide('$cms', cmsHelper);
 const route = useRoute()
 const theme = useTheme()

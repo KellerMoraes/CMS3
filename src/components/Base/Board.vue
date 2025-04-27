@@ -14,13 +14,16 @@
     </div>
 
     <Draggable :list="board.subpaginas[board.subpaginaAtiva].filhos" :item-key="idKey"
-      class="v-container v-container--fluid pr-10 containerSpace content" :group="{ name: 'linhas' }">
+    tag="VContainer"
+    :component-data="{fluid: true}"
+      class="pr-10 containerSpace content" :group="{ name: 'linhas' }"
+       @end="itemMoved" @sort="itemSort($event,path)" @remove="itemRemove($event,path)" @add="itemAdd($event,path)"
+      >
       <template #item="{ element, index }">
         <component :is="'Comp' + element.nome" :key="element[idKey]"
-          v-model="board.subpaginas[board.subpaginaAtiva].filhos[index]" :path="[{tipo: element.tipo, index, id: element[idKey]}]" />
+          v-model="board.subpaginas[board.subpaginaAtiva].filhos[index]" :path="[...path, { tipo: element.tipo, index, id: element[idKey] }]" />
       </template>
     </Draggable>
-    <v-btn location="bottom" class="mt-6 " icon="mdi-plus" @click.exact="adicionarLinha()" />
   </div>
 </template>
 
@@ -28,12 +31,13 @@
 // IMPORTS
 import { ref, onMounted } from "vue";
 import interact from "interactjs";
-import { useFerramentaStore } from '@/stores/ferramenta.js';
 import { usePaginaStore } from '@/stores/pagina.js';
 import Draggable from "vuedraggable";
 import useCms from '@/composables/useCms';
-import { storeToRefs } from 'pinia';
-import { Elementos, criarElemento } from "@/model/EstruturaBase/ElementosEstruturais";
+import { criarElemento } from "@/model/Elementos";
+// Command-pattern imports 
+import { itemAdd, itemRemove, itemSort, itemMoved } from "@/command/command";
+// Command-pattern imports 
 // IMPORTS
 // VARIAVEIS TEMPLATE
 const $cms = useCms();
@@ -48,9 +52,7 @@ const position = board.value.posicao
 const draggable = ref(null);
 // VARIAVEIS NORMAIS
 // STORE
-let ferramentaStore = useFerramentaStore()
 let paginaStore = usePaginaStore();
-const { pagina, subpaginaAtiva, boards, paginaAtual, subpaginaAtivaAtual, deletarLinha, MudarSubPaginaAtiva, criarSubPagina } = storeToRefs(paginaStore)
 // STORE
 // PROPS
 const props = defineProps({
@@ -58,10 +60,19 @@ const props = defineProps({
   initialY: { type: Number, default: 0 },
   scale: { type: Object },
   onMove: { type: Function, default: null },
+  path: {
+    type: Array,
+    required: true
+  }
 });
 // PROPS
 
+
+
+
+
 onMounted(() => {
+  console.log(props.path)
   // move o board livremente (DRAGGABLE)
   interact(draggable.value).draggable({
     ignoreFrom: '.abaSubpages, .content',
@@ -207,7 +218,6 @@ onMounted(() => {
 // FUNÇÕES
 function adicionarLinha() {
   let linha = criarElemento("Linha")
-  console.log(linha)
   board.value.subpaginas[board.value.subpaginaAtiva].filhos.push(linha)
 }
 // FUNÇÕES
@@ -245,6 +255,7 @@ function adicionarLinha() {
 
 .content {
   width: 97%;
+  height: 100vh;
 }
 
 .panOn:hover {

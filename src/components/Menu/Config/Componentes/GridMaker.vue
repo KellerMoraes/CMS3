@@ -15,7 +15,7 @@
   <script setup>
   import { computed } from 'vue';
   import { useFerramentaStore } from '@/stores/ferramenta';
-  import { ListaDeElementos } from '@/model/Elementos';
+  // import { ListaDeElementos } from '@/model/Elementos';
 const ferramentaStore = useFerramentaStore()
   
   const props = defineProps({
@@ -51,7 +51,7 @@ const ferramentaStore = useFerramentaStore()
     ferramentaStore.itemSelecionado.filhos = []
     ferramentaStore.itemSelecionado.atributos.definicoes.grid = [valor, valor2]
     for(let x = 0; x < valor * valor2; x++){
-      ferramentaStore.itemSelecionado.filhos.push(new ListaDeElementos.Celula(x))
+      // ferramentaStore.itemSelecionado.filhos.push(new ListaDeElementos.Celula(x))
 }
   }
   function highlight(valor,valor2){

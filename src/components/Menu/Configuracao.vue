@@ -39,6 +39,6 @@ import { useDisplay } from 'vuetify'
 const { xxl } = useDisplay()
 const ferramentaStore = useFerramentaStore()
 const paginaStore = usePaginaStore()
-const {pagina,subpaginaAtiva, paginaAtual,subpaginaAtivaAtual, adicionarLinhaStore,deletarLinha, MudarSubPaginaAtiva,criarSubPagina,desfaz } = paginaStore
+const {pagina,subpaginaAtiva, paginaAtual,subpaginaAtivaAtual, adicionarLinhaStore,deletarLinha, MudarSubPaginaAtiva,desfaz } = paginaStore
 
 </script>

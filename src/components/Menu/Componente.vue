@@ -79,7 +79,6 @@
     class="listaDeComponentes v-sheet d-flex flex-wrap ma-2"
     tag="div"
     :clone="clonar"
-    @end="teste"
     :sort="false"
     :item-key="idKey"
     :group="{ name: elemento.Grupo, pull: 'clone', put: false, }"
@@ -131,11 +130,7 @@ let recursos = Recursos
 function fecharComponentes() {
   editorStore.recursoSelecionado = false
 }
-function teste(e){
-  console.log(e)
-}
 function clonar(item) {
-  console.log(item)
   return criarElemento(item.nome)
   
 }

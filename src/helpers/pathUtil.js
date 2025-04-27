@@ -18,3 +18,22 @@ export function encontrarItemPorPath(dados, path) {
   }
   return atual; // objeto final do path
 }
+export function getValueAtPath(obj, path) {
+  return path.reduce((acc, key) => acc && acc[key], obj);
+}
+
+export function setValueAtPath(obj, path, value) {
+  console.log(obj)
+  console.log(path[path.length - 1])
+  console.log(path.slice(0, -1))
+  // console.log(value)
+  if (!path.length) return;
+
+  const lastKey = path[path.length - 1];
+  const target = path.slice(0, -1).reduce((acc, key) => {
+    if (!acc[key]) acc[key] = {}; // cria objeto se não existir
+    return acc[key];
+  }, obj);
+
+  target[lastKey] = value;
+}

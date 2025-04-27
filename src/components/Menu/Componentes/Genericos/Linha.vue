@@ -1,14 +1,15 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
 
-  <Draggable style="position: relative; transition: all 0.2s ease-out;" :list="dados.filhos" :style="geraEstilos(dados)"
-    :class="`linha ${ferramentaStore?.itemSelecionado[idKey] == dados[idKey] ? 'ativo' : ''} `" tag="VRow"
-    :item-key="idKey" :group="{ name: 'colunas' }" @click.ctrl.exact="selecionarLinha(dados)"
-    @click.self.exact="selecionarLinha(dados)" @end="itemMoved" @udpdate="itemSort($event,path)" @remove="itemRemove($event,path)" @add="itemAdd($event,path)">
+  <Draggable style="position: relative;" :list="dados.filhos" :style="geraEstilos(dados)"
+    :class="{ linha: true, ativo: ferramentaStore.itemSelecionado?.id === dados[idKey] }" tag="VRow"
+    :component-data="{noGutters: true}"
+    :item-key="idKey" :group="{ name: 'colunas' }" @click.ctrl.exact="ferramentaStore.selecionarLinha(dados, path)"
+    @click.self.exact="ferramentaStore.selecionarLinha(dados, path)" @end="itemMoved" @udpdate="itemSort($event,path)" @remove="itemRemove($event,path)" @add="itemAdd($event,path)">
     <template #item="{ element, index }">
       <component :is="'Comp' + element.nome" v-model="dados.filhos[index]"
         :path='[...path, { tipo: element.tipo, index, id: element[idKey] }]' 
-        :estrutura="dados[$cms('structure')]"
+        :estrutura="dados[$cms('structure')][index]"
         />
     </template>
   </Draggable>
@@ -37,9 +38,9 @@ const props = defineProps({
 })
 let dados = defineModel()
 const ferramentaStore = useFerramentaStore()
-function selecionarLinha(elemento) {
-  ferramentaStore.selecionarLinha(elemento)
-}
+// function selecionarLinha(elemento) {
+//   ferramentaStore.selecionarLinha(elemento)
+// }
 
 function geraEstilos(dados) {
   let atributos = dados.atributos

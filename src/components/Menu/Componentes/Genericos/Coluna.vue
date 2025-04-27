@@ -5,12 +5,11 @@
   <Draggable
     :list="dados.filhos"
     tag="VCol"
-    style="transition: all 0.3s ease-out;"
-    :class="`coluna ${ferramentaStore.itemSelecionado[idKey] == dados[idKey] ? 'ativa' : ''}`"
+    :class="{ coluna: true, ativo: ferramentaStore.itemSelecionado?.id === dados[idKey] }"
     :style="geraEstilos(dados)"
     :item-key="idKey"
     :group="{ name: 'componentes' }"
-    :component-data="{cols: estrutura}"
+    :component-data="{cols: 12, sm: estrutura}"
     @click.self.exact="selecionarColuna(dados)"
     @end="itemMoved" @update="itemSort($event,path)" @remove="itemRemove($event,path)" @add="itemAdd($event,path)"
     

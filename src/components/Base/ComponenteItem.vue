@@ -2,9 +2,9 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div 
-    @click.self.exact="dados ? selecionarComponente() : ''"  
-    :style="dados ? ferramentaStore.itemSelecionado[idKey] == dados[idKey] ? 'border: 4px pink solid; border-top: 12px pink solid' : '' : ''"  
-    class="componente-item"
+    @click.self.exact="dados ? selecionarComponente() : ''"    
+    @click="dados ? selecionarComponente() : ''"    
+    :class="{componenteItem: true, ativo: ferramentaStore.itemSelecionado?.[idKey] === dados[idKey]}"
   >
     <slot name="edicao" />
   </div>

@@ -1,4 +1,5 @@
 import { encontrarItemPorPath } from '@/helpers/pathUtil.js';
+import { $cms } from '@/helpers/cmsProviderHelper.js'; // precisa importar se ainda não importou
 
 export default class RemoverElementoCommand {
   constructor(info) {
@@ -11,7 +12,7 @@ export default class RemoverElementoCommand {
   }
 
   executar(dados) {
-    const listaOrigem = encontrarItemPorPath(dados, this.origem.path).filhos;
+    const listaOrigem = encontrarItemPorPath(dados, this.origem.path)[$cms('container')];
 
     if (!this.itemRemovido) {
       // Guarda o item só na primeira execução
@@ -22,7 +23,7 @@ export default class RemoverElementoCommand {
   }
 
   desfazer(dados) {
-    const listaOrigem = encontrarItemPorPath(dados, this.origem.path).filhos;
+    const listaOrigem = encontrarItemPorPath(dados, this.origem.path)[$cms('container')];
 
     if (this.itemRemovido) {
       listaOrigem.splice(this.origem.index, 0, this.itemRemovido); // Reinsere no lugar original

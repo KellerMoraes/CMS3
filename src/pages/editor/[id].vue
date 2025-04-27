@@ -127,6 +127,7 @@ interact('.canvas').dropzone({
   );
    document.addEventListener('keydown', handleKeyDown);
    document.addEventListener('keyup', handleKeyUp);
+   document.addEventListener('mousedown', hdmousedown);
    
  });
  
@@ -140,6 +141,14 @@ interact('.canvas').dropzone({
     
     pan.value = true;
     panzoomInstance.value.setOptions({ disablePan: false, cursor: "grab" });
+  }
+}
+function hdmousedown(event) {
+  if (event.button == 1) {
+    event.preventDefault()
+    pan.value = true;
+    panzoomInstance.value.setOptions({ disablePan: false, cursor: "grab" });
+    
   }
 }
 

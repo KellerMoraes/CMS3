@@ -13,7 +13,7 @@
     title="Pagina Teste and ceta and ceta"
     >
   <template #append>
-    <v-btn icon="mdi-cog" variant="text" @click="ferramentaStore.selecionarCabecalho()"></v-btn>
+    <!-- <v-btn icon="mdi-cog" variant="text" @click="ferramentaStore.selecionarCabecalho()"></v-btn> -->
   </template></v-list-item>
   </div>
   <v-divider vertical inset ></v-divider>
@@ -59,7 +59,6 @@
 import { useFerramentaStore } from '@/stores/ferramenta.js';
 import { usePaginaStore } from '@/stores/pagina.js';
 import { useCommandStore } from '@/stores/command.js';
-import { storeToRefs } from 'pinia';
 import channel from '@/helpers/broadCast';
 let ferramentaStore = useFerramentaStore()
 const commandStore = useCommandStore()
@@ -67,7 +66,6 @@ function teste() {
 commandStore.desfazer()
 }
 let paginaStore = usePaginaStore()
-const { selecionarCabecalho } = storeToRefs(ferramentaStore)
 const botoesLinha = [
   { nome: "Colar coluna", icone: "mdi-clipboard-file-outline"},
   { nome: `Copiar linha`, icone: "mdi-content-copy"},

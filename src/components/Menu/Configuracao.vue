@@ -13,20 +13,20 @@
       class="mx-auto"
       rel="noopener"
       
-      :subtitle="ferramentaStore.ferramentaSelecionada.nome ? 'Configuração' : '' "
-      :color="ferramentaStore.ferramentaSelecionada.cor"
+      :subtitle="ferramentaStore.tipoSelecionado ? 'Configuração' : '' "
+      :color="ferramentaStore.corSelecionada"
       :rounded="0"
-      :title="!paginaAtual.filhos ? ferramentaStore.ferramentaSelecionada.nome ?? 'Configuração Inicial' : ferramentaStore.ferramentaSelecionada.nome "
+      :title="!paginaAtual.filhos ? ferramentaStore.tipoSelecionado ?? 'Configuração Inicial' : ferramentaStore.tipoSelecionado "
     >
       <!-- <v-divider /> -->
       <v-spacer />
     </v-card>
     <v-sheet class="configuracoesComponentes" />
     <v-sheet>
-      <MenuConfigCabecalho v-if="ferramentaStore.ferramentaSelecionada.nome == 'Cabecalho'" />
-      <MenuConfigLinha v-if="ferramentaStore.ferramentaSelecionada.nome == 'Linha'" />
-      <MenuConfigColuna v-if="ferramentaStore.ferramentaSelecionada.nome == 'Coluna'" />
-      <MenuConfigComponente v-if="ferramentaStore.ferramentaSelecionada.nome == 'Componente'" />
+      <MenuConfigCabecalho v-if="ferramentaStore.tipoSelecionado == 'Cabecalho'" />
+      <MenuConfigLinha v-if="ferramentaStore.tipoSelecionado == 'Linha'" />
+      <MenuConfigColuna v-if="ferramentaStore.tipoSelecionado == 'Coluna'" />
+      <MenuConfigComponente v-if="ferramentaStore.tipoSelecionado == 'Componente'" />
       <!-- {{ ferramentaStore.itemSelecionado.atributos }} -->
     </v-sheet>
   </v-sheet>

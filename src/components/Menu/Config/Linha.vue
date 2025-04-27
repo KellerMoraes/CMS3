@@ -21,7 +21,7 @@
                   cols="12"
                   md="4"
                   class="pa-0"
-                  @click="colunagem(coluna.colunagem.opcao,coluna.colunagem.colunas)"
+                  @click="mudarColunagem(coluna.colunagem.opcao)"
                 >
                   <v-item v-slot="{ isSelected, toggle }">
                     <v-card
@@ -161,7 +161,11 @@ import { useFerramentaStore } from '@/stores/ferramenta.js';
 import { reactive } from 'vue'
 import { useTheme } from 'vuetify'
 import { VNumberInput } from 'vuetify/labs/VNumberInput'
-
+import { itemEdited } from '@/command/command'; // seu novo itemEdited
+import { criarElemento } from '@/model/Elementos';
+import { $cms } from '@/helpers/cmsProviderHelper';
+import AdicionarElementoCommand from '@/command/comandoAdicionar';
+import RemoverElementoCommand from '@/command/comandoRemover';
 const theme = useTheme()
 let panel = reactive([1, 2, 3])
 let ferramentaStore = useFerramentaStore()
@@ -183,9 +187,65 @@ let colunas = [
       { nome: "6:4:2", icone: "Colunagem2x4x6", classe: "fh" , colunagem: {opcao: [6,4,2], colunas:3} },
       { nome: "Livre", icone: "ColunagemCustom", colunagem: {opcao: [3,4,3], colunas:3} },
 ]
-function colunagem(opcao, colunas) {
-    ferramentaStore.mudarColunagem(opcao,colunas)
+function mudarColunagem(novaEstrutura) {
+  const valorAntes = ferramentaStore.itemSelecionado[$cms('structure')];
+  const valorDepois = novaEstrutura;
+  const container = ferramentaStore.itemSelecionado[$cms('container')];
+
+  const comandosAdicionarOuRemover = [];
+
+  // Cria uma cópia do container para manipular sem afetar o original
+  const containerTemp = [...container];
+
+  if (novaEstrutura.length > container.length) {
+    const faltam = novaEstrutura.length - container.length;
+    for (let i = 0; i < faltam; i++) {
+      const comando = new AdicionarElementoCommand({
+        elemento: criarElemento('Coluna'),
+        destino: {
+          path: ferramentaStore.pathSelecionado,
+          index: container.length + i
+        },
+        eventoNativo: false
+      });
+      comandosAdicionarOuRemover.push(comando);
+    }
   }
+
+  if (novaEstrutura.length < container.length) {
+    const sobram = container.length - novaEstrutura.length;
+
+    for (let i = 0; i < sobram; i++) {
+      // 1. Tentar encontrar coluna vazia
+      let indexParaRemover = containerTemp.findIndex(coluna => {
+        return !coluna[$cms('container')] || coluna[$cms('container')].length === 0;
+      });
+
+      // 2. Se não achou nenhuma vazia, remove a última
+      if (indexParaRemover === -1) {
+        indexParaRemover = containerTemp.length - 1;
+      }
+
+      const comando = new RemoverElementoCommand({
+        origem: {
+          path: ferramentaStore.pathSelecionado,
+          index: indexParaRemover
+        },
+        itemId: containerTemp[indexParaRemover][$cms('id')]
+      });
+
+      comandosAdicionarOuRemover.push(comando);
+
+      // Remove apenas da cópia temporária
+      containerTemp.splice(indexParaRemover, 1);
+    }
+  }
+
+  itemEdited(ferramentaStore.pathSelecionado, ['estrutura'], valorAntes, valorDepois, comandosAdicionarOuRemover);
+}
+
+
+
 </script>
 <style scoped>
 .fh{

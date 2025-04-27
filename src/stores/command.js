@@ -10,7 +10,7 @@ export const useCommandStore = defineStore('command', () => {
   const futuro = ref([])
   const comando = ref({})
 
-  function executar(comando, alvo = paginaStore.boards[0]) {
+  function executar(comando, alvo = paginaStore.pagina) {
     // la dentro desse executar só vai fazer mesmo se não for um evento nativo(de usuario)
     comando.executar(alvo)
     // la dentro desse executar só vai fazer mesmo se não for um evento nativo(de usuario)

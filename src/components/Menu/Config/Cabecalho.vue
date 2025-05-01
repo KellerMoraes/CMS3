@@ -138,7 +138,6 @@ const idKey = $cms('id')
 const panel = ref([1, 2, 3])
 let paginaStore = usePaginaStore()
 const { pagina } = storeToRefs(paginaStore)
-console.log(pagina)
 // let subpagina = computed(() => { 
 //   return paginaStore.p
 // })

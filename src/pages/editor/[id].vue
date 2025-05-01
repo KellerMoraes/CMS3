@@ -4,163 +4,68 @@
    >
    <Ferramentas />
  </v-toolbar>
- <div>
-   
-   <MenuComponente />
- </div>
-   <main ref="mainContainer"  style="display: flex; height: 100vh;" :class="pan ? 'canvas panOn': 'canvas' " >
-    <div ref="viewportContainer"  class="viewport-container">
-        
-   <BaseBoard v-for="(board , i) in paginaStore.boards"
-   v-model="paginaStore.boards[i]"
-   :key="board.nome"
-   :style="pan ? 'pointer-events: none' : ''"
-   :scale="panzoomInstance"
-   :path="[{tipo: 'subpagina', index: i, id: board[$cms('id')]}]" ></BaseBoard>
-   
-</div>
- <MenuConfiguracao />
-   </main>
+   <div>
+     
+     <MenuComponente />
+    </div>
+  <Splitpanes @resize="disableTextSelection" @splitter-dblclick="tamanhoBarraConfig = tamanhoMaximoBarraConfig" @resized="enableTextSelection" :class="{'default-theme': true, 'telasDivisao': true, 'hovering-config': isHoveringConfig}">
+    <Pane min-size="70" size="75" max-size="80">
+      <BaseCanvas></BaseCanvas>
+      <!-- Conteúdo principal -->
+    </Pane>
+    <Pane min-size="20" :size="tamanhoBarraConfig" :max-size="tamanhoMaximoBarraConfig">
+      <MenuConfiguracao  />
+      <!-- Seu painel configurador -->
+    </Pane>
+  </Splitpanes>
 
  </template>
  
  <script setup>
  import { usePaginaStore } from '@/stores/pagina.js';
-import Panzoom from "@panzoom/panzoom";
-import interact from "interactjs";
 import useCms from '@/composables/useCms';
+import { Splitpanes, Pane } from 'splitpanes'
+import 'splitpanes/dist/splitpanes.css'
 
 
 // VARIAVEIS TEMPLATE
 const $cms = useCms();
 // const idKey = $cms('id')
-
- const pan = ref(false)
- const viewportContainer = ref(null);
- const mainContainer = ref(null);
-const panzoomInstance = ref(null);
+const tamanhoMaximoBarraConfig = ref(30)
+const tamanhoBarraConfig = ref(25)
 
  let paginaStore = usePaginaStore();
- 
- onMounted(() => {
-  panzoomInstance.value = Panzoom(viewportContainer.value, {
-    maxScale: 2, // Zoom máximo
-    minScale: 0.2, // Zoom mínimo
-    disablePan: true, // Pan desativado por padrão
-    cursor: "default",
-    canvas: true ,
-    excludeClass: "board", // Exclui os boards do Panzoom
-  });
-  
-interact('.canvas').dropzone({
-  accept: '.subpage',
-  ondragenter: function (event) {
-    var dropzoneElement = event.target
-    var target = event.relatedTarget
-    if(target.parentNode.children.length > 1){
-
-      target.classList.add("boardFace")
-      target.classList.remove("mx-1")
-      target.classList.remove("pa-3")
-      target.childNodes[0].classList.add("bg-grey-darken-3")
-      target.childNodes[0].classList.add("py-3")
-      target.childNodes[0].classList.add("mx-0")
-      target.childNodes[0].classList.add("borderRadius")
-      dropzoneElement.classList.add('highlight')
-    }
-      
-  },
-  ondragleave: function (event) {
-    event.target.classList.remove('highlight')
-  },
-  ondrop: function (event) {
-    let subPaginaArrastada = event.relatedTarget.id;
-  let indexBoard;
-  let indexSubpagina;
-
-  // Ajustando a posição com base no pan e zoom
-  const { clientX, clientY } = event.dragEvent;
-  const scale = panzoomInstance.value.getScale(); // Fator de zoom
-  const offsetX = viewportContainer.value.getBoundingClientRect().left;
-  const offsetY = viewportContainer.value.getBoundingClientRect().top;
-
-  const boardHeight = event.relatedTarget.clientHeight + 25; 
-
-  let adjustedX = (clientX - offsetX) / scale;
-  let adjustedY = (clientY - offsetY) / scale - (boardHeight / scale);
-
-
-  paginaStore.boards.forEach((board, index) => {
-    indexBoard = index;
-    indexSubpagina = board.subpaginas.findIndex(item => item.id === subPaginaArrastada);
-  });
-
-  if (paginaStore.boards[indexBoard].subpaginas.length <= 1) {
-    return;
-  }
-
-  // Remover a subpágina arrastada
-  let subpaginaDesattached = paginaStore.boards[indexBoard].subpaginas.splice(indexSubpagina, 1);
-  // Adicionar o novo "board" na posição ajustada
-  paginaStore.boards.push({
-    nome: subpaginaDesattached[0].id,
-    posicao: { x: adjustedX - 20, y: adjustedY * scale + 0.1 },
-    subpaginas: subpaginaDesattached,
-    subpaginaAtiva: 0
-  });
-
-  // Remover a classe de destaque da zona de drop
-  event.target.classList.remove('highlight');
-  },
-  ondropdeactivate: function (event) {
-    // remove active dropzone feedback
-    event.target.classList.remove('drop-active')
-  }
-})
-
-
-
-  
-  mainContainer.value.addEventListener(
-    "wheel",
-      panzoomInstance.value.zoomWithWheel
-  );
-   document.addEventListener('keydown', handleKeyDown);
-   document.addEventListener('keyup', handleKeyUp);
-   document.addEventListener('mousedown', hdmousedown);
-   
- });
- 
- onUnmounted(() => {
-   document.removeEventListener('keydown', handleKeyDown);
-   document.removeEventListener('keyup', handleKeyUp);
- });
- function handleKeyDown(event) {
-   if (event.code === "Space") {
-    event.preventDefault()
-    
-    pan.value = true;
-    panzoomInstance.value.setOptions({ disablePan: false, cursor: "grab" });
-  }
-}
-function hdmousedown(event) {
-  if (event.button == 1) {
-    event.preventDefault()
-    pan.value = true;
-    panzoomInstance.value.setOptions({ disablePan: false, cursor: "grab" });
-    
-  }
+ function disableTextSelection() {
+  document.body.style.userSelect = 'none';
 }
 
-function handleKeyUp(event) {
-  if (event.code === "Space") {
-    event.preventDefault()
-    pan.value = false;
-    panzoomInstance.value.setOptions({ disablePan: true, cursor: "default" });
-  }
+function enableTextSelection() {
+  document.body.style.userSelect = '';
 }
+
  
  </script>
+ <style lang="scss">
+/* .default-theme.splitpanes__splitter {background-color: #ccc;position: relative;} */
+.splitpanes.default-theme .splitpanes__splitter:before, .splitpanes.default-theme .splitpanes__splitter:after{
+  background-color: rgb(194, 194, 194);
+}
+.splitpanes.default-theme .splitpanes__splitter{
+  transition: 0.5s;
+  background-color: white;position: relative;
+}
+.default-theme.splitpanes--vertical>.splitpanes__splitter, .default-theme .splitpanes--vertical>.splitpanes__splitter{
+  width: 10px;
+  border-left: none;
+}
+.splitpanes.default-theme .splitpanes__splitter:hover{
+  transition: 0.5s;
+  background-color: #313131;position: relative;
+}
+.splitpanes.default-theme .splitpanes__splitter:hover:before, .splitpanes.default-theme .splitpanes__splitter:hover:after{
+  background-color: white;
+}
+    </style>
  
  <style scoped lang="scss">
  .viewport-container{

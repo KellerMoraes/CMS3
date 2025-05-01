@@ -12,7 +12,6 @@ export const useEditorStore = defineStore('editor', {
       }),
       actions: {
         selecionarRecurso(recurso){
-          console.log(recurso)
           this.recursoSelecionado = recurso
           this.opcaoComponenteSelecionado = true
         },

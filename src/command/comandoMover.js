@@ -1,34 +1,41 @@
+// src/helpers/comandoMover.js
 import { encontrarItemPorPath } from '@/helpers/pathUtil.js';
+import { $cms } from '@/helpers/cmsProviderHelper';
 
 export default class MoverElementoCommand {
   constructor(info) {
-    this.itemId = info.itemId;
-    this.origem = {
-      path: info.origem.path,
-      index: info.origem.index
-    };
-    this.destino = {
-      path: info.destino.path,
-      index: info.destino.index
-    };
-    this.eventoNativo = info.eventoNativo
-    //evento nativo é para definir se o evento é feito pelo usuário ou não, 
-    //já que o executar só deve fazer sua função, caso já não tenha sido feito pela biblioteca 
+    this.item = info.item;
+    this.origem = { ...info.origem };
+    this.destino = { ...info.destino };
+    this.eventoNativo = !!info.eventoNativo;
+    this.executado = false;
   }
 
   executar(dados) {
-    if(!this.eventoNativo){
-      const listaOrigem = encontrarItemPorPath(dados, this.origem.path).filhos;
-      const item = listaOrigem.splice(this.origem.index, 1)[0]; // remove
-      const listaDestino = encontrarItemPorPath(dados, this.destino.path).filhos;
-      listaDestino.splice(this.destino.index, 0, item); // insere
+    // Se o movimento foi feito pelo usuário, desfazemos primeiro para registrar corretamente
+    if (this.eventoNativo && !this.executado) {
+      const listaDestino = encontrarItemPorPath(dados, this.destino.path)[$cms('container')];
+      const item = listaDestino.splice(this.destino.index, 1)[0];
+
+      const listaOrigem = encontrarItemPorPath(dados, this.origem.path)[$cms('container')];
+      listaOrigem.splice(this.origem.index, 0, item);
     }
+
+    // Executa movimento de forma previsível
+    const listaOrigem = encontrarItemPorPath(dados, this.origem.path)[$cms('container')];
+    const item = listaOrigem.splice(this.origem.index, 1)[0];
+
+    const listaDestino = encontrarItemPorPath(dados, this.destino.path)[$cms('container')];
+    listaDestino.splice(this.destino.index, 0, item);
+
+    this.executado = true;
   }
 
   desfazer(dados) {
-    const listaDestino = encontrarItemPorPath(dados, this.destino.path).filhos;
-    const item = listaDestino.splice(this.destino.index, 1)[0]; // remove
-    const listaOrigem = encontrarItemPorPath(dados, this.origem.path).filhos;
-    listaOrigem.splice(this.origem.index, 0, item); // volta
+    const listaDestino = encontrarItemPorPath(dados, this.destino.path)[$cms('container')];
+    const item = listaDestino.splice(this.destino.index, 1)[0];
+
+    const listaOrigem = encontrarItemPorPath(dados, this.origem.path)[$cms('container')];
+    listaOrigem.splice(this.origem.index, 0, item);
   }
 }

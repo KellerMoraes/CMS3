@@ -5,11 +5,12 @@ class Pagina extends ElementoBase {
   static criar(args) {
     // ARGS: NAME, IDDOMAIN, STARTDATE
     const subpaginaInicial = SubPagina.criar();
+    const subpaginaInicial2 = SubPagina.criar();
     return {
       ...this.criarEstrutura({ 
         [$cms('type')]: 'pagina', 
         [$cms('name')]: args[$cms('name')],
-        [$cms('container')]: [subpaginaInicial], 
+        [$cms('container')]: [subpaginaInicial, subpaginaInicial2], 
       }),
       [$cms('idDomain')]: args[$cms('idDomain')],
       [$cms('version')]: '3.0',

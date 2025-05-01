@@ -8,7 +8,6 @@
     <script setup>
    import { $cms } from '@/helpers/cmsProviderHelper';
    const model = defineModel();
-   console.log(model.value)
 function componenteNome(name){return defineAsyncComponent(() => import(`./${name}.vue`))}
     
     </script>

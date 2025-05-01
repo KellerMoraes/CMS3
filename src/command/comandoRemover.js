@@ -3,30 +3,30 @@ import { $cms } from '@/helpers/cmsProviderHelper.js'; // precisa importar se ai
 
 export default class RemoverElementoCommand {
   constructor(info) {
-    this.itemId = info.itemId;
     this.origem = {
       path: info.origem.path,
       index: info.origem.index
     };
-    this.itemRemovido = null; // será preenchido no momento da execução
+    this.itemRemovido = null;
   }
 
   executar(dados) {
     const listaOrigem = encontrarItemPorPath(dados, this.origem.path)[$cms('container')];
 
     if (!this.itemRemovido) {
-      // Guarda o item só na primeira execução
       this.itemRemovido = listaOrigem[this.origem.index];
     }
 
-    listaOrigem.splice(this.origem.index, 1); // Remove o item
+    if (listaOrigem[this.origem.index] === this.itemRemovido) {
+      listaOrigem.splice(this.origem.index, 1);
+    }
   }
 
   desfazer(dados) {
-    const listaOrigem = encontrarItemPorPath(dados, this.origem.path)[$cms('container')];
-
     if (this.itemRemovido) {
-      listaOrigem.splice(this.origem.index, 0, this.itemRemovido); // Reinsere no lugar original
+      const listaOrigem = encontrarItemPorPath(dados, this.origem.path)[$cms('container')];
+      listaOrigem.splice(this.origem.index, 0, this.itemRemovido);
     }
   }
 }
+

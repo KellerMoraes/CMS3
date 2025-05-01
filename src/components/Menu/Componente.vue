@@ -79,12 +79,14 @@
     class="listaDeComponentes v-sheet d-flex flex-wrap ma-2"
     tag="div"
     :clone="clonar"
+    @update="test"
     :sort="false"
+
     :item-key="idKey"
     :group="{ name: elemento.Grupo, pull: 'clone', put: false, }"
     >
     <template #item="{ element }">
-          <v-card color="#f5f5f5" width="85px" height="105px" class="mx-1 my-1 ">
+          <v-card color="#f5f5f5" width="85px" height="105px" flat style="border: 1px black solid; cursor: grab" class="mx-1 my-1 ">
             <v-card-title class="text-center pb-0">
               <v-icon size="40">{{ element.icone }}</v-icon>
             </v-card-title>
@@ -134,8 +136,8 @@ function clonar(item) {
   return criarElemento(item.nome)
   
 }
-function gerarId() {
-    return Math.random().toString(36).slice(2);
+function test(e) {
+  console.log(e)
 }
 function selecionar(recurso) {
   editorStore.selecionarRecurso(recurso)

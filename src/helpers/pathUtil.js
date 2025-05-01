@@ -3,29 +3,23 @@ export function encontrarItemPorPath(dados, path) {
   let atual = dados;
 
   for (const etapa of path) {
-    if (!dados[[$cms('container')]] || !Array.isArray(atual[$cms('container')])) {
-      throw new Error("Estrutura de filhos inválida no path");
+    const container = atual[$cms('container')];
+    if (!Array.isArray(container)) {
+      throw new Error('Estrutura de filhos inválida no path');
     }
 
-    // pode usar .find ou o index mesmo se quiser garantir performance
-    const proximo = atual[$cms('container')].find(item => item[$cms('id')] === etapa[$cms('id')]);
-
+    const proximo = container.find(item => item[$cms('id')] === etapa[$cms('id')]);
     if (!proximo) {
       throw new Error(`Item com ID ${etapa[$cms('id')]} não encontrado`);
     }
 
     atual = proximo;
   }
-  return atual; // objeto final do path
-}
-export function getValueAtPath(obj, path) {
-  return path.reduce((acc, key) => acc && acc[key], obj);
+
+  return atual;
 }
 
 export function setValueAtPath(obj, path, value) {
-  console.log(obj)
-  console.log(path[path.length - 1])
-  console.log(path.slice(0, -1))
   // console.log(value)
   if (!path.length) return;
 

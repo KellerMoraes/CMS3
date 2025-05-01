@@ -1,8 +1,7 @@
-// src/command/ComandoComposto.js
-
 export default class ComandoComposto {
-  constructor(comandos = []) {
+  constructor(comandos = [], eventoNativo = false) {
     this.comandos = comandos;
+    this.eventoNativo = eventoNativo;
   }
 
   executar(dados) {

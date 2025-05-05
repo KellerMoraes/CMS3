@@ -120,10 +120,12 @@ defineExpose({
 
 <style scoped>
 .canvas {
-  width: 100vw;
-  height: 100vh;
+  /* width: 100vw; */
+  height:  calc(100vh - 64px);
   overflow: auto; /* importante para o panzoom não sair da tela */
   position: relative;
+  margin-top: 64px;
+  margin-left: 70px;
   cursor: default;
 }
 

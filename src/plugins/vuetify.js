@@ -47,7 +47,7 @@ export default createVuetify({
     },
   },
   theme: {
-    defaultTheme: 'light'
+    defaultTheme: 'dark'
   },
   icons: {
     aliases: {

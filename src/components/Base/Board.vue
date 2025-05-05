@@ -1,8 +1,26 @@
 <template>
   <div class="board" ref="draggable" :style="{ transform: `translate(${position.x}px, ${position.y}px)` }">
     <div class="abas flutuante bg-grey-darken-3">
-      <div class="abaWrap d-flex">
-        <div :id="element[idKey]" v-for="(element, index) in board.subpaginas" :key="element[idKey]"
+        <Draggable :list="board.subpaginas" :item-key="idKey" class="abaWrap d-flex" :component-data="{
+          type: 'transition-group',
+          name: !drag ? 'flip-list' : null
+        }"
+        :group="{ name: 'subpaginas' }"
+        v-bind="dragOptions"
+        @start="drag = true"
+        @end="drag = false"
+      >
+      <template #item="{ element, index }">
+        <div :id="element[idKey]" :key="element[idKey]"
+          @click="board.subPaginaAtiva = index" ref="subpagina" class="abaSubpages subpage mr-1 pa-3"
+          :data-index="index" :data-board-id="board.id">
+            <span class="nomeSubPagina">
+              {{ element.nome }}
+            </span>
+        </div>
+      </template>
+    </Draggable>
+        <!-- <div :id="element[idKey]" v-for="(element, index) in board.subpaginas" :key="element[idKey]"
           @click="board.subPaginaAtiva = index" ref="subpagina" class="abaSubpages subpage mr-1 pa-3"
           :data-index="index" :data-board-id="board.id">
           <div>
@@ -10,8 +28,7 @@
               {{ element.nome }}
             </span>
           </div>
-        </div>
-      </div>
+        </div> -->
     </div>
 
     <Draggable :list="board.subpaginas[board.subpaginaAtiva].filhos" :item-key="idKey"
@@ -30,7 +47,7 @@
 
 <script setup>
 // IMPORTS
-import { ref, onMounted, watch, nextTick } from "vue";
+import { ref, onMounted, watch, nextTick,computed } from "vue";
 import interact from "interactjs";
 import { usePaginaStore } from '@/stores/pagina.js';
 import Draggable from "vuedraggable";
@@ -49,6 +66,7 @@ const board = defineModel()
 // MODELS DEFINIDAS
 // VARIAVEIS NORMAIS
 const subpagina = ref(null)
+const drag = ref(false)
 const position = board.value.posicao
 const draggable = ref(null);
 const draggingSubpagina = ref(null);
@@ -69,7 +87,15 @@ const props = defineProps({
   }
 });
 // PROPS
-
+const dragOptions = computed(() => {
+  return {
+        animation: 200,
+        group: "description",
+        disabled: false,
+        chosenClass: "ghost1",
+        dragClass: "ghost"
+      };
+})
 onMounted(() => {
   // move o board livremente (DRAGGABLE)
   draggable.value.setAttribute('data-x', position.x);
@@ -148,80 +174,115 @@ onMounted(() => {
   // move cada aba individualmente (DRAGGABLE)
   interact('.subpage')
     .draggable({
-      modifiers: [
-        interact.modifiers.restrictRect({
-          endOnly: true
-        })
-      ],
-      autoScroll: true,
-
+      manualStart: true,
+      
       listeners: {
-        start(event) {
-          const element = event.target;
-          draggingSubpagina.value = element;
-          draggingSubpaginaIndex.value = parseInt(element.getAttribute('data-index'));
-          
-          // Marcar visualmente a aba sendo arrastada
-          element.classList.add('dragging');
-        },
-        move(event) {
-          const scale = props.scale?.getScale?.() || 1;
-          const target = event.target;
-
-          let x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx / scale;
-          let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy / scale;
-
-          target.setAttribute('data-x', x);
-          target.setAttribute('data-y', y);
-          target.style.transform = `translate(${x}px, ${y}px)`;
-
-          // Verificar se está fora do board atual (para possível detach)
-          const boardRect = draggable.value.getBoundingClientRect();
-          const subpageRect = target.getBoundingClientRect();
-          
-          // Se a distância for grande, podemos considerar um "detach"
-          const outOfBounds = 
-            subpageRect.top > boardRect.bottom || 
-            subpageRect.bottom < boardRect.top || 
-            subpageRect.left > boardRect.right || 
-            subpageRect.right < boardRect.left;
-          
-          target.setAttribute('data-out-of-bounds', outOfBounds);
-        },
-        end(event) {
-          const target = event.target;
-          target.classList.remove('dragging');
-          
-          // Resetar a posição visual da aba
-          target.style.transform = '';
-          target.removeAttribute('data-x');
-          target.removeAttribute('data-y');
-          
-          // Verificar se está fora do board para fazer detach
-          const outOfBounds = target.getAttribute('data-out-of-bounds') === 'true';
-          const index = parseInt(target.getAttribute('data-index'));
-          
-          if (outOfBounds && board.value.subpaginas.length > 1) {
-            // Calcular posição para o novo board
-            const scale = props.scale?.getScale?.() || 1;
-            const mouseX = event.clientX / scale;
-            const mouseY = event.clientY / scale;
-            
-            detachSubpagina(index, { 
-              x: mouseX - 100, // Ajuste para centralizar
-              y: mouseY - 50   // Ajuste para centralizar
-            });
-          } else {
-            // Se não estiver fora, podemos reorganizar a ordem das abas
-            // (isso seria um código adicional para reordenar as abas no mesmo board)
-          }
-          
-          // Limpar referências
-          draggingSubpagina.value = null;
-          draggingSubpaginaIndex.value = null;
-        }
+        start (event) {
+      // console.log(event.type, event.target)
+    },
       }
-    });
+    }).on('move', function (event) {
+      var interaction = event.interaction
+      console.log(interaction.pointerIsDown && event.originalEvent.offsetY > 35)
+      // console.log(interaction.pointerIsDown)
+    // if(interaction.pointerIsDown && (event.originalEvent.offsetY > 40 || event.originalEvent.offsetY < -25)){
+    //     console.log(interaction.pointerIsDown)
+    //     interaction.start(
+    //     { name: 'drag' },
+    //     event.interactable,
+    //     event.currentTarget,
+    //   )
+    //   } 
+    // if (!interaction.interacting()) {
+    //   interaction.start(
+    //     { name: 'drag' },
+    //     event.interactable,
+    //     event.currentTarget,
+    //   )
+    // }
+  });
+  // .on('drag', function (event) {
+  //   var interaction = event.interaction
+  //     if(event.originalEvent.offsetY > 40 || event.originalEvent.offsetY < -25){
+  //       interaction.start(
+  //       { name: 'drag' },
+  //       event.interactable,
+  //       event.currentTarget,
+  //     )
+  //     } 
+  //   // if (!interaction.interacting()) {
+  //   //   interaction.start(
+  //   //     { name: 'drag' },
+  //   //     event.interactable,
+  //   //     event.currentTarget,
+  //   //   )
+  //   // }
+  // });
+        // start(event) {
+        //   const element = event.target;
+        //   draggingSubpagina.value = element;
+        //   draggingSubpaginaIndex.value = parseInt(element.getAttribute('data-index'));
+          
+        //   // Marcar visualmente a aba sendo arrastada
+        //   element.classList.add('dragging');
+        // },
+        // move(event) {
+        //   const scale = props.scale?.getScale?.() || 1;
+        //   const target = event.target;
+
+        //   let x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx / scale;
+        //   let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy / scale;
+
+        //   target.setAttribute('data-x', x);
+        //   target.setAttribute('data-y', y);
+        //   target.style.transform = `translate(${x}px, ${y}px)`;
+
+        //   // Verificar se está fora do board atual (para possível detach)
+        //   const boardRect = draggable.value.getBoundingClientRect();
+        //   const subpageRect = target.getBoundingClientRect();
+          
+        //   // Se a distância for grande, podemos considerar um "detach"
+        //   const outOfBounds = 
+        //     subpageRect.top > boardRect.bottom || 
+        //     subpageRect.bottom < boardRect.top || 
+        //     subpageRect.left > boardRect.right || 
+        //     subpageRect.right < boardRect.left;
+          
+        //   target.setAttribute('data-out-of-bounds', outOfBounds);
+        // },
+        // end(event) {
+        //   const target = event.target;
+        //   target.classList.remove('dragging');
+          
+        //   // Resetar a posição visual da aba
+        //   target.style.transform = '';
+        //   target.removeAttribute('data-x');
+        //   target.removeAttribute('data-y');
+          
+        //   // Verificar se está fora do board para fazer detach
+        //   const outOfBounds = target.getAttribute('data-out-of-bounds') === 'true';
+        //   const index = parseInt(target.getAttribute('data-index'));
+          
+        //   if (outOfBounds && board.value.subpaginas.length > 1) {
+        //     // Calcular posição para o novo board
+        //     const scale = props.scale?.getScale?.() || 1;
+        //     const mouseX = event.clientX / scale;
+        //     const mouseY = event.clientY / scale;
+            
+        //     detachSubpagina(index, { 
+        //       x: mouseX - 100, // Ajuste para centralizar
+        //       y: mouseY - 50   // Ajuste para centralizar
+        //     });
+        //   } else {
+        //     // Se não estiver fora, podemos reorganizar a ordem das abas
+        //     // (isso seria um código adicional para reordenar as abas no mesmo board)
+        //   }
+          
+        //   // Limpar referências
+        //   draggingSubpagina.value = null;
+        //   draggingSubpaginaIndex.value = null;
+        // }
+    
 });
 
 // FUNÇÕES
@@ -305,7 +366,17 @@ function adicionarLinha() {
 }
 // FUNÇÕES
 </script>
-
+<style>
+.flip-list-move {
+  transition: transform 0.5s;
+}
+.ghost{
+  opacity: 0;
+}
+.ghost1{
+  background: rgba(0, 100, 231, 0.459) !important;
+}
+</style>
 <style lang="scss" scoped>
 .board {
   background: #b6b6b6c0;
@@ -368,7 +439,7 @@ function adicionarLinha() {
 }
 
 .nomeSubPagina {
-  background-color: black;
+  // background-color: black;
   border-radius: 15px 0px 0px 0px;
   padding: 12px;
 }

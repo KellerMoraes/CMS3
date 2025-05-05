@@ -45,6 +45,7 @@ function setupPanZoom() {
     minZoom: 0.2,
     initialX: -1012,
     initialY: -1100,
+    transformOrigin: {x: 0.5, y: 0.5},
     initialZoom: 0.7,
     bounds: false, // deixe false se quiser sair dos limites
     beforeWheel: (e) => !e.ctrlKey,
@@ -129,8 +130,8 @@ defineExpose({
 .inner-canvas {
   width: 5000px;
   height: 5000px;
-  transform-origin: 0 0;
+  /* transform-origin: 0 0;
   background-image: repeating-linear-gradient(0deg, #ccc 0, #ccc 2px, #ededed 3px, #efefef00 100px),
-                    repeating-linear-gradient(90deg, #ccc 0, #ccc 4px, #efefef00 5px, transparent 100px);
+                    repeating-linear-gradient(90deg, #ccc 0, #ccc 4px, #efefef00 5px, transparent 100px); */
 }
 </style>

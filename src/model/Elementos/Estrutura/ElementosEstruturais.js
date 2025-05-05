@@ -4,8 +4,8 @@ import { $cms } from '@/helpers/cmsProviderHelper';
 class Pagina extends ElementoBase {
   static criar(args) {
     // ARGS: NAME, IDDOMAIN, STARTDATE
-    const subpaginaInicial = SubPagina.criar();
-    const subpaginaInicial2 = SubPagina.criar();
+    const subpaginaInicial = SubPagina.criar("subpagina 1");
+    const subpaginaInicial2 = SubPagina.criar("subpagina 2");
     return {
       ...this.criarEstrutura({ 
         [$cms('type')]: 'pagina', 

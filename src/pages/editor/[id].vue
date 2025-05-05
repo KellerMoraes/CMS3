@@ -62,6 +62,9 @@ function enableTextSelection() {
   transition: 0.5s;
   background-color: #313131;position: relative;
 }
+.splitpanes.default-theme .splitpanes__pane{
+  background: var(--v-theme-surface);
+}
 .splitpanes.default-theme .splitpanes__splitter:hover:before, .splitpanes.default-theme .splitpanes__splitter:hover:after{
   background-color: white;
 }

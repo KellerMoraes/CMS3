@@ -1,34 +1,19 @@
 import { $cms } from '@/helpers/cmsProviderHelper';
-export function encontrarItemPorPath(dados, path) {
-  let atual = dados;
+export function findItemByPath(data, path) {
+  let current = data;
   
-  for (const etapa of path) {
-    const container = atual;
+  for (const pathStep of path) {
+    const container = current;
     if (!Array.isArray(container)) {
       throw new Error('Estrutura de filhos inválida no path');
     }
     
-    const proximo = container.find(item => item[$cms('id')] === etapa[$cms('id')]);
-    if (!proximo) {
-      throw new Error(`Item com ID ${etapa[$cms('id')]} não encontrado`);
+    const next = container.find(item => item[$cms('id')] === pathStep[$cms('id')]);
+    if (!next) {
+      throw new Error(`Item com ID ${pathStep[$cms('id')]} não encontrado`);
     }
     
-    atual = proximo;
+    current = next;
   }
-  
-  console.log(atual)
-  return atual;
-}
-
-export function setValueAtPath(obj, path, value) {
-  // console.log(value)
-  if (!path.length) return;
-
-  const lastKey = path[path.length - 1];
-  const target = path.slice(0, -1).reduce((acc, key) => {
-    if (!acc[key]) acc[key] = {}; // cria objeto se não existir
-    return acc[key];
-  }, obj);
-
-  target[lastKey] = value;
+  return current;
 }

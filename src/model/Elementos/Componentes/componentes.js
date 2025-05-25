@@ -2,7 +2,7 @@ import { ElementoBase } from '@/model/Base/BaseElemento';
 import { $cms } from '@/helpers/cmsProviderHelper';
 
 class Titulo extends ElementoBase {
-  static criar() {
+  static criar(args) {
     return {
       ...this.criarEstrutura({
         [$cms('type')]: 'texto',
@@ -10,7 +10,9 @@ class Titulo extends ElementoBase {
         [$cms('attrs')]: {
         },
       }),
-      [$cms('content')]: 'Título padrão'// aqui no nível do item, fora dos attrs
+      [$cms('content')]: 'Título padrão',// aqui no nível do item, fora dos attrs
+      [$cms('icon')]: args?.icon,
+      [$cms('group')]: args?.group,
     };
 }
 }

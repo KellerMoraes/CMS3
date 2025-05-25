@@ -14,28 +14,29 @@ export default class MoverElementoCommand {
   executar(dados) {
     // Se o movimento foi feito pelo usuário, desfazemos primeiro para registrar corretamente
     if (this.eventoNativo && !this.executado) {
-      const listaDestino = encontrarItemPorPath(dados, this.destino.path)[$cms('container')];
+      const listaDestino = encontrarItemPorPath(dados, this.destino.path)[$cms('subpages')];
       const item = listaDestino.splice(this.destino.index, 1)[0];
 
-      const listaOrigem = encontrarItemPorPath(dados, this.origem.path)[$cms('container')];
+      const listaOrigem = encontrarItemPorPath(dados, this.origem.path)[$cms('subpages')];
       listaOrigem.splice(this.origem.index, 0, item);
     }
 
     // Executa movimento de forma previsível
-    const listaOrigem = encontrarItemPorPath(dados, this.origem.path)[$cms('container')];
+    const listaOrigem = encontrarItemPorPath(dados, this.origem.path)[$cms('subpages')];
     const item = listaOrigem.splice(this.origem.index, 1)[0];
 
-    const listaDestino = encontrarItemPorPath(dados, this.destino.path)[$cms('container')];
+    const listaDestino = encontrarItemPorPath(dados, this.destino.path)[$cms('subpages')];
     listaDestino.splice(this.destino.index, 0, item);
 
     this.executado = true;
   }
 
   desfazer(dados) {
-    const listaDestino = encontrarItemPorPath(dados, this.destino.path)[$cms('container')];
+    const listaDestino = encontrarItemPorPath(dados, this.destino.path)[$cms('subpages')];
+    console.log(listaDestino)
     const item = listaDestino.splice(this.destino.index, 1)[0];
 
-    const listaOrigem = encontrarItemPorPath(dados, this.origem.path)[$cms('container')];
+    const listaOrigem = encontrarItemPorPath(dados, this.origem.path)[$cms('subpages')];
     listaOrigem.splice(this.origem.index, 0, item);
   }
 }

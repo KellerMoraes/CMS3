@@ -1,16 +1,17 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { usePaginaStore } from '@/stores/pagina'
+import { useEditorStore } from '@/stores/editor'
 
 export const useCommandStore = defineStore('command', () => {
-  const paginaStore = usePaginaStore()
+  const editorStore = useEditorStore()
 
   // Histórico de comandos executados
   const historico = ref([])
   const futuro = ref([])
   const comando = ref({})
 
-  function executar(comando, alvo = paginaStore.pagina) {
+  function executar(comando, alvo = editorStore.canvas.boards) {
     // Verifica se estamos usando um comando com a estrutura correta
     if (!comando || typeof comando.executar !== 'function') {
       console.error('Comando inválido', comando)
@@ -34,7 +35,7 @@ export const useCommandStore = defineStore('command', () => {
     limparComando()
   }
   
-  function desfazer(alvo = paginaStore.pagina) {
+  function desfazer(alvo = editorStore.canvas.boards) {
     const comandoDesfazer = historico.value.pop()
     if (comandoDesfazer && typeof comandoDesfazer.desfazer === 'function') {
       comandoDesfazer.desfazer(alvo)
@@ -43,7 +44,7 @@ export const useCommandStore = defineStore('command', () => {
     }
   }
   
-  function refazer(alvo = paginaStore.pagina) {
+  function refazer(alvo = editorStore.canvas.boards) {
     const comandoRefazer = futuro.value.pop()
     if (comandoRefazer && typeof comandoRefazer.executar === 'function') {
       comandoRefazer.executar(alvo)

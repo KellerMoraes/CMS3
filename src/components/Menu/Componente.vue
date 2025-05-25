@@ -30,7 +30,37 @@
           </v-icon>
           
         </v-btn>
-    </v-sheet>
+        <v-dialog max-width="900">
+  <template v-slot:activator="{ props: activatorProps }">
+    <v-btn v-bind="activatorProps" style="position: absolute; bottom: 9%;" class="mr-1" rounded :variant="'text'" size="38"  >
+      <v-icon size="24">
+        mdi-cog
+      </v-icon>
+    </v-btn>
+  </template>
+  <template v-slot:default="{ isActive }">
+    <v-app-bar style="left: 0; width: 100%;">
+      <v-app-bar-title>
+        Configurações
+      </v-app-bar-title>
+      <template v-slot:append>
+          <v-btn icon="mdi-close" @click="isActive.value = false"></v-btn>
+        </template>
+    </v-app-bar>
+    <!-- <v-card>
+      <v-card-title class="pr-5 pl-3  pt-5 pb-1">
+            </v-card-title>
+            <v-card-subtitle class="pr-5 pl-4  py-2" style="font-size: 24px; font-family: Poppins;">
+  
+    </v-card-subtitle>
+    <v-card-text class="pa-5 pl-2 pt-0"> -->
+
+      <ConfigSystemEditor></ConfigSystemEditor>
+    <!-- </v-card-text>
+    </v-card> -->
+  </template>
+</v-dialog>
+      </v-sheet>
   </v-navigation-drawer>
   <!-- MENU DOS COMPONENTES -->
   <!-- COMPONENTES DO MENU SELECIONADO -->
@@ -38,7 +68,7 @@
   style="top: 65px; "
     :width="xlAndUp ? 300 : 180"
     permanent
-    
+    :class="{elementCreateDrag: draggingElement}"
     v-model="editorStore.recursoSelecionado"
     
   >
@@ -78,8 +108,10 @@
     :list="elemento.Componentes"
     class="listaDeComponentes v-sheet d-flex flex-wrap ma-2"
     tag="div"
+    :move="onMove"
     :clone="clonar"
-    @update="test"
+    @start="startDrag"
+    @end="endDrag"
     :sort="false"
 
     :item-key="idKey"
@@ -119,25 +151,39 @@ import { useEditorStore } from '@/stores/editor.js';
 import _ from 'lodash'
 import { Recursos } from "@/model/Recursos";
 import { criarElemento } from "@/model/Elementos";
+import { useUserConfigStore } from '@/stores/userConfigs';
 // VARIAVEIS TEMPLATE
 import useCms from '@/composables/useCms';
+import ConfigSystemEditor from "../System/ConfigSystemEditor.vue";
+const userConfigsStore = useUserConfigStore()
 const $cms = useCms();
 const idKey = $cms('id')
 // VARIAVEIS TEMPLATE
 let editorStore = useEditorStore()
 const { xlAndUp } = useDisplay()
 let drawer = ref(true)
+let draggingElement = ref(false)
 let recursos = Recursos
 
 function fecharComponentes() {
   editorStore.recursoSelecionado = false
 }
 function clonar(item) {
-  return criarElemento(item.nome)
+  return criarElemento(item.tipo,{icon: item.icone , group: item.grupo})
   
 }
-function test(e) {
-  console.log(e)
+function onMove(evt) {
+  if(evt.to.classList.contains('quickAcessGroup') && userConfigsStore.quickAcessElements.find((item)=>{return item.nome == evt.draggedContext.element.nome})){
+        return false
+    }
+  
+
+}
+function startDrag(e) {
+  draggingElement.value = true
+}
+function endDrag(e) {
+  draggingElement.value = false
 }
 function selecionar(recurso) {
   editorStore.selecionarRecurso(recurso)
@@ -156,6 +202,10 @@ function selecionar(recurso) {
   }
 .listaDeComponentes .v-card * :not(.v-icon) {
   font-size: 14px !important;
+}
+.elementCreateDrag{
+  opacity: 0.1;
+  pointer-events: none;
 }
 .titulo{
   font-family: "Inter", sans-serif;

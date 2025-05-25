@@ -1,5 +1,6 @@
 import { ElementoBase } from '@/model/Base/BaseElemento';
 import { $cms } from '@/helpers/cmsProviderHelper';
+import { gerarId } from '@/helpers/gerarId';
 
 class Pagina extends ElementoBase {
   static criar(args) {
@@ -32,21 +33,32 @@ class Pagina extends ElementoBase {
     return novaSub;
   }
 }
+class Board {
+static criar({ posicao = { x: 1800, y: 1800 }, subpaginas = [], subpaginaAtiva = 0 } = {}) {
+  return {
+    [$cms('id')]: `board-${gerarId()}`,
+    posicao,
+    subpaginas,
+    subpaginaAtiva,
+  };
+}
+
+}
 
 class Linha extends ElementoBase {
-  static criar(componente = null) {
+  static criar(args) {
     // Cria a coluna (sem filhos inicialmente)
     const coluna = Coluna.criar();
 
     // Se um componente for fornecido, adiciona à coluna
-    if (componente) {
-      coluna[$cms('container')].push(componente);
+    if (args?.component) {
+      coluna[$cms('container')].push(args?.component);
     }
 
     // Cria a estrutura da linha com a coluna
     return {
       ...this.criarEstrutura({
-        [$cms('type')]: 'linha',
+        [$cms('type')]: 'Linha',
         [$cms('name')]: 'Linha',  // A linha sempre terá ao menos uma coluna
         [$cms('container')]: [coluna],  // A linha sempre terá ao menos uma coluna
         [$cms('attrs')]: {
@@ -54,7 +66,9 @@ class Linha extends ElementoBase {
           [$cms('bgStyle')]: 'Cor sólida',
         },
       }),
-    [$cms('structure')]: [12]
+      [$cms('icon')]: args?.icon,
+      [$cms('group')]: args?.group,
+      [$cms('structure')]: [12]
   }
 }
 }
@@ -62,7 +76,7 @@ class Linha extends ElementoBase {
 class Coluna extends ElementoBase {
   static criar() {
     return this.criarEstrutura({
-      [$cms('type')]: 'coluna',
+      [$cms('type')]: 'Coluna',
       [$cms('name')]: 'Coluna',
       [$cms('attrs')]: {
         [$cms('style')]: { 'background': '#ffffff' },
@@ -73,11 +87,11 @@ class Coluna extends ElementoBase {
 }
 
 class SubPagina extends ElementoBase {
-  static criar(name = "Subpágina") {
+  static criar(args) {
     return this.criarEstrutura({
-      [$cms('type')]: 'subpagina',
+      [$cms('type')]: 'Subpagina',
       [$cms('container')]: [],
-      [$cms('name')]: name,
+      [$cms('name')]: args?.name ?? "Subpágina",
       [$cms('attrs')]: {
         [$cms('visibility')]: { [$cms('name')]: 'display', [$cms('value')]: 'block', [$cms('extension')]: null },
         [$cms('image')]: { [$cms('show')]: false, [$cms('desktop')]: '', [$cms('mobile')]: '', [$cms('imagePosition')]: '' },
@@ -91,5 +105,6 @@ export const Elementos = {
   SubPagina,
   Linha,
   Coluna,
+  Board
 //   Celula,
 };

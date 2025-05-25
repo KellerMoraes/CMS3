@@ -11,13 +11,13 @@ export const usePaginaStore = defineStore('pagina', () => {
   
   MudarSubPaginaAtiva(0)
   
-  const boards = ref([{
-    nome: pagina.value[$cms('container')][0][$cms('name')], 
-    id: pagina.value[$cms('container')][0][$cms('id')], 
-    posicao: { x: 1800, y: 1800 }, 
-    subpaginas: pagina.value[$cms('container')], 
-    subpaginaAtiva: 0
-  }])
+  // const boards = ref([{
+  //   nome: pagina.value[$cms('container')][0][$cms('name')], 
+  //   id: pagina.value[$cms('container')][0][$cms('id')], 
+  //   posicao: { x: 1800, y: 1800 }, 
+  //   subpaginas: pagina.value[$cms('container')], 
+  //   subpaginaAtiva: 0
+  // }])
 
   function MudarSubPaginaAtiva(index) {
     subpaginaAtiva.value = pagina.value[$cms('container')][index]
@@ -131,7 +131,6 @@ export const usePaginaStore = defineStore('pagina', () => {
       
   return {
     pagina,
-    boards, 
     subpaginaAtiva, 
     paginaAtual,
     deletarLinha,

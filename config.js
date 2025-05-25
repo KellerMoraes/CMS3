@@ -6,6 +6,7 @@ const properties = {
   type: 'tipo',
   attrs: 'atributos',
   container: 'filhos',
+  subpages: 'subpaginas',
   meta: 'meta',
   class: 'classe',
   icon: 'icone',

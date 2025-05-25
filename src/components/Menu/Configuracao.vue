@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div style="padding-top: 65px; overflow: auto;">
+  <div style="overflow: auto;">
     <v-layout style="height: calc(100vh - 65px); overflow-y: auto">
       <v-app-bar class="px-4"
         :color="ferramentaStore.corSelecionada"

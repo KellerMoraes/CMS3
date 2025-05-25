@@ -28,7 +28,6 @@
 </template>
 <script setup>
 import { useEditorStore } from '@/stores/editor.js';
-import { defineModel,ref } from 'vue';
 import useCms from '@/composables/useCms';
 // VARIAVEIS TEMPLATE
 const $cms = useCms();

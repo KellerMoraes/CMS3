@@ -11,5 +11,5 @@ export function criarElemento(tipo, args) {
   if (!classe || typeof classe.criar !== 'function') {
     throw new Error(`Tipo de elemento "${tipo}" não é válido.`);
   }
-  return classe.criar(args);
+  return classe.criar(args); 
 }

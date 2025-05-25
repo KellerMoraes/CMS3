@@ -11,7 +11,6 @@
   import { useFerramentaStore } from '@/stores/ferramenta';
   const ferramentaStore = useFerramentaStore()
 
-  import { defineModel,ref } from 'vue';
   let dados = defineModel()
   
   let NomeCampo = "Nome"

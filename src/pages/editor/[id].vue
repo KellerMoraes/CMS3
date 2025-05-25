@@ -4,39 +4,53 @@
    >
    <Ferramentas />
  </v-toolbar>
-   <div>
-     
-     <MenuComponente />
-    </div>
-  <Splitpanes @resize="disableTextSelection" @splitter-dblclick="tamanhoBarraConfig = tamanhoMaximoBarraConfig" @resized="enableTextSelection" :class="{'default-theme': true, 'telasDivisao': true, 'hovering-config': isHoveringConfig}">
-    <Pane min-size="70" size="75" max-size="80">
-      <BaseCanvas></BaseCanvas>
-      <!-- Conteúdo principal -->
+ <div>
+   
+   <MenuComponente />
+  </div>
+  <Splitpanes  @resize="disableTextSelection($event, 'horizontal')" @resized="enableTextSelection" :push-other-panes="true" horizontal style="position: absolute;" :class="{'default-theme': true, 'telasDivisao': true}" >
+    <Pane :size="userConfigsStore.quickAcessBarSize" max-size="30" style="position: relative;" min-size="7">
+      <BaseQuickAcessComponents></BaseQuickAcessComponents>
     </Pane>
-    <Pane min-size="20" :size="tamanhoBarraConfig" :max-size="tamanhoMaximoBarraConfig">
-      <MenuConfiguracao  />
-      <!-- Seu painel configurador -->
+    <Pane :size="100 - userConfigsStore.quickAcessBarSize" min-size="70" max-size="93">
+      <Splitpanes @resize="disableTextSelection($event, 'vertical')" @splitter-dblclick="userConfigsStore.configBarSize = maxConfigBarSize" @resized="enableTextSelection" :class="{'default-theme': true, 'telasDivisao': true}">
+        <Pane min-size="70" :size="100 - userConfigsStore.configBarSize" max-size="80">
+          <BaseCanvas></BaseCanvas>
+          <!-- Conteúdo principal -->
+        </Pane>
+        <Pane min-size="20" style="z-index: 500" :size="userConfigsStore.configBarSize" :max-size="maxConfigBarSize">
+          <MenuConfiguracao  />
+          <!-- Seu painel configurador -->
+        </Pane>
+      </Splitpanes>
     </Pane>
   </Splitpanes>
 
  </template>
  
  <script setup>
- import { usePaginaStore } from '@/stores/pagina.js';
+ import { useUserConfigStore } from '@/stores/userConfigs.js';
 import useCms from '@/composables/useCms';
 import { Splitpanes, Pane } from 'splitpanes'
 import 'splitpanes/dist/splitpanes.css'
 
+// ARRUMAR O DUPLO CLIQUE PARA DIMINUIR A BARRA MAS TAMBÉM CONTABILIZAR OS VALORES DA STORE
 
 // VARIAVEIS TEMPLATE
 const $cms = useCms();
 // const idKey = $cms('id')
-const tamanhoMaximoBarraConfig = ref(30)
-const tamanhoBarraConfig = ref(25)
+const maxConfigBarSize = ref(30)
+// const tamanhoBarraConfig = ref(25)
 
- let paginaStore = usePaginaStore();
- function disableTextSelection() {
+ let userConfigsStore = useUserConfigStore();
+ function disableTextSelection(e,direction) {
   document.body.style.userSelect = 'none';
+  if(direction == 'vertical'){
+    userConfigsStore.configBarSize = e.nextPane.size
+  return
+  }
+  userConfigsStore.quickAcessBarSize = e.prevPane.size
+  // console.log(e)
 }
 
 function enableTextSelection() {
@@ -47,26 +61,68 @@ function enableTextSelection() {
  </script>
  <style lang="scss">
 /* .default-theme.splitpanes__splitter {background-color: #ccc;position: relative;} */
-.splitpanes.default-theme .splitpanes__splitter:before, .splitpanes.default-theme .splitpanes__splitter:after{
-  background-color: rgb(194, 194, 194);
-}
-.splitpanes.default-theme .splitpanes__splitter{
-  transition: 0.5s;
-  background-color: white;position: relative;
-}
-.default-theme.splitpanes--vertical>.splitpanes__splitter, .default-theme .splitpanes--vertical>.splitpanes__splitter{
-  width: 10px;
-  border-left: none;
-}
-.splitpanes.default-theme .splitpanes__splitter:hover{
-  transition: 0.5s;
-  background-color: #313131;position: relative;
-}
 .splitpanes.default-theme .splitpanes__pane{
   background: var(--v-theme-surface);
 }
-.splitpanes.default-theme .splitpanes__splitter:hover:before, .splitpanes.default-theme .splitpanes__splitter:hover:after{
-  background-color: white;
+.default-theme.splitpanes--horizontal>.splitpanes__splitter, .default-theme .splitpanes--horizontal>.splitpanes__splitter{
+  // largura redimensionador
+  // width: 10px;
+  height: 12px;
+  border-top: none;
+}
+.default-theme.splitpanes--vertical>.splitpanes__splitter, .default-theme .splitpanes--vertical>.splitpanes__splitter{
+  // largura redimensionador
+  width: 10px;
+  border-left: none;
+}
+.v-theme--light{
+  .splitpanes.default-theme .splitpanes__splitter{
+    // cor redimensionador
+    transition: 0.5s;
+    background-color: #9c9c9c;
+    position: relative;
+  }
+  .splitpanes.default-theme .splitpanes__splitter:hover{
+    // cor redimensionador hover
+    transition: 0.5s;
+    background-color: rgb(70, 70, 70);
+    position: relative;
+  }
+  .splitpanes.default-theme .splitpanes__splitter:before, .splitpanes.default-theme .splitpanes__splitter:after{
+    // cor mini linhas dentro do redimensionador
+    background-color: rgb(219, 219, 219);
+  }
+  .splitpanes.default-theme .splitpanes__splitter:hover:before, .splitpanes.default-theme .splitpanes__splitter:hover:after{
+    // cor mini linhas dentro do redimensionador hover
+    background-color: rgb(255, 255, 255);
+  }
+  
+}
+.v-theme--dark{
+  .splitpanes.default-theme .splitpanes__splitter{
+    // cor redimensionador
+    transition: 0.5s;
+    background-color: rgb(88, 88, 88);
+    position: relative;
+  }
+  .splitpanes.default-theme .splitpanes__splitter:hover{
+    // cor redimensionador hover
+    transition: 0.5s;
+    background-color: #e9e9e9;
+    position: relative;
+  }
+  .splitpanes.default-theme .splitpanes__splitter:before, .splitpanes.default-theme .splitpanes__splitter:after{
+    // cor mini linhas dentro do redimensionador
+    background-color: rgb(194, 194, 194);
+  }
+  .splitpanes.default-theme .splitpanes__splitter:hover:before, .splitpanes.default-theme .splitpanes__splitter:hover:after{
+    // cor mini linhas dentro do redimensionador hover
+    background-color: rgb(56, 56, 56);
+  }
+  
+}
+.splitpanes {
+  z-index: 500;
 }
     </style>
  
@@ -78,6 +134,9 @@ function enableTextSelection() {
    height: 100%;
    width: 100%;
  }
+//  .telasDivisao{
+//   height: calc(95vh - 100px);
+//  }
  
  .abas{
   width: 100%;
@@ -103,10 +162,6 @@ function enableTextSelection() {
  .panOn:hover{
    cursor: grab;
  
- }
- .highlight{
-  background: rgba(60, 122, 255, 0.699) ;
-  transition: 0.3s;
  }
  
  </style>

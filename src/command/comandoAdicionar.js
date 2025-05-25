@@ -14,7 +14,7 @@ export default class AdicionarElementoCommand {
   executar(dados) {
     if (this.eventoNativo) return;
 
-    const listaDestino = encontrarItemPorPath(dados, this.destino.path)[$cms('container')];
+    const listaDestino = encontrarItemPorPath(dados, this.destino.path)[$cms('subpages')];
 
     if (this.destino.index === null || this.destino.index > listaDestino.length) {
       listaDestino.push(this.elemento);
@@ -24,8 +24,10 @@ export default class AdicionarElementoCommand {
   }
 
   desfazer(dados) {
-    const listaDestino = encontrarItemPorPath(dados, this.destino.path)[$cms('container')];
+    console.log(dados)
+    const listaDestino = encontrarItemPorPath(dados, this.destino.path)[$cms('subpages')];
     const index = listaDestino.findIndex(e => e[$cms('id')] === this.elemento[$cms('id')]);
+    console.log(index)
     if (index !== -1) listaDestino.splice(index, 1);
   }
 }

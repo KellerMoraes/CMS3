@@ -25,14 +25,22 @@ export const useFerramentaStore = defineStore('ferramenta', () => {
   function selecionarComponente(componente, path) {
     selecionarItem(componente, path, 'Componente', 'purple');
   }
+  function selecionarBoard(board) {
+    selecionarItem(board, null, 'Board', '#ce0224');
+  }
+  function removerSelecao() {
+    selecionarItem(null, null, null, null);
+  }
 
   return {
     itemSelecionado,
     pathSelecionado,
     tipoSelecionado,
     corSelecionada,
+    selecionarBoard,
     selecionarLinha,
     selecionarColuna,
     selecionarComponente,
+    removerSelecao
   };
 });

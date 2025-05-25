@@ -21,7 +21,6 @@
   </BaseComponenteItem>
 </template>
 <script setup>
-import { defineModel,ref } from 'vue';
 import { useFerramentaStore } from '@/stores/ferramenta';
 import Draggable from "vuedraggable";
 

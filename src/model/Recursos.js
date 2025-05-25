@@ -9,6 +9,8 @@ Estruturais.adicionarGrupo("Genéricos","linhas", //Componentes
     [
         {
             [$cms("name")]: "Linha",
+            [$cms("group")]: "linhas",
+            [$cms("type")]: "Linha",
             [$cms("id")]: "linha-",
             [$cms("icon")]: 'mdi-view-sequential',
         },
@@ -18,6 +20,8 @@ Estruturais.adicionarGrupo("Genéricos","colunas", //Componentes
     [
         {
             [$cms("name")]: "Coluna",
+            [$cms("group")]: "colunas",
+            [$cms("type")]: "Coluna",
             [$cms("id")]: "coluna-",
             [$cms("icon")]: 'mdi-view-column',
         },
@@ -27,11 +31,15 @@ const Componentes = new RecursoBase("Componentes","componentes","Componentes", "
 Componentes.adicionarGrupo("Textos","componentes", //Componentes
     [
         {
+            [$cms("group")]: "componentes",
             [$cms("name")]: "Titulo",
+            [$cms("type")]: "Titulo",
             [$cms("id")]: "h1-",
             [$cms("icon")]: 'mdi-format-title'
         },
         {
+            [$cms("group")]: "componentes",
+            [$cms("type")]: "Paragrafo",
             [$cms("name")]: "Parágrafo",
             [$cms("id")]: "p-",
             [$cms("icon")]: 'mdi-format-paragraph'
@@ -42,7 +50,9 @@ const Agrupamentos = new RecursoBase("Agrupamentos","componentes","Agrupamentos"
 Agrupamentos.adicionarGrupo("Cards","componentes", //Componentes
     [
         {
+            [$cms("group")]: "componentes",
             [$cms("name")]: "Card",
+            [$cms("type")]: "Card",
             [$cms("id")]: "card-",
             [$cms("icon")]: 'mdi-card-text'
         },
@@ -53,11 +63,15 @@ Formularios.adicionarGrupo("Campos","componentes", //Componentes
     [
         {
             [$cms("name")]: "Campo",
+            [$cms("group")]: "componentes",
+            [$cms("type")]: "Campo",
             [$cms("id")]: "Campo-",
             [$cms("icon")]: 'mdi-form-textbox'
         },
         {
             [$cms("name")]: "Selecionavel",
+            [$cms("group")]: "componentes",
+            [$cms("type")]: "Selecionavel",
             [$cms("id")]: "Selecionavel-",
             [$cms("icon")]: 'mdi-radiobox-marked'
         },
@@ -66,6 +80,8 @@ Formularios.adicionarGrupo("Campos","componentes", //Componentes
 Formularios.adicionarGrupo("Formulários","linhas", //Componentes
     [
         {
+            [$cms("type")]: "Formulario",
+            [$cms("group")]: "linhas",
             [$cms("name")]: "Formulario",
             [$cms("id")]: "Formulario-",
             [$cms("icon")]: 'mdi-list-box-outline'

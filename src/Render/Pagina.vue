@@ -1,15 +1,14 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
         <!-- Linhas -->
-             <component v-for="Linha in Linhas" :key="Linha[this._cmsProps.id]" :is="componenteNome(Linha.nome)" :dados="Linha" ></component>
+             <component v-for="Linha in model[$cms('container')][0][$cms('container')]" :key="Linha[$cms('id')]" :is="componenteNome(Linha[$cms('name')])" :dados="Linha" ></component>
             
     </template>
     
     <script setup>
-   import { usePaginaStore } from "@/stores/pagina";
-const paginaStore = usePaginaStore()
-let Linhas = paginaStore.pagina.filhos[0].filhos
-function componenteNome(nome){return defineAsyncComponent(() => import(`./${nome}.vue`))}
+   import { $cms } from '@/helpers/cmsProviderHelper';
+   const model = defineModel();
+function componenteNome(name){return defineAsyncComponent(() => import(`./${name}.vue`))}
     
     </script>
     <style>

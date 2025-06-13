@@ -7,7 +7,6 @@
     ></v-text-field>
 </template>
 <script setup>
-import { defineModel,ref } from 'vue';
 import { vMaska } from "maska/vue"
 
 const props = defineProps(['dados'])

@@ -2,9 +2,9 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div 
-    @click.self.exact="dados ? selecionarComponente() : ''"  
-    :style="dados ? ferramentaStore.itemSelecionado[_cmsProps.id] == dados[_cmsProps.id] ? 'border: 4px pink solid; border-top: 12px pink solid' : '' : ''"  
-    class="componente-item"
+    @click.self.exact="dados ? selecionarComponente() : ''"    
+    @click="dados ? selecionarComponente() : ''"    
+    :class="{componenteItem: true, ativo: ferramentaStore.itemSelecionado?.[idKey] === dados[idKey]}"
   >
     <slot name="edicao" />
   </div>
@@ -13,9 +13,14 @@
 <script setup>
 import { useFerramentaStore } from '@/stores/ferramenta.js';
 import { defineModel} from 'vue';
+import useCms from '@/composables/useCms';
 let dados = defineModel()
 // let visibilidade = desabilitado == true ? "componente-desabilitado" : ""
 const ferramentaStore = useFerramentaStore()
+// VARIAVEIS TEMPLATE
+const $cms = useCms();
+const idKey = $cms('id')
+// VARIAVEIS TEMPLATE
   function selecionarComponente() {
     ferramentaStore.selecionarComponente(dados.value)
   }

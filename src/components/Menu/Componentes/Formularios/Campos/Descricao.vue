@@ -8,7 +8,6 @@
 </template>
 <script setup>
 import { useFerramentaStore } from '@/stores/ferramenta';
-import { defineModel,ref } from 'vue';
 const ferramentaStore = useFerramentaStore()
 
 let dados = defineModel()

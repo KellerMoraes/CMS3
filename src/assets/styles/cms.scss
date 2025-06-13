@@ -358,17 +358,20 @@ input[type="color"] {
   border-top: 15px transparent solid;
   flex: 1 0;
 
-  &:not(:last-child) {
-    margin-right: 4px;
+  &:not(:first-child) {
+    box-shadow: -3px 0px 1px #b3b3b3;
 
   }
 
-  &.ativa {
-    border: 4px #2196f3 solid
+  &.ativo {
+    border: 2px #0277C6 solid;
+    border-top: 15px #0277C6 solid;
   }
-
-  // border-style: inset;
-  // transition: 0.35s ; 
+  &:hover {
+    // transition: 0.35s; 
+    border: 2px #0277C6 solid;
+    border-top: 15px #0277C6 solid;
+  }
 
 }
 
@@ -381,24 +384,23 @@ input[type="color"] {
   margin: 0;
 }
 
-.coluna:hover {
-  // transition: 0.35s; 
-  border: 2px #0277C6 solid;
-  border-top: 15px #0277C6 solid;
-}
 
-.componente-item {
+.componenteItem {
   border: 4px transparent solid;
   border-top: 12px transparent solid;
   padding: 2px;
   margin: 4px;
   border-radius: 5px;
+  &:hover{
+      border: 4px pink solid !important;
+      border-top: 12px pink solid !important;
+  }
+  &.ativo{
+    border: 4px pink solid; 
+    border-top: 12px pink solid;
+  }
 }
 
-.componente-item:hover {
-  border: 4px pink solid !important;
-  border-top: 12px pink solid !important;
-}
 
 
 .border {

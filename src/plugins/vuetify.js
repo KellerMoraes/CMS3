@@ -7,7 +7,7 @@
 // Styles
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
-
+import { pt } from 'vuetify/locale'
 // Composables
 import { createVuetify } from 'vuetify'
 // import AlignBaselineDark from '@/icons/AlignBaselineDark.vue'
@@ -46,12 +46,12 @@ export default createVuetify({
       xxl: 1960,
     },
   },
-  theme: {
-    defaultTheme: 'light'
-  },
   icons: {
     aliases: {
       ...aliasesCustom
   },
-  }
+  },
+  locale: {
+    messages: { pt },
+  },
 })

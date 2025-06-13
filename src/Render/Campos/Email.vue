@@ -7,7 +7,6 @@
     ></v-text-field>
 </template>
 <script setup>
-import { defineModel,ref } from 'vue';
 
 const props = defineProps(['dados'])
 const infoModel = defineModel()

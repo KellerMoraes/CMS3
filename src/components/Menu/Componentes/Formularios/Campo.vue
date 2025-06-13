@@ -10,7 +10,6 @@
     </BaseComponenteItem>
   </template>
   <script setup>
-  import { defineModel,ref } from 'vue';
 import { useFerramentaStore } from '@/stores/ferramenta';
   const ferramentaStore = useFerramentaStore()
   let dados = defineModel()

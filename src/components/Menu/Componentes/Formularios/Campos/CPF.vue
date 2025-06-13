@@ -9,7 +9,6 @@
 </template>
 <script setup>
 import { useFerramentaStore } from '@/stores/ferramenta';
-import { defineModel,ref } from 'vue';
 import { vMaska } from "maska/vue"
 const ferramentaStore = useFerramentaStore()
 

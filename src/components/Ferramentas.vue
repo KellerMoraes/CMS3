@@ -13,7 +13,7 @@
     title="Pagina Teste and ceta and ceta"
     >
   <template #append>
-    <v-btn icon="mdi-cog" variant="text" @click="ferramentaStore.selecionarCabecalho()"></v-btn>
+    <!-- <v-btn icon="mdi-cog" variant="text" @click="ferramentaStore.selecionarCabecalho()"></v-btn> -->
   </template></v-list-item>
   </div>
   <v-divider vertical inset ></v-divider>
@@ -21,7 +21,19 @@
     Teste
   </div>
   <div class="d-flex justify-end align-center mr-8">
-    <v-btn color="#003d7c" style="border-radius: 5px;" class="px-3"  variant="flat"  height="45px" size="">
+    <v-btn @click="teste" color="white" style="border-radius: 5px;" class="px-4"  variant="flat"  height="45px" size="">
+      <v-icon class="mr-2">
+        mdi-arrow-left
+      </v-icon>
+      undo/redo cet
+    </v-btn>
+    <v-btn @click="exportar" color="white" style="border-radius: 5px;" class="px-4"  variant="flat"  height="45px" size="">
+      <v-icon class="mr-2">
+        mdi-export
+      </v-icon>
+      Exportar
+    </v-btn>
+    <v-btn color="#003d7c" @click="salvar" style="border-radius: 5px;" class="px-3"  variant="flat"  height="45px" size="">
       <v-icon class="mr-2">
         mdi-content-save
       </v-icon>
@@ -33,7 +45,7 @@
       </v-icon>
       Publicar
     </v-btn>
-    <v-btn color="primary"  variant="flat" size="" style="border-radius: 5px;" height="45px" class="px-2" to="/editor/visualizacao">
+    <v-btn color="primary"  variant="flat" size="" style="border-radius: 5px;" height="45px" class="px-2" target="_blank" to="/editor/visualizacao">
       <v-icon class="mr-2">
         mdi-play
       </v-icon>
@@ -45,24 +57,41 @@
 </template>
 <script setup>
 import { useFerramentaStore } from '@/stores/ferramenta.js';
-import { storeToRefs } from 'pinia';
+import { usePaginaStore } from '@/stores/pagina.js';
+import { useCommandStore } from '@/stores/command.js';
+import channel from '@/helpers/broadCast';
 let ferramentaStore = useFerramentaStore()
-const { selecionarCabecalho } = storeToRefs(ferramentaStore)
-
+const commandStore = useCommandStore()
+function teste() {
+commandStore.desfazer()
+}
+let paginaStore = usePaginaStore()
 const botoesLinha = [
-        { nome: "Colar coluna", icone: "mdi-clipboard-file-outline"},
-        { nome: `Copiar linha`, icone: "mdi-content-copy"},
-        { nome: "Excluir", icone: "mdi-delete" },
-      ]
+  { nome: "Colar coluna", icone: "mdi-clipboard-file-outline"},
+  { nome: `Copiar linha`, icone: "mdi-content-copy"},
+  { nome: "Excluir", icone: "mdi-delete" },
+]
 const botoesColuna = [
-        { nome: "Colar componente", icone: "mdi-clipboard-file-outline"},
-        { nome: `Copiar coluna`, icone: "mdi-content-copy" },
-        { nome: "Excluir", icone: "mdi-delete" },
-      ]
-      function salvar() {
-        console.log(this.ferramentaStore.itemSelecionado)
-      }
+  { nome: "Colar componente", icone: "mdi-clipboard-file-outline"},
+  { nome: `Copiar coluna`, icone: "mdi-content-copy" },
+  { nome: "Excluir", icone: "mdi-delete" },
+]
+function salvar() {
+  channel.postMessage({
+    tipo: 'atualizar-pagina',
+    payload: JSON.stringify(paginaStore.pagina),
+  });
+}
 
+function exportar(){
+  console.log(paginaStore.pagina)
+ let anchor = document.createElement("a")
+anchor.href = `data:text/json;charset=utf-8,${encodeURIComponent(
+  JSON.stringify(paginaStore.pagina)
+  )}`
+anchor.download = paginaStore.pagina.nomePagina + ".json"
+anchor.click()
+}
 </script>
 <style scoped>
 .itensMenu{

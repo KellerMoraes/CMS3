@@ -1,28 +1,24 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <v-row :style="geraEstilos()">
-    <component v-for="dado in dados.filhos" :key="dado[this._cmsProps.id]" :is="componenteNome(dado.nome)" v-model="infoModel" :dados="dado" ></component>
+    <component v-for="dado in dados[$cms('container')]" :key="dado[$cms('id')]" :is="componenteNome(dado[$cms('name')])" v-model="infoModel" :dados="dado" ></component>
   </v-row>
   </template>
   
   <script setup>
+  import { $cms } from '@/helpers/cmsProviderHelper';
   const props = defineProps(['dados'])
   const infoModel = defineModel()
-  onMounted(()=>{
-    console.log(import.meta.env.V_ID)
-
-  })
     function geraEstilos() {
       let dados = props.dados
-      let atributos = dados.atributos
       let estiloCSS = '';
-        for (let indexEstilo in atributos.estilo) {
-              estiloCSS += `${indexEstilo}: ${typeof atributos.estilo[indexEstilo] == 'number' ? atributos.estilo[indexEstilo] + 'px' : atributos.estilo[indexEstilo] }; `;
+        for (let indexEstilo in dados[$cms('attrs')][$cms('style')]) {
+              estiloCSS += `${indexEstilo}: ${typeof dados[$cms('attrs')][$cms('style')][indexEstilo] == 'number' ? dados[$cms('attrs')][$cms('style')][indexEstilo] + 'px' : dados[$cms('attrs')][$cms('style')][indexEstilo] }; `;
         }
         return estiloCSS;
       
       }
-      function componenteNome(nome){return defineAsyncComponent(() => import(`./${nome}.vue`))}
+      function componenteNome(name){return defineAsyncComponent(() => import(`./${name}.vue`))}
   </script>
   <style>
   </style>

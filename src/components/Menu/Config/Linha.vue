@@ -21,7 +21,7 @@
                   cols="12"
                   md="4"
                   class="pa-0"
-                  @click="colunagem(coluna.colunagem.opcao,coluna.colunagem.colunas)"
+                  @click="mudarColunagem(coluna.colunagem)"
                 >
                   <v-item v-slot="{ isSelected, toggle }">
                     <v-card
@@ -158,10 +158,14 @@
 </template>
 <script setup>
 import { useFerramentaStore } from '@/stores/ferramenta.js';
-import { reactive } from 'vue'
+import { reactive,nextTick } from 'vue'
 import { useTheme } from 'vuetify'
 import { VNumberInput } from 'vuetify/labs/VNumberInput'
-
+import { itemEdited } from '@/command/command'; // seu novo itemEdited
+import { criarElemento } from '@/model/Elementos';
+import { $cms } from '@/helpers/cmsProviderHelper';
+import AdicionarElementoCommand from '@/command/comandoAdicionar';
+import RemoverElementoCommand from '@/command/comandoRemover';
 const theme = useTheme()
 let panel = reactive([1, 2, 3])
 let ferramentaStore = useFerramentaStore()
@@ -173,19 +177,74 @@ let swatches = [
 ]
 let colunas = [
     
-      { nome: "6:6", icone: "Colunagem6x6", colunagem: {opcao: [6,6], colunas:2} },
-      { nome: "4:4:4", icone: "Colunagem4x4x4", colunagem: {opcao: [4,4,4], colunas:3} },
-      { nome: "3:3:3:3", icone: "Colunagem3x3x3x3", colunagem: {opcao: [3,3,3,3], colunas:4} },
-  { nome: "4:8", icone: "Colunagem4x8", colunagem: {opcao: [4,8], colunas:2}},
-      { nome: "8:4", icone: "Colunagem4x8", classe: "fh" ,  colunagem: {opcao: [8,4], colunas:2} },
-      { nome: "3:6:3", icone: "Colunagem3x6x3", colunagem: {opcao: [3,6,3], colunas:3} },
-      { nome: "2:4:6", icone: "Colunagem2x4x6", colunagem: {opcao: [2,4,6], colunas:3} },
-      { nome: "6:4:2", icone: "Colunagem2x4x6", classe: "fh" , colunagem: {opcao: [6,4,2], colunas:3} },
-      { nome: "Livre", icone: "ColunagemCustom", colunagem: {opcao: [3,4,3], colunas:3} },
+      { nome: "6:6", icone: "Colunagem6x6", colunagem: [6,6] },
+      { nome: "4:4:4", icone: "Colunagem4x4x4", colunagem: [4,4,4] },
+      { nome: "3:3:3:3", icone: "Colunagem3x3x3x3", colunagem: [3,3,3,3] },
+  { nome: "4:8", icone: "Colunagem4x8", colunagem: [4,8]},
+      { nome: "8:4", icone: "Colunagem4x8", classe: "fh" ,  colunagem: [8,4] },
+      { nome: "3:6:3", icone: "Colunagem3x6x3", colunagem: [3,6,3] },
+      { nome: "2:4:6", icone: "Colunagem2x4x6", colunagem: [2,4,6] },
+      { nome: "6:4:2", icone: "Colunagem2x4x6", classe: "fh" , colunagem: [6,4,2] },
+      { nome: "Livre", icone: "ColunagemCustom", colunagem: [3,4,3] },
 ]
-function colunagem(opcao, colunas) {
-    ferramentaStore.mudarColunagem(opcao,colunas)
+async function mudarColunagem(novaEstrutura) {
+  const valorAntes = ferramentaStore.itemSelecionado[$cms('structure')];
+  const valorDepois = novaEstrutura;
+  const container = ferramentaStore.itemSelecionado[$cms('container')];
+
+  const comandosAdicionarOuRemover = [];
+  const containerTemp = [...container];
+
+  if (novaEstrutura.length > container.length) {
+    const faltam = novaEstrutura.length - container.length;
+    for (let i = 0; i < faltam; i++) {
+      const comando = new AdicionarElementoCommand({
+        elemento: criarElemento('Coluna'),
+        destino: {
+          path: ferramentaStore.pathSelecionado,
+          index: container.length + i
+        },
+        eventoNativo: false
+      });
+      comandosAdicionarOuRemover.push(comando);
+    }
   }
+
+  if (novaEstrutura.length < container.length) {
+    const sobram = container.length - novaEstrutura.length;
+
+    for (let i = 0; i < sobram; i++) {
+      // 1. Tentar encontrar coluna vazia
+      let indexParaRemover = containerTemp.findIndex(coluna => {
+        return !coluna[$cms('container')] || coluna[$cms('container')].length === 0;
+      });
+
+      // 2. Se não achou nenhuma vazia, remove a última
+      if (indexParaRemover === -1) {
+        indexParaRemover = containerTemp.length - 1;
+      }
+
+      const comando = new RemoverElementoCommand({
+        origem: {
+          path: ferramentaStore.pathSelecionado,
+          index: indexParaRemover
+        },
+        itemId: containerTemp[indexParaRemover][$cms('id')]
+      });
+
+      comandosAdicionarOuRemover.push(comando);
+
+      // Remove apenas da cópia temporária
+      containerTemp.splice(indexParaRemover, 1);
+    }
+  }
+
+  itemEdited(ferramentaStore.pathSelecionado, ['estrutura'], valorAntes, valorDepois, comandosAdicionarOuRemover);
+  await nextTick();
+}
+
+
+
 </script>
 <style scoped>
 .fh{

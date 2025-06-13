@@ -81,19 +81,19 @@ cols="12"
         <Draggable
     style="position: relative; transition: all 0.2s ease-out;"
     :list="paginaStore.pagina.filhos"
-    :item-key="_cmsProps.id"
+    :item-key="idKey"
     @end="mudarVisibilidadeSubpagina()"
     handle=".handleSubPagina"
     :group="{ name: 'subpaginas' }"
   >
     <template #item="{ element,index }">
-      <div :key="element[_cmsProps.id]" style="position: relative;" class="d-flex justify-center align-center">
+      <div :key="element[idKey]" style="position: relative;" class="d-flex justify-center align-center">
           <v-tooltip location="top">
             <template #activator="{ props }">
               <v-icon v-if="index == 0"  size="23" style="position: absolute; left: 8px;" v-bind="props">
                 mdi-eye-off
               </v-icon>
-              <v-btn v-else variant="plain" @click="mudarVisibilidadeSubpagina(element[_cmsProps.id])" size="40" style="position: absolute; left: 0;" v-bind="props" :icon="element.atributos['visibilidade'].valor == 'block' ? 'mdi-eye-off' : 'mdi-eye'">
+              <v-btn v-else variant="plain" @click="mudarVisibilidadeSubpagina(element[idKey])" size="40" style="position: absolute; left: 0;" v-bind="props" :icon="element.atributos['visibilidade'].valor == 'block' ? 'mdi-eye-off' : 'mdi-eye'">
               </v-btn>
             </template>
             <span v-if="index == 0">Primeira subpágina <br> não pode ser invisivel</span>
@@ -115,7 +115,7 @@ cols="12"
   <v-tooltip location="bottom">
             <template #activator="{ props }">
               <div class="d-flex justify-end mx-7 my-2">
-    <v-btn v-bind="props" variant="text" size="40" icon="mdi-plus-circle" @click="paginaStore.criarSubPagina()" style="font-size: 18px;"></v-btn>
+    <v-btn v-bind="props" variant="text" size="40" icon="mdi-plus-circle"  style="font-size: 18px;"></v-btn>
   </div>
 </template>
 <span>Nova subpágina</span>
@@ -130,18 +130,21 @@ cols="12"
 import { usePaginaStore } from '@/stores/pagina.js';
 import { storeToRefs } from 'pinia';
 import Draggable from "vuedraggable";
-import _cmsProps from "/config"
+import useCms from '@/composables/useCms';
+// VARIAVEIS TEMPLATE
+const $cms = useCms();
+const idKey = $cms('id')
+// VARIAVEIS TEMPLATE
 const panel = ref([1, 2, 3])
 let paginaStore = usePaginaStore()
-const { pagina, criarSubPagina } = storeToRefs(paginaStore)
-console.log(pagina)
+const { pagina } = storeToRefs(paginaStore)
 // let subpagina = computed(() => { 
 //   return paginaStore.p
 // })
 function mudarVisibilidadeSubpagina(id){
   paginaStore.pagina.filhos[0].atributos['visibilidade'].valor = 'block'
   if(id){
-    let subPagina = paginaStore.pagina.filhos.find((item)=>{return item[_cmsProps.id] == id})
+    let subPagina = paginaStore.pagina.filhos.find((item)=>{return item[idKey] == id})
     subPagina.atributos['visibilidade'].valor == 'none' ? subPagina.atributos['visibilidade'].valor = 'block' : subPagina.atributos['visibilidade'].valor = 'none'
   }
 }

@@ -50,7 +50,6 @@
 </template>
 <script setup>
 import { useEditorStore } from '@/stores/editor.js';
-import { defineModel,ref } from 'vue';
 let dados = defineModel()
 let editaveis = ref([false,false,false])
 const editorStore = useEditorStore()

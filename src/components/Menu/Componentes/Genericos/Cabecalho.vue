@@ -119,9 +119,9 @@ function next (){
   : model.value -1
   paginaStore.MudarSubPaginaAtiva(model.value)
       }
-     function criarSubPagina () {
-       paginaStore.criarSubPagina()
-     }
+    //  function criarSubPagina () {
+    //    paginaStore.criarSubPagina()
+    //  }
 function MudarSubPaginaAtiva(indice) {
   model.value = indice
         paginaStore.MudarSubPaginaAtiva(indice)

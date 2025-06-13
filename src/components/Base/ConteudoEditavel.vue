@@ -12,7 +12,6 @@
 }
 </style>
 <script setup>
-import { defineModel,ref } from 'vue';
 let conteudo = defineModel('conteudo')
 let editavel = defineModel('editavel')
 let pronto = ref(false)

@@ -1,11 +1,4 @@
 <template>
-    <!-- <v-app-bar
-     flat
-     color="#2e211a"
-   >T
-     Cabecalho
-   </v-app-bar> -->
-   <!-- <MenuConfiguracao></MenuConfiguracao> -->
    <v-toolbar
    style="z-index: 1005;border-bottom: 1px #e1e1e1 solid;  position: fixed; background-color:  rgb(var(--v-theme-surface));"
    >
@@ -14,168 +7,137 @@
  <div>
    
    <MenuComponente />
- </div>
-   <main style="display: flex; height: 93vh;" :class="pan ? 'panOn': '' " >
-     <zoompinch
- ref="zoompinchRef"
- v-model:transform="transform"
- :width="tamanho.largura"
- :height="tamanho.altura"
- :offset="{ top: 10, right: 10, bottom: 10, left: 10 }"
- :min-scale="0.2"
- :max-scale="2.0"
- :bounds="false"
- :mouse="pan"
- wheel
- 
- >
- <template #canvas>
-   <div class="board" :style="ferramentaStore.ferramentaSelecionada.nome == 'Cabecalho' ? `border: 2px ${ferramentaStore.ferramentaSelecionada.cor} solid`: ''">
-    <div class="abas flutuante bg-grey-darken-3">
-      <v-tabs class="abaWrap" slider-color="white"
-      show-arrows >
-        <v-tab @click="paginaStore.MudarSubPaginaAtiva(index)" v-for="(element,index) in paginaStore.pagina.filhos" :key="element[_cmsProps.id]" class="abaSubpages" >
-          {{ element.nome + index }}
-        </v-tab>
-      </v-tabs>
   </div>
-
-   <Draggable :style="pan ? 'pointer-events: none' : ''"
-   :list="subpaginaAtiva.filhos"
-   :item-key="_cmsProps.id"
-   class="v-container v-container--fluid pr-10 containerSpace"
-   :group="{ name: 'linhas' }"
-   >
-   <template #item="{ element, index }">
-     <component
-     :is="'Comp'+element.nome"
-     :key="element[_cmsProps.id]"
-     v-model="subpaginaAtiva.filhos[index]"
-     />
-   </template>
-   </Draggable>
-   <v-btn :style="pan ? 'pointer-events: none' : ''"
-   location="bottom"
-   class="mt-6 "
-   icon="mdi-plus"
-   @click.exact="adicionarLinha()"
-   />
-   <v-btn
-   location="bottom"
-   class="mt-6 ml-10 "
-   icon="mdi-minus"
-   @click.exact="refaz()"
-   />
-   </div>
- </template>
- <template v-slot:matrix="{ composePoint }">
-   <svg xmlns="http://www.w3.org/2000/svg" @click="handleClickOnLayer">
-     <!-- This circle will stick to the center of the canvas -->
-     <circle :cx="composePoint(0.5, 0.5)[0]" :cy="composePoint(0.5, 0.5)[1]" r="5" style="opacity: 0;" />
-   </svg>
- </template>
- </zoompinch>
- <MenuConfiguracao />
-   </main>
+  <Splitpanes  @resize="disableTextSelection($event, 'horizontal')" @resized="enableTextSelection" :push-other-panes="true" horizontal style="position: absolute;" :class="{'default-theme': true, 'telasDivisao': true}" >
+    <Pane :size="userConfigsStore.quickAcessBarSize" max-size="30" style="position: relative;" min-size="7">
+      <BaseQuickAcessComponents></BaseQuickAcessComponents>
+    </Pane>
+    <Pane :size="100 - userConfigsStore.quickAcessBarSize" min-size="70" max-size="93">
+      <Splitpanes @resize="disableTextSelection($event, 'vertical')" @splitter-dblclick="userConfigsStore.configBarSize = maxConfigBarSize" @resized="enableTextSelection" :class="{'default-theme': true, 'telasDivisao': true}">
+        <Pane min-size="70" :size="100 - userConfigsStore.configBarSize" max-size="80">
+          <BaseCanvas></BaseCanvas>
+          <!-- Conteúdo principal -->
+        </Pane>
+        <Pane min-size="20" style="z-index: 500" :size="userConfigsStore.configBarSize" :max-size="maxConfigBarSize">
+          <MenuConfiguracao  />
+          <!-- Seu painel configurador -->
+        </Pane>
+      </Splitpanes>
+    </Pane>
+  </Splitpanes>
 
  </template>
  
  <script setup>
- import Draggable from "vuedraggable";
- import { usePaginaStore } from '@/stores/pagina.js';
- import { useFerramentaStore } from '@/stores/ferramenta.js';
- import { computed, ref } from 'vue';
- import { Zoompinch } from '@/libs/zoompinch/index';
- import '@/libs/zoompinch/style.css';
- import { useRefHistory } from '@vueuse/core'
- import { VTabs } from 'vuetify/components/VTabs';
-import draggable from 'vuedraggable';
-import { storeToRefs } from 'pinia';
+ import { useUserConfigStore } from '@/stores/userConfigs.js';
+import useCms from '@/composables/useCms';
+import { Splitpanes, Pane } from 'splitpanes'
+import 'splitpanes/dist/splitpanes.css'
 
-draggable.components = { ...draggable.components, VTabs };
+// ARRUMAR O DUPLO CLIQUE PARA DIMINUIR A BARRA MAS TAMBÉM CONTABILIZAR OS VALORES DA STORE
+
+// VARIAVEIS TEMPLATE
+const $cms = useCms();
+// const idKey = $cms('id')
+const maxConfigBarSize = ref(30)
+// const tamanhoBarraConfig = ref(25)
+
+ let userConfigsStore = useUserConfigStore();
+ function disableTextSelection(e,direction) {
+  document.body.style.userSelect = 'none';
+  if(direction == 'vertical'){
+    userConfigsStore.configBarSize = e.nextPane.size
+  return
+  }
+  userConfigsStore.quickAcessBarSize = e.prevPane.size
+  // console.log(e)
+}
+
+function enableTextSelection() {
+  document.body.style.userSelect = '';
+}
+
  
- const pan = ref(false)
- const zoompinchRef = ref();
- const route = useRoute()
- const tab = ref(0)
- console.log(route.params.id)
- const transform = ref({
-   x: 0,
-   y: 0,
-   scale: 0.1,
- });
- function teste(){
-  console.log(tab.value)
- }
- const tamanho = computed(()=>{
-   return {
-     largura: window.innerWidth,
-     altura: window.innerHeight,
-   }
- })
- let paginaStore = usePaginaStore();
- let ferramentaStore = useFerramentaStore()
- const { selecionarCabecalho } = storeToRefs(ferramentaStore)
- const {pagina,subpaginaAtiva, paginaAtual,subpaginaAtivaAtual, adicionarLinhaStore,deletarLinha, MudarSubPaginaAtiva,criarSubPagina } = storeToRefs(paginaStore)
- 
- 
- const { history,undo,redo } = useRefHistory(ref(subpaginaAtivaAtual), {deep: true})
- function adicionarLinha() {
-   paginaStore.adicionarLinhaStore()
-   console.log(history)
- 
- }
- function refaz(){
-   undo()
-   console.log(history)
- }
- 
- onMounted(() => {
-   document.addEventListener('keydown', handleKeyDown);
-   document.addEventListener('keyup', handleKeyUp);
-   
- });
- 
- onUnmounted(() => {
-   document.removeEventListener('keydown', handleKeyDown);
-   document.removeEventListener('keyup', handleKeyUp);
- });
- function handleKeyDown(event) {
-   if (event.code === 'Space') {
-     pan.value = true;
-   }
- }
- 
- function handleKeyUp(event) {
-   if (event.code === 'Space') {
-     pan.value = false;
-   }
- }
- 
- function handleClickOnLayer(event) {
-   const [x, y] = zoompinchRef.value?.normalizeMatrixCoordinates(event.clientX, event.clientY);
- }
  </script>
+ <style lang="scss">
+/* .default-theme.splitpanes__splitter {background-color: #ccc;position: relative;} */
+.splitpanes.default-theme .splitpanes__pane{
+  background: var(--v-theme-surface);
+}
+.default-theme.splitpanes--horizontal>.splitpanes__splitter, .default-theme .splitpanes--horizontal>.splitpanes__splitter{
+  // largura redimensionador
+  // width: 10px;
+  height: 12px;
+  border-top: none;
+}
+.default-theme.splitpanes--vertical>.splitpanes__splitter, .default-theme .splitpanes--vertical>.splitpanes__splitter{
+  // largura redimensionador
+  width: 10px;
+  border-left: none;
+}
+.v-theme--light{
+  .splitpanes.default-theme .splitpanes__splitter{
+    // cor redimensionador
+    transition: 0.5s;
+    background-color: #9c9c9c;
+    position: relative;
+  }
+  .splitpanes.default-theme .splitpanes__splitter:hover{
+    // cor redimensionador hover
+    transition: 0.5s;
+    background-color: rgb(70, 70, 70);
+    position: relative;
+  }
+  .splitpanes.default-theme .splitpanes__splitter:before, .splitpanes.default-theme .splitpanes__splitter:after{
+    // cor mini linhas dentro do redimensionador
+    background-color: rgb(219, 219, 219);
+  }
+  .splitpanes.default-theme .splitpanes__splitter:hover:before, .splitpanes.default-theme .splitpanes__splitter:hover:after{
+    // cor mini linhas dentro do redimensionador hover
+    background-color: rgb(255, 255, 255);
+  }
+  
+}
+.v-theme--dark{
+  .splitpanes.default-theme .splitpanes__splitter{
+    // cor redimensionador
+    transition: 0.5s;
+    background-color: rgb(88, 88, 88);
+    position: relative;
+  }
+  .splitpanes.default-theme .splitpanes__splitter:hover{
+    // cor redimensionador hover
+    transition: 0.5s;
+    background-color: #e9e9e9;
+    position: relative;
+  }
+  .splitpanes.default-theme .splitpanes__splitter:before, .splitpanes.default-theme .splitpanes__splitter:after{
+    // cor mini linhas dentro do redimensionador
+    background-color: rgb(194, 194, 194);
+  }
+  .splitpanes.default-theme .splitpanes__splitter:hover:before, .splitpanes.default-theme .splitpanes__splitter:hover:after{
+    // cor mini linhas dentro do redimensionador hover
+    background-color: rgb(56, 56, 56);
+  }
+  
+}
+.splitpanes {
+  z-index: 500;
+}
+    </style>
  
  <style scoped lang="scss">
- 
+ .viewport-container{
+  width: 85vw;
+ }
  main {
    height: 100%;
    width: 100%;
  }
+//  .telasDivisao{
+//   height: calc(95vh - 100px);
+//  }
  
- .board {
-   background: #b6b6b6c0;
-   height: auto;
-   min-height: 90vh;
-   width: 71vw;
-   border: 2px #aeaeaec0 solid;
-   border-radius:15px ;
-   margin-top: 15vh;
-   margin-left: 5vw;
-   position: relative;
-   padding: 1em;
- }
  .abas{
   width: 100%;
   border-radius: 12px 12px 0px 0px;
@@ -201,4 +163,5 @@ draggable.components = { ...draggable.components, VTabs };
    cursor: grab;
  
  }
+ 
  </style>

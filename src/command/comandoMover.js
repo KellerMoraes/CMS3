@@ -8,35 +8,33 @@ export default class MoverElementoCommand {
     this.origem = { ...info.origem };
     this.destino = { ...info.destino };
     this.eventoNativo = !!info.eventoNativo;
-    this.executado = false;
   }
 
-  executar(dados) {
-    // Se o movimento foi feito pelo usuário, desfazemos primeiro para registrar corretamente
-    if (this.eventoNativo && !this.executado) {
-      const listaDestino = findItemByPath(dados, this.destino.path)[$cms('subpages')];
-      const item = listaDestino.splice(this.destino.index, 1)[0];
-
-      const listaOrigem = findItemByPath(dados, this.origem.path)[$cms('subpages')];
-      listaOrigem.splice(this.origem.index, 0, item);
+  executar(dados) {  
+    if (this.eventoNativo) {
+      // Ignora execução real, só prepara para o próximo uso (refazer/desfazer)
+      this.eventoNativo = false;
+      return;
     }
-
-    // Executa movimento de forma previsível
-    const listaOrigem = findItemByPath(dados, this.origem.path)[$cms('subpages')];
+  
+    const listaOrigem = findItemByPath(dados, this.origem.path)[$cms('container')];
     const item = listaOrigem.splice(this.origem.index, 1)[0];
-
-    const listaDestino = findItemByPath(dados, this.destino.path)[$cms('subpages')];
+  
+    const listaDestino = findItemByPath(dados, this.destino.path)[$cms('container')];
     listaDestino.splice(this.destino.index, 0, item);
-
+  
     this.executado = true;
   }
 
   desfazer(dados) {
-    const listaDestino = findItemByPath(dados, this.destino.path)[$cms('subpages')];
-    console.log(listaDestino)
+    const listaDestino = findItemByPath(dados, this.destino.path)[$cms('container')];
     const item = listaDestino.splice(this.destino.index, 1)[0];
-
-    const listaOrigem = findItemByPath(dados, this.origem.path)[$cms('subpages')];
+    
+    const listaOrigem = findItemByPath(dados, this.origem.path)[$cms('container')];
     listaOrigem.splice(this.origem.index, 0, item);
+  }
+
+  refazer(dados) {
+    this.executar(dados); // Executa como se fosse novo
   }
 }

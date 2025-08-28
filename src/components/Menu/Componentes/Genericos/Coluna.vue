@@ -55,7 +55,7 @@ const props = defineProps(
 // onMounted(()=>{console.log(props.path)})
 const ferramentaStore = useFerramentaStore()
   function selecionarColuna(coluna) {
-      ferramentaStore.selecionarColuna(coluna)
+      ferramentaStore.selecionarColuna(coluna, props.path)
   }
 
   function geraEstilos(dados) {

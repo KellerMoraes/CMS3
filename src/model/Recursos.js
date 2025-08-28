@@ -9,6 +9,7 @@ Estruturais.adicionarGrupo("Genéricos","linhas", //Componentes
     [
         {
             [$cms("name")]: "Linha",
+            compName: 'linha',
             [$cms("group")]: "linhas",
             [$cms("type")]: "Linha",
             [$cms("id")]: "linha-",
@@ -22,6 +23,7 @@ Estruturais.adicionarGrupo("Genéricos","colunas", //Componentes
             [$cms("name")]: "Coluna",
             [$cms("group")]: "colunas",
             [$cms("type")]: "Coluna",
+
             [$cms("id")]: "coluna-",
             [$cms("icon")]: 'mdi-view-column',
         },
@@ -55,6 +57,17 @@ Agrupamentos.adicionarGrupo("Cards","componentes", //Componentes
             [$cms("type")]: "Card",
             [$cms("id")]: "card-",
             [$cms("icon")]: 'mdi-card-text'
+        },
+    ]
+)
+Agrupamentos.adicionarGrupo("Container","componentes", //Componentes
+    [
+        {
+            [$cms("group")]: "componentes",
+            [$cms("name")]: "Container",
+            [$cms("type")]: "Container",
+            [$cms("id")]: "container-",
+            [$cms("icon")]: 'mdi-contain'
         },
     ]
 )

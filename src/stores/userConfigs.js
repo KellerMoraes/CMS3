@@ -8,6 +8,7 @@ const theme = ref('light')
 const sidebarTransparency = ref(false)
 const configBarSize = ref(25)
 const quickAcessBarSize = ref(20)
+const clipboard = ref(null)
 const quickAcessElements = ref([{
             [$cms("name")]: "Linha",
             [$cms("id")]: "linha-",
@@ -24,5 +25,5 @@ function changeSbTransparency(value){
 function changeSbButtonsView(value){
     sidebarButtonsView.value = value
 }
-return { theme, sidebarTransparency ,sidebarButtonsView, configBarSize,quickAcessBarSize,quickAcessElements, changeTheme, changeSbTransparency, changeSbButtonsView}
+return { theme, sidebarTransparency ,sidebarButtonsView, configBarSize,quickAcessBarSize,quickAcessElements, clipboard, changeTheme, changeSbTransparency, changeSbButtonsView}
 }, {persist: true})

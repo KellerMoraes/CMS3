@@ -14,6 +14,7 @@ import Titulo from '@/components/Menu/Componentes/Titulos/Titulo.vue'
 import Botao from '@/components/Menu/Componentes/Botoes/Botao.vue'
 import Paragrafo from '@/components/Menu/Componentes/Paragrafos/Paragrafo.vue'
 import Card from '@/components/Menu/Componentes/Cards/Card.vue'
+import Container from '@/components/Menu/Componentes/Container/Container.vue'
 import GridCell from '@/components/Base/BaseGridCell.vue'
 import Campo from '@/components/Menu/Componentes/Formularios/Campo.vue'
 import CampoNome from '@/components/Menu/Componentes/Formularios/Campos/Nome.vue'
@@ -26,6 +27,7 @@ import Selecionavel from '@/components/Menu/Componentes/Formularios/Selecionavel
 import ConfigInput from '@/components/Menu/Config/Componentes/Input.vue'
 import ConfigGridMaker from '@/components/Menu/Config/Componentes/GridMaker.vue'
 import ConfigDimensoes from '@/components/Menu/Config/Componentes/Dimensoes.vue'
+import ConfigTexto from '@/components/Menu/Config/Componentes/Texto.vue'
 import Linha from '@/components/Menu/Componentes/Genericos/Linha.vue'
 import Coluna from '@/components/Menu/Componentes/Genericos/Coluna.vue'
 import Formulario from '@/components/Menu/Componentes/Formularios/Formulario.vue'
@@ -51,11 +53,13 @@ app.component(prefixoComp+'Formulario', Formulario);
 app.component(prefixoComp+'Titulo', Titulo);
 app.component(prefixoComp+'Botao', Botao);
 app.component(prefixoComp+'Card', Card);
+app.component(prefixoComp+'Container', Container);
 app.component('Base'+'GridCell', GridCell);
 app.component(prefixoComp+'Paragrafo', Paragrafo);
 app.component(prefixoComp+'Campo', Campo);
 app.component(prefixoComp+'Selecionavel', Selecionavel);
 app.component(prefixoConfig+'Input', ConfigInput);
+app.component(prefixoConfig+'Texto', ConfigTexto);
 app.component(prefixoConfig+'GridMaker', ConfigGridMaker);
 app.component(prefixoConfig+'Dimensoes', ConfigDimensoes);
 app.component(prefixoCampo+'Nome', CampoNome);

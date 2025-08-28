@@ -5,50 +5,73 @@
       v-if="dados"
       #edicao
     >
-      <div
-        :id="dados[this._cmsProps.id] ?? ''"
-        class="v-card v-sheet theme--light elevation-0"
-        :style="dados.atributos"
-      >
-        <div class="card-text ml-5">
-          <div
-            class="tituloCard"
-            @dblclick="habilitarEditavel(dados.conteudo.titulo,1)"
-          >
-            <BaseConteudoEditavel
+    <v-card :style="dados.atributos">
+      <v-card-title @dblclick="habilitarEditavel(dados.conteudo.titulo,1)">
+        <BaseConteudoEditavel
               v-model:conteudo="dados.conteudo.titulo"
               v-model:editavel="editaveis[1]"
             />
-          </div>
-          <small
-            class="subtituloCard "
-            @dblclick="habilitarEditavel(dados.conteudo.subtitulo,2)"
-          >
-            <BaseConteudoEditavel
+      </v-card-title>
+      <v-card-subtitle @dblclick="habilitarEditavel(dados.conteudo.subtitulo,2)">
+        <BaseConteudoEditavel
               v-model:conteudo="dados.conteudo.subtitulo"
               v-model:editavel="editaveis[2]"
             />
-          </small>
-          <p
-            class="textoCard"
-            @dblclick="habilitarEditavel(dados.conteudo.texto,3)"
-          >
-            <BaseConteudoEditavel
+      </v-card-subtitle>
+      <v-card-text @dblclick="habilitarEditavel(dados.conteudo.texto,3)">
+        <BaseConteudoEditavel
               v-model:conteudo="dados.conteudo.texto"
               v-model:editavel="editaveis[3]"
             />
-          </p>
-        </div>
-        <div
-          class="v-card__actions"
-          style="display: table; width: 100%; text-align: right; padding: 0"
-        />
-      </div>
+      </v-card-text>
+      <v-card-actions></v-card-actions>
+    </v-card>
+    
     </template>
     
   </BaseComponenteItem>
+  <!-- <div
+:id="dados[$cms('id')] ?? ''"
+class="v-card v-sheet theme--light elevation-0"
+:style="dados.atributos"
+>
+<div class="card-text ml-5">
+  <div
+    class="tituloCard"
+    @dblclick="habilitarEditavel(dados.conteudo.titulo,1)"
+  >
+    <BaseConteudoEditavel
+      v-model:conteudo="dados.conteudo.titulo"
+      v-model:editavel="editaveis[1]"
+    />
+  </div>
+  <small
+    class="subtituloCard "
+    @dblclick="habilitarEditavel(dados.conteudo.subtitulo,2)"
+  >
+    <BaseConteudoEditavel
+      v-model:conteudo="dados.conteudo.subtitulo"
+      v-model:editavel="editaveis[2]"
+    />
+  </small>
+  <p
+    class="textoCard"
+    @dblclick="habilitarEditavel(dados.conteudo.texto,3)"
+  >
+    <BaseConteudoEditavel
+      v-model:conteudo="dados.conteudo.texto"
+      v-model:editavel="editaveis[3]"
+    />
+  </p>
+</div>
+<div
+  class="v-card__actions"
+  style="display: table; width: 100%; text-align: right; padding: 0"
+/>
+</div> -->
 </template>
 <script setup>
+import { $cms } from '@/helpers/cmsProviderHelper';
 import { useEditorStore } from '@/stores/editor.js';
 let dados = defineModel()
 let editaveis = ref([false,false,false])

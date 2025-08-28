@@ -134,9 +134,9 @@ function enableTextSelection() {
    height: 100%;
    width: 100%;
  }
-//  .telasDivisao{
-//   height: calc(95vh - 100px);
-//  }
+ .telasDivisao{
+z-index: 500;
+}
  
  .abas{
   width: 100%;

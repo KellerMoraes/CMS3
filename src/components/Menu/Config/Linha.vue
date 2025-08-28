@@ -7,7 +7,48 @@
       multiple
       variant="accordion"
     >
-      <v-expansion-panel :value="1">
+      <!-- <v-expansion-panel :value="1">
+        <v-expansion-panel-title style="min-height: 50px;">
+          <h5>Editar</h5>
+        </v-expansion-panel-title>
+        <v-expansion-panel-text class="py-0">
+          <v-item-group mandatory>
+          <v-container>
+              <v-row>
+                <v-col
+                  v-for="(botao,i) in botoesEditar"
+                  :key="i"
+                  cols="12"
+                  md="4"
+                  class="pa-0"
+                >
+                <v-item v-slot="{ isSelected, toggle }">
+                    <v-card
+                      :color="isSelected ? 'primary' : ''"
+                      class="d-flex align-center ma-1"
+                      height="60"
+                      flat
+                      variant="tonal"
+                    >
+                    <v-tooltip
+        activator="parent"
+        location="top"
+      ><span :class="theme.name.value == 'dark'? 'text-black' : 'text-white' "  >{{ botao.nome }}</span></v-tooltip>
+                      <v-scroll-y-transition>
+                        <div
+                          class="flex-grow-1 text-center font-weight-bold"
+                        >
+                        <v-icon size="40">{{ botao.icone }}</v-icon>
+                        </div>
+                      </v-scroll-y-transition>
+                    </v-card>
+                  </v-item>
+              </v-col>
+                </v-row></v-container>
+              </v-item-group>
+        </v-expansion-panel-text>
+      </v-expansion-panel> -->
+      <v-expansion-panel :value="2">
         <v-expansion-panel-title style="min-height: 50px;">
           <h5>Colunagem</h5>
         </v-expansion-panel-title>
@@ -74,7 +115,7 @@
       </v-expansion-panel> -->
       <v-expansion-panel
         
-        :value="2"
+        :value="3"
       >
         <v-expansion-panel-title style="min-height: 50px;">
           <h5>Fundo</h5>
@@ -118,7 +159,7 @@
       </v-expansion-panel>
       <v-expansion-panel
         
-        :value="3"
+        :value="4"
       >
         <v-expansion-panel-title style="min-height: 50px;">
           <h5>Tamanhos</h5>
@@ -167,7 +208,7 @@ import { $cms } from '@/helpers/cmsProviderHelper';
 import AdicionarElementoCommand from '@/command/comandoAdicionar';
 import RemoverElementoCommand from '@/command/comandoRemover';
 const theme = useTheme()
-let panel = reactive([1, 2, 3])
+const panel = ref([1,2,3,4])
 let ferramentaStore = useFerramentaStore()
 const tipoFundo = ref("Cor sólida")
 let swatches = [
@@ -175,6 +216,11 @@ let swatches = [
 ['#FFFF00', '#AAAA00',],
 ['#550000', '#555500',],
 ]
+// const botoesEditar = ref([    
+//       { nome: "Copiar", icone: "mdi-content-copy", habilitado: true },
+//       { nome: "Colar", icone: "mdi-content-paste", habilitado: true },
+//       { nome: "Excluir", icone: "mdi-delete-outline", habilitado: true },
+// ])
 let colunas = [
     
       { nome: "6:6", icone: "Colunagem6x6", colunagem: [6,6] },

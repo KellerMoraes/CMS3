@@ -84,7 +84,6 @@ function salvar() {
 }
 
 function exportar(){
-  console.log(paginaStore.pagina)
  let anchor = document.createElement("a")
 anchor.href = `data:text/json;charset=utf-8,${encodeURIComponent(
   JSON.stringify(paginaStore.pagina)

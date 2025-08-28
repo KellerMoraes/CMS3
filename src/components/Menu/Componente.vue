@@ -173,7 +173,7 @@ function clonar(item) {
   
 }
 function onMove(evt) {
-  if(evt.to.classList.contains('quickAcessGroup') && userConfigsStore.quickAcessElements.find((item)=>{return item.nome == evt.draggedContext.element.nome})){
+  if(evt.to.classList.contains('quickAccessGroup') && userConfigsStore.quickAcessElements.find((item)=>{return item.nome == evt.draggedContext.element.nome})){
         return false
     }
   

@@ -39,7 +39,6 @@
   import { useFerramentaStore } from '@/stores/ferramenta.js';
   import Draggable from "vuedraggable";
   let dados = defineModel()
-  console.log(dados)
   const ferramentaStore = useFerramentaStore()
 
   </script>

@@ -1,13 +1,19 @@
 import { ElementoBase } from '@/model/Base/BaseElemento';
 import { $cms } from '@/helpers/cmsProviderHelper';
-import { RichTextBloco, RichTextTexto } from "@/model/RichText/Texto"
 export class Titulo extends ElementoBase {
   static criar(args) {
-    const texto1 = new RichTextTexto({ texto: "Título " })
-    const texto2 = new RichTextTexto({ texto: "padrão" })
-    const bloco = new RichTextBloco({ tipo: "h1", conteudo: [texto1, texto2] })
-    texto1.__parent = bloco  // referência para o parent
-    texto2.__parent = bloco  // referência para o parent
+    let content = {
+        type: "doc",
+        content: [
+          {
+            type: "heading",
+            attrs: { level: 1 },
+            content: [
+              { type: "text", text: "Título padrão ",marks: [{type: "textStyle",attrs: { color: "#003d7c" }}] }
+            ]
+          }
+        ]
+      }
 
     return {
       ...this.criarEstrutura({
@@ -15,7 +21,7 @@ export class Titulo extends ElementoBase {
         [$cms("name")]: "Titulo",
         [$cms("attrs")]: {},
       }),
-      [$cms("content")]: bloco,
+      [$cms("content")]: content,
       [$cms("icon")]: args?.icon,
       [$cms("configs")]: ["Texto"],
       [$cms("group")]: args?.group,
@@ -23,8 +29,21 @@ export class Titulo extends ElementoBase {
     }
   }
 }
+
 class Paragrafo extends ElementoBase {
   static criar(args) {
+    let content = {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [
+            { type: 'text', text: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quaerat ipsam, nihil excepturi quisquam optio minima maiores, natus magni voluptates rem officia perferendis quis! Quia quos veniam nihil! Molestias, quisquam explicabo?',
+               marks: [{type: "textStyle",attrs: { color: "#003d7c", fontSize: "18px" }}, {type: 'fontWeight', attrs:{ weight: 400 }}] 
+            }],
+        }
+      ]
+    }
     return {
       ...this.criarEstrutura({
         [$cms('type')]: 'Componente',
@@ -32,8 +51,9 @@ class Paragrafo extends ElementoBase {
         [$cms('attrs')]: {
         },
       }),
-      [$cms('content')]: 'Título padrão',// aqui no nível do item, fora dos attrs
+      [$cms('content')]: content,// aqui no nível do item, fora dos attrs
       [$cms('icon')]: args?.icon,
+      [$cms("configs")]: ["Texto"],
       [$cms('group')]: args?.group,
       compName: 'Paragrafo',
     };

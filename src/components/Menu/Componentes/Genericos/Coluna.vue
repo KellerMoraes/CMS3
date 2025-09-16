@@ -10,14 +10,14 @@
     :item-key="idKey"
     :group="{ name: 'componentes' }"
     :component-data="{cols: 12, sm: estrutura}"
-    @click.self.exact="selecionarColuna(dados)"
+    @mousedown.self.exact="selecionarColuna(dados)"
     @end="itemMoved" @update="itemSort($event,path)" @remove="itemRemove($event,path)" @add="itemAdd($event,path)"
     
   >
     <template #item="{ element,index}">
       <component
         v-if="element"
-        :is="'Comp'+element.nome"
+        :is="'Comp'+element.compName"
         v-model="dados.filhos[index]"
         :key="element[idKey]"
         :path="[...path, { tipo: element.tipo, index, id: element[idKey] }]"
@@ -29,7 +29,6 @@
 <script setup>
 import Draggable from "vuedraggable";
 import { useFerramentaStore } from '@/stores/ferramenta.js';
-import { defineModel } from 'vue';
 // Command-pattern imports 
 import { itemAdd, itemRemove, itemSort, itemMoved } from "@/command/command";
 // Command-pattern imports 
@@ -39,6 +38,9 @@ const $cms = useCms();
 const idKey = $cms('id')
 // VARIAVEIS TEMPLATE
 let dados = defineModel()
+onMounted(()=>{
+  console.log(dados.value)
+})
 const props = defineProps(
   {
     path: 

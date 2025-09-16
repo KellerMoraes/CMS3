@@ -69,9 +69,9 @@
     :width="xlAndUp ? 300 : 180"
     permanent
     :class="{elementCreateDrag: draggingElement}"
-    v-model="editorStore.recursoSelecionado"
-    
-  >
+    :model-value="!!editorStore.recursoSelecionado"
+    >
+    <!-- !! <- faz retornar true ou false aquele valor em especifico e não o valor em si (para isso a model não pode ser v-model (vuetify)) -->
   <div>
 
   <div class="d-flex justify-space-between align-center ma-2 mt-4 mb-4">
@@ -170,6 +170,7 @@ function fecharComponentes() {
 }
 function clonar(item) {
   return criarElemento(item.tipo,{icon: item.icone , group: item.grupo})
+  console.log(item)
   
 }
 function onMove(evt) {

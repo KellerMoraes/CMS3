@@ -2,10 +2,13 @@
 <template>
     <v-expansion-panels>
       <v-expansion-panel :value="1">
-        <v-expansion-panel-title style="min-height: 50px;">
-          <h3>Configuração</h3>
+       <v-expansion-panel-title style="min-height: 50px;" class="pl-3" expand-icon="" collapse-icon="">
+        <template #default="{ expanded }">
+      <v-icon class="iconConfig transition" :class="{ 'rotate-90': expanded }">mdi-chevron-right</v-icon>
+      <h2 class="titleConfigFont">Configuração</h2>
+    </template>
       </v-expansion-panel-title>
-      <v-card class="pa-2 pb-5">
+      <v-card class="pa-5 pb-5">
        <v-text-field label="Nome" variant="outlined" v-model="ferramentaStore.itemSelecionado.sp.nome">
        </v-text-field>
       </v-card>

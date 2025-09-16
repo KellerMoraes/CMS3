@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <BaseComponenteItem v-model="dados">
     <template
@@ -6,23 +5,21 @@
       #edicao
     >
       <h1
-        :id="dados[idKey] ?? ''"
-         class="text-primary"
+        :id="dados[$cms('id')] ?? ''"
       >
-        <BaseConteudoEditavel
-          v-model="dados.conteudo"
+        <BaseConteudoEditavel v-if="dados" :config="Config"
+          v-model="dados"
         />
       </h1>
     </template>
   </BaseComponenteItem>
 </template>
 <script setup>
-import useCms from '@/composables/useCms';
-// VARIAVEIS TEMPLATE
-const $cms = useCms();
-const idKey = $cms('id')
-// VARIAVEIS TEMPLATE
-let dados = defineModel()
-let editavel = ref(false)
 
+import Heading from '@tiptap/extension-heading'
+import Document from '@tiptap/extension-document'
+import { $cms } from '@/helpers/cmsProviderHelper';
+let dados = defineModel()
+const DocHeadingOnly = Document.extend({ content: 'heading' })
+const Config = [DocHeadingOnly, Heading.configure({ levels: [1] })]
 </script>

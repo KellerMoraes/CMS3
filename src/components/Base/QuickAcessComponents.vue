@@ -44,7 +44,6 @@ import { $cms } from '@/helpers/cmsProviderHelper';
 const group = ref(null)
 
 function clonar(item) {
-    console.log(item)
     group.value = item.grupo
     return criarElemento(item.compName, {icon: item.icone , group: item.grupo})
   

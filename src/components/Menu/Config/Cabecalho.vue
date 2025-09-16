@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <v-expansion-panels
+  <v-expansion-panels class="mb-2"
     v-model="panel"
     multiple
     variant="accordion"

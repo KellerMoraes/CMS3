@@ -1,11 +1,14 @@
 services:
-  vue-app:
+  front-end:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    ports:
-      - "3000:3000"
     volumes:
       - .:/app
-      - /app/node_modules
+      - ./node_modules:/app/node_modules
+    ports:
+      - "3000:3000"
     command: npm run dev
+
+volumes:
+  node_modules:

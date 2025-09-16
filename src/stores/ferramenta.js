@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia';
-import { ref, reactive } from 'vue';
+import { ref} from 'vue';
 import { usePaginaStore } from './pagina';
 import RemoverElementoCommand from '@/command/comandoRemover';
 import { useCommandStore } from './command';
 import DuplicarElementoCommand from '@/command/comandoDuplicar';
 import { useUserConfigStore } from './userConfigs';
-import { findItemByPath } from '@/helpers/pathUtil';
 import { $cms } from '@/helpers/cmsProviderHelper';
 import { criarElemento } from '@/model/Elementos';
 
@@ -14,18 +13,9 @@ export const useFerramentaStore = defineStore('ferramenta', () => {
   const nivelSelecionado = ref(null);
   const pathSelecionado = ref([]);
   const itemCopiado = ref(null);
-  const comandoEstilo = ref(null)
- const estilosAtivos = ref({
-  bold: false,
-  italic: false,
-  underline: false,
-  thin: false,
-  regular: false,
-  // ...outros estilos que você usa
-})
   const tipoSelecionado = ref('Pagina');
   const corSelecionada = ref('#ce0224');
-
+  
   function selecionarItem(item, nivel, path, tipo, cor) {
     itemSelecionado.value = item;
     nivelSelecionado.value = nivel;
@@ -33,15 +23,15 @@ export const useFerramentaStore = defineStore('ferramenta', () => {
     tipoSelecionado.value = tipo;
     corSelecionada.value = cor;
   }
-
+  
   function selecionarLinha(linha, path) {
     selecionarItem(linha,3, path, 'Linha', 'green');
   }
-
+  
   function selecionarColuna(coluna, path) {
     selecionarItem(coluna,4, path, 'Coluna', 'blue');
   }
-
+  
   function selecionarComponente(componente, path) {
     selecionarItem(componente,5, path, 'Componente', 'purple');
   }
@@ -55,6 +45,7 @@ export const useFerramentaStore = defineStore('ferramenta', () => {
   function removerSelecao() {
     selecionarItem(null,0, null, 'Pagina', '#ce0224');
   }
+  
   function deletarElemento() {
     if(nivelSelecionado.value > 1){
       let comandoExcluir = new RemoverElementoCommand({origem:{path: pathSelecionado.value.slice(0, -1), index:pathSelecionado.value[pathSelecionado.value.length - 1].index}})
@@ -142,16 +133,13 @@ function descobrirPathDeDestino(pathSelecionado) {
 
   return construirPath(estrutura, tipoProcurado)
 }
-
-
-
-
 if(nivelSelecionado.value > 0 && useUserConfigStore().clipboard ){
   if(pathSelecionado.value?.tipo == 'subpagina' && itemSelecionado.value?.sp[$cms('container')]?.length == 0){
     // significa que não tem linha na subpagina
     
     return
   }
+  
   const clipboard = useUserConfigStore().clipboard
 const itemCopiado = clipboard.item
 const tipoCopiado = itemCopiado.tipo
@@ -198,24 +186,15 @@ const comandoDuplicar = new DuplicarElementoCommand({
 useCommandStore().executar(comandoDuplicar)
     }
   }
-  function aplicarEstilo(novos) {
-  // sempre atualiza as chaves conhecidas
-  const KEYS = ['bold', 'italic', 'underline']
-  for (const k of KEYS) {
-    estilosAtivos.value[k] = !!novos[k]
+// Variaveis e Funções - RichText
+ const editor = ref(null)
+ const editorConfigs = ref(null)
+  function setEditor(instance) {
+      editor.value = instance
   }
-}
-  function aplicarEstiloNoEditor(chave, valor) {
-      if (this.aplicarEstiloNaSelecao) {
-        this.aplicarEstiloNaSelecao(chave, valor)
-      }
-    }
-  function aplicarEstiloNoCursorEditor(chave, valor) {
-      if (this.aplicarEstiloNoCursor) {
-        this.aplicarEstiloNoCursor(chave, valor)
-      }
-    }
-
+  function setEditorConfig(config) {
+      editorConfigs.value = config
+  }
 
   return {
     itemSelecionado,
@@ -234,12 +213,12 @@ useCommandStore().executar(comandoDuplicar)
     duplicarElemento,
     copiarElemento,
     colarElemento,
-    //aqui é parte do richText
-    comandoEstilo,
-    estilosAtivos,
-    aplicarEstilo,
-    aplicarEstiloNoEditor,
-    aplicarEstiloNoCursorEditor,
-    //aqui é parte do richText
+    //richText
+    setEditor,
+    setEditorConfig,
+    editor,
+    editorConfigs,
+
+    //richText
   };
 });

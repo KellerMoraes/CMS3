@@ -47,6 +47,7 @@ let prefixoCampo = "Campo"
 registerPlugins(app)
 // nome do "Comp" precisa ser sucedido do nome definido no JSON, igual o valor da propriedade "nome"
 app.provide('$cms', cmsHelper);
+app.component('Base'+'GridCell', GridCell);
 app.component(prefixoComp+'Linha', Linha);
 app.component(prefixoComp+'Coluna', Coluna);
 app.component(prefixoComp+'Formulario', Formulario);
@@ -54,7 +55,6 @@ app.component(prefixoComp+'Titulo', Titulo);
 app.component(prefixoComp+'Botao', Botao);
 app.component(prefixoComp+'Card', Card);
 app.component(prefixoComp+'Container', Container);
-app.component('Base'+'GridCell', GridCell);
 app.component(prefixoComp+'Paragrafo', Paragrafo);
 app.component(prefixoComp+'Campo', Campo);
 app.component(prefixoComp+'Selecionavel', Selecionavel);

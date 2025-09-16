@@ -2,7 +2,7 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div 
-  @click.stop="dados ? selecionarComponente(path) : ''" 
+  @mousedown.stop="dados ? selecionarComponente(path) : ''" 
     :class="{componenteItem: true, ativo: ferramentaStore.itemSelecionado?.[idKey] === dados[idKey]}"
   >
     <slot name="edicao" />
@@ -11,7 +11,6 @@
 
 <script setup>
 import { useFerramentaStore } from '@/stores/ferramenta.js';
-import { defineModel} from 'vue';
 import useCms from '@/composables/useCms';
 let dados = defineModel()
 const props = defineProps({

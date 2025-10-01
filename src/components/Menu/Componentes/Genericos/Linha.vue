@@ -6,7 +6,7 @@
     :component-data="{noGutters: true}"
     :item-key="idKey" :group="{ name: 'colunas' }" 
     @click.ctrl.exact="ferramentaStore.selecionarLinha(dados, path)"
-    @mousedown.self.exact="ferramentaStore.selecionarLinha(dados, path)" 
+    @click.self.exact="ferramentaStore.selecionarLinha(dados, path)" 
     :move="validarMovimento" 
     @update="canMove ? itemSort($event, path) : null"
     @add="itemAdd($event, path)"

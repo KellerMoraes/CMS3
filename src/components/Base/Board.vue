@@ -1,16 +1,16 @@
 <template>
-  <div v-if="board" :class="{board: true, ativo: ferramentaStore.itemSelecionado?.[idKey] == board[idKey]}" :id="board.id" ref="draggableBoard" style="min-height: 700px;
+  <div v-if="board" :class="{board: true, ativo: ferramentaStore.itemSelecionado?.[$cms('id')] == board[$cms('id')]}" :id="board.id" ref="draggableBoard" style="min-height: 700px;
   width: 1400px;"  :style="{ transform: `translate(${position.x}px, ${position.y}px)`, zIndex: board.depth }">
     <div class="abas bg-grey-darken-3" >
-      <div class="abaWrap d-flex" ref="abas" :id="board[idKey]" @click.self.exact="ferramentaStore.selecionarBoard(board)">
+      <div class="abaWrap d-flex" ref="abas" :id="board[$cms('id')]" @mousedown.self.exact="ferramentaStore.selecionarBoard(board)">
         <div 
   v-for="(subpage, indexSub) in board.subpaginas" 
-  :key="subpage[idKey]"
+  :key="subpage[$cms('id')]"
   :data-index="indexSub"
-  :id="subpage[idKey]"
-  :data-board-id="board[idKey]"
+  :id="subpage[$cms('id')]"
+  :data-board-id="board[$cms('id')]"
   :class="[
-    'abaSubpages', 'subpage', 'mr-1', 'pa-3', { 'active': board.subpaginaAtivaId == null ? indexSub == 0 :subpage[idKey] === board.subpaginaAtivaId },
+    'abaSubpages', 'subpage', 'mr-1', 'pa-3', { 'active': board.subpaginaAtivaId == null ? indexSub == 0 :subpage[$cms('id')] === board.subpaginaAtivaId },
     {
       'shift-left': shouldShiftLeft(indexSub),
       'shift-right': shouldShiftRight(indexSub)
@@ -28,11 +28,11 @@
     <Draggable 
     :list="props.realSubpagina?.filhos || []"
 
-      :item-key="idKey"
+      :item-key="$cms('id')"
       tag="VContainer"
       :component-data="{fluid: true}"
       class="pr-10 containerSpace content" 
-      :group="{ name: 'linhas' }" @click.self.exact="selecionarContainer(board)"
+      :group="{ name: 'linhas' }" @mousedown.self.exact="selecionarContainer(board)"
       @end="itemMoved" 
       @sort="itemSort($event, [pathBoard])" 
       @remove="itemRemove($event, [pathBoard])" 
@@ -41,14 +41,14 @@
       <template #item="{ element, index }">
         <component 
           :is="'Comp' + element.nome" 
-          :key="element[idKey]"
+          :key="element[$cms('id')]"
           v-model="props.realSubpagina.filhos[index]" 
           :path="[
   pathBoard,
   {
     tipo: element.tipo,
     index,
-    id: element[idKey]
+    id: element[$cms('id')]
   }
 ]"
         />
@@ -60,7 +60,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import Draggable from "vuedraggable";
-import useCms from '@/composables/useCms';
 import { usePaginaStore } from '@/stores/pagina.js';
 import { itemAdd, itemRemove, itemSort, itemMoved } from "@/command/command";
 import { setupBoardDragging } from '@/helpers/interact/interactDragBoard';
@@ -68,10 +67,9 @@ import { setupTabGroup } from '@/helpers/interact/interactDropTabGroup';
 import { useFerramentaStore } from '@/stores/ferramenta.js'
 import { useDragStore } from '@/stores/drag.js'
 import { useEditorStore } from "@/stores/editor";
+import { $cms } from '@/helpers/cmsProviderHelper'
 
 // CMS
-const $cms = useCms();
-const idKey = $cms('id');
 // MODELO
 const ferramentaStore = useFerramentaStore()
 const dragStore = useDragStore()
@@ -137,9 +135,9 @@ function shouldShiftRight(index) {
 function handleTabClick(subpage) {
   if (document.querySelector('.subpage.dragging')) return;
 
-  const indexReal = paginaStore.pagina[$cms('container')].findIndex(p => p[idKey] === subpage[idKey]);
+  const indexReal = paginaStore.pagina[$cms('container')].findIndex(p => p[$cms('id')] === subpage[$cms('id')]);
   // console.log(indexReal)
-  board.value.subpaginaAtiva = board.value.subpaginas.findIndex(s => s[idKey] === subpage[idKey]);
+  board.value.subpaginaAtiva = board.value.subpaginas.findIndex(s => s[$cms('id')] === subpage[$cms('id')]);
   // console.log(board)
 
   if (indexReal !== -1) {

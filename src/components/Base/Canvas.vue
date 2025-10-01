@@ -15,7 +15,7 @@
         width: editorStore.canvas.size.width + 'px',
         height: editorStore.canvas.size.height + 'px'
       }"
-      @click.self.exact="ferramentaStore.removerSelecao()"
+      @mousedown.self.exact="ferramentaStore.removerSelecao()"
     >
     <Board
   v-for="(board, index) in editorStore.canvas.boards"

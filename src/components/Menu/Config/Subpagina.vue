@@ -28,9 +28,9 @@
 import { $cms } from '@/helpers/cmsProviderHelper';
     let editorStore = useEditorStore()
     let ferramentaStore = useFerramentaStore()
-    watch(() => ferramentaStore.itemSelecionado.sp.nome, (novoNome) => {
-  const board = editorStore.canvas.boards.find(p => p[$cms('id')] === ferramentaStore.itemSelecionado.boardId)
-  const subpaginaOriginal = board.subpaginas.find(p => p[$cms('id')] === ferramentaStore.itemSelecionado.sp.id)
+    watch(() => ferramentaStore.itemSelecionado?.sp.nome, (novoNome) => {
+  const board = editorStore.canvas.boards.find(p => p[$cms('id')] === ferramentaStore.itemSelecionado?.boardId)
+  const subpaginaOriginal = board.subpaginas.find(p => p[$cms('id')] === ferramentaStore.itemSelecionado?.sp?.id)
   console.log(subpaginaOriginal)
   if (subpaginaOriginal) {
     subpaginaOriginal.nome = novoNome;

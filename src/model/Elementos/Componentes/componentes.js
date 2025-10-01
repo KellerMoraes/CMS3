@@ -39,7 +39,7 @@ class Paragrafo extends ElementoBase {
           type: "paragraph",
           content: [
             { type: 'text', text: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quaerat ipsam, nihil excepturi quisquam optio minima maiores, natus magni voluptates rem officia perferendis quis! Quia quos veniam nihil! Molestias, quisquam explicabo?',
-               marks: [{type: "textStyle",attrs: { color: "#003d7c", fontSize: "18px" }}, {type: 'fontWeight', attrs:{ weight: 400 }}] 
+               marks: [{type: "textStyle",attrs: { color: "#003d7c", fontSize: "18px", fontFamily: 'Roboto', }}] 
             }],
         }
       ]

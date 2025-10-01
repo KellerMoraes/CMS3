@@ -18,9 +18,11 @@
 <script setup>
 let dados = defineModel()
 import Document from '@tiptap/extension-document'
-import Paragraph from '@tiptap/extension-paragraph'
+import TextAlign from '@tiptap/extension-text-align'
 import { $cms } from '@/helpers/cmsProviderHelper';
 
-const DocParagraphOnly = Document.extend({ content: 'paragraph' })
-const Config = [DocParagraphOnly, Paragraph]
+// const DocParagraphOnly = Document.extend({ content: 'paragraph' })
+const Config = [TextAlign.configure({
+          types: ['paragraph'],
+        }),]
 </script>

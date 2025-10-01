@@ -2,7 +2,7 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div 
-  @mousedown.stop="dados ? selecionarComponente(path) : ''" 
+  @click.stop="dados ? selecionarComponente(path) : ''" 
     :class="{componenteItem: true, ativo: ferramentaStore.itemSelecionado?.[idKey] === dados[idKey]}"
   >
     <slot name="edicao" />
@@ -26,7 +26,6 @@ const $cms = useCms();
 const idKey = $cms('id')
 // VARIAVEIS TEMPLATE
   function selecionarComponente(path) {
-    // console.log(path)
     ferramentaStore.selecionarComponente(dados.value,path)
   }
     

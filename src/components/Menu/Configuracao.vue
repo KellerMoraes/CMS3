@@ -1,19 +1,21 @@
 <template>
-  <v-layout style="display: flex; flex-direction: column; height: 100vh;">
-    <v-app-bar class="px-4" fixed :color="ferramentaStore.corSelecionada">
-      <v-app-bar-title>
-        {{ !paginaAtual.filhos ? ferramentaStore.tipoSelecionado ?? 'Configuração Inicial'
+  <div class="config-wrapper">
+    <!-- Barra fixa -->
+    
+    <!-- Conteúdo scrollável -->
+     <v-toolbar flat dense :color="ferramentaStore.corSelecionada" style="position: sticky; top: 0; z-index: 10;">
+  <v-toolbar-title>
+    {{ !paginaAtual.filhos
+          ? ferramentaStore.tipoSelecionado ?? 'Configuração Inicial'
           : ferramentaStore.tipoSelecionado }}
-      </v-app-bar-title>
-    </v-app-bar>
-
-    <v-main style="flex: 1; overflow-y: auto;">
-      <v-container fluid>
-        <v-expansion-panels
-          v-if="ferramentaStore.tipoSelecionado !== 'Pagina'"
-          v-model="panel"
-          class="mb-1"
-        >
+  </v-toolbar-title>
+</v-toolbar>
+    <div class="config-content">
+      <v-expansion-panels
+        v-if="ferramentaStore.tipoSelecionado !== 'Pagina'"
+        v-model="panel"
+        class="mb-1"
+      >
           <v-expansion-panel :value="1">
             <v-expansion-panel-title
               style="min-height: 50px;"
@@ -72,17 +74,15 @@
           </v-expansion-panel>
         </v-expansion-panels>
 
-        <!-- Configurações dinâmicas -->
-        <MenuConfigPagina v-if="ferramentaStore.tipoSelecionado == 'Pagina'" />
-        <MenuConfigBoard v-if="ferramentaStore.tipoSelecionado == 'Board'" />
-        <MenuConfigCabecalho v-if="ferramentaStore.tipoSelecionado == 'Cabecalho'" />
-        <MenuConfigLinha v-if="ferramentaStore.tipoSelecionado == 'Linha'" />
-        <MenuConfigColuna v-if="ferramentaStore.tipoSelecionado == 'Coluna'" />
-        <MenuConfigComponente v-if="ferramentaStore.tipoSelecionado == 'Componente'" />
-        <MenuConfigSubpagina v-if="ferramentaStore.tipoSelecionado == 'Subpagina'" />
-      </v-container>
-    </v-main>
-  </v-layout>
+      <MenuConfigPagina v-if="ferramentaStore.tipoSelecionado == 'Pagina'" />
+      <MenuConfigBoard v-if="ferramentaStore.tipoSelecionado == 'Board'" />
+      <MenuConfigCabecalho v-if="ferramentaStore.tipoSelecionado == 'Cabecalho'" />
+      <MenuConfigLinha v-if="ferramentaStore.tipoSelecionado == 'Linha'" />
+      <MenuConfigColuna v-if="ferramentaStore.tipoSelecionado == 'Coluna'" />
+      <MenuConfigComponente v-if="ferramentaStore.tipoSelecionado == 'Componente'" />
+      <MenuConfigSubpagina v-if="ferramentaStore.tipoSelecionado == 'Subpagina'" />
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -164,5 +164,16 @@ function acaoEditar(opt) {
   &.transition {
     transition: transform 0.2s;
   }
+}
+.config-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* ocupa a altura toda do container */
+}
+
+.config-content {
+  flex: 1;
+  overflow-y: auto; /* scroll só no conteúdo */
+  padding: 16px;
 }
 </style>

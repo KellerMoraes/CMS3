@@ -10,7 +10,7 @@
     :item-key="idKey"
     :group="{ name: 'componentes' }"
     :component-data="{cols: 12, sm: estrutura}"
-    @mousedown.self.exact="selecionarColuna(dados)"
+    @click.self.exact="selecionarColuna(dados)"
     @end="itemMoved" @update="itemSort($event,path)" @remove="itemRemove($event,path)" @add="itemAdd($event,path)"
     
   >

@@ -20,7 +20,7 @@
         </Pane>
         <Pane min-size="20" style="z-index: 500" :size="userConfigsStore.configBarSize" :max-size="maxConfigBarSize">
           <MenuConfiguracao  />
-          <!-- Seu painel configurador -->
+          <!-- painel configurador -->
         </Pane>
       </Splitpanes>
     </Pane>

@@ -170,7 +170,6 @@ function fecharComponentes() {
 }
 function clonar(item) {
   return criarElemento(item.tipo,{icon: item.icone , group: item.grupo})
-  console.log(item)
   
 }
 function onMove(evt) {

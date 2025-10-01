@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <FontSegment :config="configsList"></FontSegment>
-    <TextSettingsSegment :config="configsList"></TextSettingsSegment>
-    <ColorSegment :config="configsList"></ColorSegment>
-    <DecorationSegment :config="configsList"></DecorationSegment>
+  <div v-if="ferramentaStore.editorConfigs">
+    <FontSegment :config="ferramentaStore.editorConfigs"></FontSegment>
+    <TextSettingsSegment :config="ferramentaStore.editorConfigs"></TextSettingsSegment>
+    <ColorSegment :config="ferramentaStore.editorConfigs"></ColorSegment>
+    <DecorationSegment :config="ferramentaStore.editorConfigs"></DecorationSegment>
   </div>
 </template>
 <script setup>
@@ -13,14 +13,7 @@ import TextSettingsSegment from './TextoSegmento/TextSettingsSegment.vue'
 import ColorSegment from './TextoSegmento/ColorSegment.vue'
 import DecorationSegment from './TextoSegmento/DecorationSegment.vue'
 const ferramentaStore = useFerramentaStore()
-const configsList = ref(null) //todas as configurações presentes neste componente ativo.
-
-
-onMounted(() => {
-  configsList.value = ferramentaStore.editorConfigs.map(obj => obj.name)
-  console.log(configsList.value)
-})
-
+const props = defineProps(["configList"])
 
 </script>
 <style lang="scss">
@@ -36,6 +29,7 @@ onMounted(() => {
 
 .btnAtivo {
   background-color: #ffc107;
+  color: rgb(255, 255, 255);
 }
 
 .disabled {

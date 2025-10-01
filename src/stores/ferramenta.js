@@ -17,6 +17,9 @@ export const useFerramentaStore = defineStore('ferramenta', () => {
   const corSelecionada = ref('#ce0224');
   
   function selecionarItem(item, nivel, path, tipo, cor) {
+    if(tipo !== "Componente"){
+      editorId.value = null
+    }
     itemSelecionado.value = item;
     nivelSelecionado.value = nivel;
     pathSelecionado.value = path;
@@ -175,12 +178,12 @@ const comandoDuplicar = new DuplicarElementoCommand({
     path: pathDestino,
     index:
   !Array.isArray(itemSelecionado.value?.[$cms('container')])
-    ? pathSelecionado.value.at(-1).index + 1
-    : itemSelecionado.value.tipo !== tipoCopiado
+    ? pathSelecionado.value?.at(-1).index + 1
+    : itemSelecionado.value?.tipo !== tipoCopiado
       ? 0
-      : itemSelecionado.value.tipo === 'Componente'
+      : itemSelecionado.value?.tipo === 'Componente'
         ? 0
-        : pathSelecionado.value.at(-1).index + 1,
+        : pathSelecionado.value?.at(-1).index + 1,
   },
 })
 useCommandStore().executar(comandoDuplicar)
@@ -189,6 +192,7 @@ useCommandStore().executar(comandoDuplicar)
 // Variaveis e Funções - RichText
  const editor = ref(null)
  const editorConfigs = ref(null)
+ const editorId = ref(false)
   function setEditor(instance) {
       editor.value = instance
   }
@@ -218,6 +222,7 @@ useCommandStore().executar(comandoDuplicar)
     setEditorConfig,
     editor,
     editorConfigs,
+    editorId,
 
     //richText
   };

@@ -15,12 +15,16 @@ export const useEditorStore = defineStore('editor', () => {
   const canvas = ref({
     boards: [
       criarElemento('Board', {
-        subpaginas: paginaStore.pagina[$cms('container')],
-        posicao: { x: 1800, y: 1800 },
+        subpaginas: JSON.parse(JSON.stringify(paginaStore.pagina[$cms('container')])),
+        posicao: { x: 5000, y: 5000 },
+        subpaginaAtiva:0,
+        subpaginaAtivaId:paginaStore.pagina[$cms('container')][0][$cms('id')],
       })
     ],
-    scale: 0.7,
-    panPosition: {}
+    scale: 0.6,
+    panPosition: {x:0, y:0},
+    size: {height: 10000,width: 10000},
+    offset: { x: 0, y: 0 }
     })
 
 
@@ -29,10 +33,11 @@ export const useEditorStore = defineStore('editor', () => {
       this.opcaoComponenteSelecionado = true
     }
     
-    function adicionarBoard({subpaginas = [],posicao }) {
-      const novoBoard = criarElemento('Board', { subpaginas, posicao });
-      canvas.value.boards.push(novoBoard);
-      return novoBoard;
+    function adicionarBoard({ subpaginas = [], posicao }) {
+      const subpaginasClone = subpaginas.map(sp => JSON.parse(JSON.stringify(sp)))
+      const novoBoard = criarElemento('Board', { subpaginas: subpaginasClone, posicao })
+      canvas.value.boards.push(novoBoard)
+      return novoBoard[$cms('id')]
     }
   function removerBoard(id) {
     const index = canvas.value.boards.findIndex(b => b.id === id);
@@ -40,20 +45,68 @@ export const useEditorStore = defineStore('editor', () => {
       canvas.value.boards.splice(index, 1);
     }
   }
-  function moverSubpaginasEntreBoards(idBoardRemover, idSubpage, idBoardAdicionar , posi = { x: 2600, y: 1800 }){
-    const indexBoardRemove = canvas.value.boards.findIndex(b => b.id === idBoardRemover);
-    const indexSubpage = canvas.value.boards[indexBoardRemove].subpaginas.findIndex(s => s.id === idSubpage);
-   let subPage = canvas.value.boards[indexBoardRemove].subpaginas.splice(indexSubpage,1)
-    if(idBoardAdicionar){
-      const indexBoardAdd = canvas.value.boards.findIndex(b => b.id === idBoardAdicionar);
-      canvas.value.boards[indexBoardAdd].subpaginas.splice(indexBoardRemove,0,subPage[0])
-      if(canvas.value.boards[indexBoardRemove].subpaginas.length == 0){
-        removerBoard(idBoardRemover)
-      }
-    }else{
-      adicionarBoard({subpaginas: subPage, posicao: posi})
+  function subpageManipulationOnBoards(
+    idBoardRemover,
+    idSubpage,
+    idBoardAdicionar,
+    posicao = { x: 2600, y: 1800 },
+    boardExistenteParaCriar = null // <- opcional
+  ) {
+    const boards = canvas.value.boards;
+  
+    const boardRemoverIndex = boards.findIndex(b => b.id === idBoardRemover);
+    if (boardRemoverIndex === -1) return;
+  
+    const boardRemover = boards[boardRemoverIndex];
+    const subpageIndex = boardRemover.subpaginas.findIndex(s => s.id === idSubpage);
+    if (subpageIndex === -1) return;
+  
+    const [subpage] = boardRemover.subpaginas.splice(subpageIndex, 1);
+  
+    let removedEmptyBoard = false;
+    let removedBoardPosition = null;
+  
+    if (boardRemover.subpaginas.length === 0) {
+      removedBoardPosition = boardRemover.posicao;
+      boards.splice(boardRemoverIndex, 1);
+      removedEmptyBoard = true;
     }
-
+  
+    if (idBoardAdicionar) {
+      const boardAdd = boards.find(b => b.id === idBoardAdicionar);
+      if (boardAdd) {
+        boardAdd.subpaginas.push(subpage);
+      }
+    } else {
+      const novoBoard = boardExistenteParaCriar
+        ? boardExistenteParaCriar
+        : criarElemento('Board', {
+            subpaginas: [subpage],
+            posicao
+          });
+  
+          if (!boardExistenteParaCriar) {
+            novoBoard.subpaginas = [subpage];
+            novoBoard.posicao = posicao;
+          
+            // ⬇️ Adicione isso aqui:
+            novoBoard.subpaginaAtiva = 0;
+            novoBoard.subpaginaAtivaId = subpage.id;
+          }
+  
+      boards.push(novoBoard);
+  
+      return {
+        createdBoard: novoBoard,
+        removedEmptyBoard,
+        removedBoardPosition
+      };
+    }
+  
+    return {
+      removedEmptyBoard,
+      removedBoardPosition
+    };
   }
   return {
     canvas,
@@ -63,6 +116,6 @@ export const useEditorStore = defineStore('editor', () => {
     selecionarRecurso,
     adicionarBoard,
     removerBoard,
-    moverSubpaginasEntreBoards
+    subpageManipulationOnBoards
   };
 })

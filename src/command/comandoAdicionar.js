@@ -1,9 +1,9 @@
 import { findItemByPath } from '@/helpers/pathUtil.js';
 import { $cms } from '@/helpers/cmsProviderHelper';
-import _ from 'lodash'
+import { cloneDeep } from 'lodash';
 export default class AdicionarElementoCommand {
   constructor(info) {
-    this.elemento = _.cloneDeep(info.elemento); // Evita mutações inesperadas
+    this.elemento = cloneDeep(info.elemento); // Evita mutações inesperadas
     this.destino = {
       path: info.destino.path,
       index: info.destino.index ?? null,
@@ -14,7 +14,7 @@ export default class AdicionarElementoCommand {
   executar(dados) {
     if (this.eventoNativo) return;
 
-    const listaDestino = findItemByPath(dados, this.destino.path)[$cms('subpages')];
+    const listaDestino = findItemByPath(dados, this.destino.path)[$cms('container')];
 
     if (this.destino.index === null || this.destino.index > listaDestino.length) {
       listaDestino.push(this.elemento);
@@ -24,10 +24,13 @@ export default class AdicionarElementoCommand {
   }
 
   desfazer(dados) {
-    console.log(dados)
-    const listaDestino = findItemByPath(dados, this.destino.path)[$cms('subpages')];
+    console.log(this.destino)
+    const listaDestino = findItemByPath(dados, this.destino.path)[$cms('container')];
     const index = listaDestino.findIndex(e => e[$cms('id')] === this.elemento[$cms('id')]);
-    console.log(index)
+    // console.log(index)
     if (index !== -1) listaDestino.splice(index, 1);
+  }
+  refazer(dados) {
+   this.executar(dados)
   }
 }

@@ -18,7 +18,7 @@
   </div>
   <v-divider vertical inset ></v-divider>
   <div class="d-flex justify-start align-center">
-    Teste
+    Teste 1
   </div>
   <div class="d-flex justify-end align-center mr-8">
     <v-btn @click="teste" color="white" style="border-radius: 5px;" class="px-4"  variant="flat"  height="45px" size="">
@@ -84,7 +84,6 @@ function salvar() {
 }
 
 function exportar(){
-  console.log(paginaStore.pagina)
  let anchor = document.createElement("a")
 anchor.href = `data:text/json;charset=utf-8,${encodeURIComponent(
   JSON.stringify(paginaStore.pagina)

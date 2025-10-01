@@ -6,33 +6,23 @@
       #edicao
     >
       <p
-        :id="dados ? dados[this._cmsProps.id] : ''"
-        @dblclick="habilitarEditavel(dados.conteudo)"
+        :id="dados[$cms('id')] ?? ''"
       >
-        <BaseConteudoEditavel
-          v-model:conteudo="dados.conteudo"
-          v-model:editavel="editavel"
+        <BaseConteudoEditavel v-if="dados" :config="Config"
+          v-model="dados"
         />
-      </p>
-    </template>
-    <template
-      v-else
-      #visualizacao
-    >
-      <!-- componente que será mostrado na lista de adição -->
-      <p :id="''">
-        Parágrafo de Texto
       </p>
     </template>
   </BaseComponenteItem>
 </template>
 <script setup>
-import { useEditorStore } from '@/stores/editor.js';
 let dados = defineModel()
-let editavel = ref(false)
-const editorStore = useEditorStore()
-function habilitarEditavel(valor) {
-      editavel.value = true
-      editorStore.campoSelecionado = valor
-    }
+import Document from '@tiptap/extension-document'
+import TextAlign from '@tiptap/extension-text-align'
+import { $cms } from '@/helpers/cmsProviderHelper';
+
+// const DocParagraphOnly = Document.extend({ content: 'paragraph' })
+const Config = [TextAlign.configure({
+          types: ['paragraph'],
+        }),]
 </script>

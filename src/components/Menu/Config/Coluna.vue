@@ -1,19 +1,25 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <v-expansion-panels
+  <v-expansion-panels class="mb-2"
     v-model="panel"
     multiple
     variant="accordion"
   >
-    <v-expansion-panel :value="1">
-      <v-expansion-panel-title style="min-height: 50px;">
-        <h3>Layout</h3>
+    <v-expansion-panel :value="1" class="mb-1">
+      <v-expansion-panel-title style="min-height: 50px;" class="pl-3" expand-icon="" collapse-icon="">
+        <template #default="{ expanded }">
+      <v-icon class="iconConfig transition" :class="{ 'rotate-90': expanded }">mdi-chevron-right</v-icon>
+      <h2 class="titleConfigFont">Layout</h2>
+    </template>
       </v-expansion-panel-title>
       <BaseDisplayConfig :habilitados="['block', 'flex']"></BaseDisplayConfig>
     </v-expansion-panel>
-    <v-expansion-panel :value="2">
-      <v-expansion-panel-title style="min-height: 50px;">
-        <h3>Espaçamentos</h3>
+    <v-expansion-panel :value="2" class="mb-1">
+      <v-expansion-panel-title style="min-height: 50px;" class="pl-3" expand-icon="" collapse-icon="">
+        <template #default="{ expanded }">
+      <v-icon class="iconConfig transition" :class="{ 'rotate-90': expanded }">mdi-chevron-right</v-icon>
+      <h2 class="titleConfigFont">Espaçamentos</h2>
+    </template>
       </v-expansion-panel-title>
       <v-expansion-panel-text>
         <div class="pa-4">Padding</div>

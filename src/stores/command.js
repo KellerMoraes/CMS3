@@ -2,16 +2,18 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { usePaginaStore } from '@/stores/pagina'
 import { useEditorStore } from '@/stores/editor'
-
+import { $cms } from '@/helpers/cmsProviderHelper';
 export const useCommandStore = defineStore('command', () => {
   const editorStore = useEditorStore()
+  const paginaStore = usePaginaStore()
 
   // Histórico de comandos executados
   const historico = ref([])
   const futuro = ref([])
   const comando = ref({})
 
-  function executar(comando, alvo = editorStore.canvas.boards) {
+  function executar(comando, alvo = paginaStore.pagina) {
+    // console.log(paginaStore.pagina)
     // Verifica se estamos usando um comando com a estrutura correta
     if (!comando || typeof comando.executar !== 'function') {
       console.error('Comando inválido', comando)
@@ -35,21 +37,21 @@ export const useCommandStore = defineStore('command', () => {
     limparComando()
   }
   
-  function desfazer(alvo = editorStore.canvas.boards) {
+  function desfazer(alvo = paginaStore.pagina) {
     const comandoDesfazer = historico.value.pop()
     if (comandoDesfazer && typeof comandoDesfazer.desfazer === 'function') {
       comandoDesfazer.desfazer(alvo)
       futuro.value.push(comandoDesfazer)
-      console.log('Comando desfeito:', comandoDesfazer)
+      // console.log('Comando desfeito:', comandoDesfazer)
     }
   }
   
-  function refazer(alvo = editorStore.canvas.boards) {
+  function refazer(alvo = paginaStore.pagina) {
     const comandoRefazer = futuro.value.pop()
     if (comandoRefazer && typeof comandoRefazer.executar === 'function') {
-      comandoRefazer.executar(alvo)
+      comandoRefazer.refazer(alvo)
       historico.value.push(comandoRefazer)
-      console.log('Comando refeito:', comandoRefazer)
+      // console.log('Comando refeito:', comandoRefazer)
     }
   }
 

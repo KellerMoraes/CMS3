@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <BaseComponenteItem v-model="dados">
     <template
@@ -6,38 +5,21 @@
       #edicao
     >
       <h1
-        :id="dados[idKey] ?? ''"
-        @dblclick="habilitarEditavel(dados.conteudo)"
+        :id="dados[$cms('id')] ?? ''"
       >
-        <BaseConteudoEditavel
-          v-model:conteudo="dados.conteudo"
-          v-model:editavel="editavel"
+        <BaseConteudoEditavel v-if="dados" :config="Config"
+          v-model="dados"
         />
-      </h1>
-    </template>
-    <template
-      v-else
-      #visualizacao
-    >
-      <!-- componente que será mostrado na lista de adição -->
-      <h1 :id="''">
-        Titulo 1
       </h1>
     </template>
   </BaseComponenteItem>
 </template>
 <script setup>
-import { useEditorStore } from '@/stores/editor.js';
-import useCms from '@/composables/useCms';
-// VARIAVEIS TEMPLATE
-const $cms = useCms();
-const idKey = $cms('id')
-// VARIAVEIS TEMPLATE
+
+import Heading from '@tiptap/extension-heading'
+import Document from '@tiptap/extension-document'
+import { $cms } from '@/helpers/cmsProviderHelper';
 let dados = defineModel()
-let editavel = ref(false)
-const editorStore = useEditorStore()
-function habilitarEditavel(valor) {
-      editavel.value = true
-      editorStore.campoSelecionado = valor
-    }
+const DocHeadingOnly = Document.extend({ content: 'heading' })
+const Config = [DocHeadingOnly, Heading.configure({ levels: [1] })]
 </script>

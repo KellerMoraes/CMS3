@@ -1,67 +1,72 @@
-<!-- eslint-disable vue/multi-word-component-names -->
-
 <template>
-  <div>
-    <Editor
-      v-model="dados"
-      :inline="true"
-      height="400"
-      @init="retornaOk()"
-      @blur="desabilitaEdicao()"
-      :disabled="props.desabilitado"
-      :toolbar="''"
-      api-key="fgx0lgv6jj1x2u1vkch05dfg5xcgvty2bmkwxfo6sruujuxu"
-      :init="{
-        language: 'pt_BR',
-        min_height: 400,
-        menubar: false,
-        statusbar: false,
-        toolbar_persist: false,
-        toolbar_mode: 'wrap',
-        fixed_toolbar_container: '.configuracoesComponentes',
-        plugins: 'lists link',
-        toolbar: toolbarCompleta,
-        //  toolbar4: 'alignleft aligncenter alignright',
-        //  toolbar5: 'alignleft aligncenter alignright',
-        //  toolbar6: 'alignleft aligncenter alignright'
-      
-      }"
-    />
-  </div>
+  <EditorContent @dblclick="toggleEditorEditable"  :editor="editor" />
 </template>
+
 <script setup>
-import Editor from '@tinymce/tinymce-vue'
-let dados = defineModel()
-const emit = defineEmits(['completamenteCarregado', "desabilitarEdicao"])
-const props = defineProps({
-  desabilitado: Boolean
+import { Editor, EditorContent } from '@tiptap/vue-3'
+import { $cms } from '@/helpers/cmsProviderHelper';
+import { useFerramentaStore } from '@/stores/ferramenta'
+const editor = ref(null)
+const model = defineModel()
+const props = defineProps(['extensions'])
+const ferramentaStore = useFerramentaStore()
+
+watch(() => model.value[$cms('content')], (val) => {
+  if (val && editor.value && JSON.stringify(val) !== JSON.stringify(editor.value.getJSON())) {
+    editor.value.commands.setContent(val)
+  }
 })
-function retornaOk() {
-  emit('completamenteCarregado')
+
+onMounted(()=>{
+  editor.value = new Editor({
+  extensions: props.extensions,
+  editable: false,
+  content: model.value[$cms('content')], // inicia a partir do JSON salvo
+  onUpdate: ({ editor }) => {
+    model.value[$cms('content')] = editor.getJSON() // sempre salva JSON no v-model
+  },
+})
+  
+})
+watch(() => ferramentaStore.itemSelecionado?.[$cms('id')], (selectedId) => {
+    let selected = selectedId == model.value[$cms('id')]
+    if(selected){
+      if(editor.value){
+        ferramentaStore.setEditor(editor.value)
+      }
+      ferramentaStore.setEditorConfig(props.extensions.map(obj => obj.name))
+      editor.value?.commands.smartSelectAll()
+      // editor.value?.chain().focus().selectAll().run()
+    }else{
+      editor.value?.setEditable(false)
+    }
+},{immediate: true})
+
+function toggleEditorEditable(){
+  editor.value?.setEditable(true)
+  const endPos = editor.value.state.doc.content.size
+editor.value.chain().focus().setTextSelection(endPos).run()
 }
-function desabilitaEdicao() {
-  setTimeout(() => { 
-
-      
-      emit('desabilitarEdicao')
-  },100)
-}
-let toolbarCompleta = [
-    { name: 'formatting', items: [ 'bold', 'italic', 'strikethrough','underline' ] },
-    { name: 'sizes', items: [ 'fontsizeinput', 'fontfamily' ] },
-    { name: 'alignment', items: [ 'alignleft', 'aligncenter', 'alignright', 'alignjustify','outdent', 'indent' ] },
-    { name: 'indentation', items: [ 'lineheight', 'superscript' ] },
-    { name: 'links', items: [ 'link', 'unlink' ] }
-  ]
-  //     let toolbarSimples = [
-  //   { name: 'history', items: [ 'undo', 'redo' ] },
-  //   { name: 'styles', items: [ 'styles' ] },
-  //   { name: 'formatting', items: [ 'bold', 'italic' ] },
-  //   { name: 'alignment', items: [ 'alignleft', 'aligncenter', 'alignright', 'alignjustify' ] },
-  //   { name: 'indentation', items: [ 'outdent', 'indent' ] }
-  // ]
-
-
-
-
+onBeforeUnmount(() => {
+  if(ferramentaStore.itemSelecionado?.[$cms('id')] !== model.value?.[$cms('id')]){
+    editor.value?.destroy()
+    ferramentaStore.setEditor(null)
+    ferramentaStore.setEditorConfig(null)
+  }
+})
 </script>
+<style lang="scss">
+.tiptap.ProseMirror ul,
+.tiptap.ProseMirror ol {
+  list-style-position: outside; /* padrão */
+  padding-left: 1.5em;          /* espaço p/ marcador */
+  margin-left: 0;               /* evita deslocar demais */
+}
+
+.tiptap.ProseMirror {
+  --v-theme-on-surface: initial;
+  --v-theme-on-background: initial;
+  color: inherit;
+}
+
+</style>

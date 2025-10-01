@@ -1,171 +1,249 @@
 <template>
-  <div ref="canvas" class="canvas" >
-    <SystemToolsToolZoom @zoom-emit="onZoomEmit"></SystemToolsToolZoom>
-    <div ref="inner" class="inner-canvas" @click.self.exact="ferramentaStore.removerSelecao()">
-      <Board
-        v-for="(board, index) in editorStore.canvas.boards"
-        :key="board.id"
-        
-        v-model="editorStore.canvas.boards[index]"
-        :path="[{ tipo: 'board', index, id: board.id }]"
-        :scale="scaleRef"
-        
-        :data-board-index="index"
-        :class="{boardComponent: true}"
-      />
+  <div ref="canvas" class="canvas" @wheel="handleWheel">
+  <SystemToolsToolZoom @zoom-emit="onZoomEmit" />
+  
+  <!-- camada intermediária que escala -->
+  <div
+    class="scale-container"
+    :style="{ transform: `scale(${editorStore.canvas.scale})`, transformOrigin: '0 0' }"
+  >
+    <!-- camada que define o tamanho lógico fixo -->
+    <div
+      ref="inner"
+      class="inner-canvas"
+      :style="{
+        width: editorStore.canvas.size.width + 'px',
+        height: editorStore.canvas.size.height + 'px'
+      }"
+      @mousedown.self.exact="ferramentaStore.removerSelecao()"
+    >
+    <Board
+  v-for="(board, index) in editorStore.canvas.boards"
+  :key="board.id"
+  v-model="editorStore.canvas.boards[index]"
+  :realSubpagina="paginaStore.pagina[$cms('container')].find(p => p[$cms('id')] === board.subpaginas[board.subpaginaAtiva]?.[$cms('id')])"
+  :scale="{ getScale: () => editorStore.canvas.scale }"
+  :data-board-index="index"
+  class="boardComponent"
+/>
     </div>
   </div>
+</div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
-import panzoom from 'panzoom'
+import { ref, onMounted, provide, watch, nextTick  } from 'vue'
 import { useEditorStore } from '@/stores/editor.js'
 import { useFerramentaStore } from '@/stores/ferramenta.js'
+import { usePaginaStore } from '@/stores/pagina.js'
 import Board from './Board.vue'
-import { setupCanvasDrop } from '@/helpers/interact/interactDropCanvas';
-import { provide } from 'vue';
+import { setupCanvasDrop } from '@/helpers/interact/interactDropCanvas'
+import { setupTabDragging } from '@/helpers/interact/interactDragTabs'
+import { $cms } from '@/helpers/cmsProviderHelper'
+
 const canvas = ref(null)
 const inner = ref(null)
-const scaleRef = ref({ getScale: () => 0.7 }) // fallback inicial
-const panZoomInstance = ref(null);
+const scale = ref(0.7)
 
+const paginaStore = usePaginaStore()
 const editorStore = useEditorStore()
 const ferramentaStore = useFerramentaStore()
 
 onMounted(() => {
-  setupPanZoom();
+  setupMousePan()
+  setupCanvasDrop(canvas.value, clientToCanvasCoordinates)
+  setupTabDragging('.subpage', clientToCanvasCoordinates, maybeExpandCanvas)
+  // scrollToCanvasPosition(2400, 2400)
   
-  setupCanvasDrop(inner.value, clientToCanvasCoordinates)
-  // Observar mudanças nos boards
-  watch(() => editorStore.canvas.boards.length, () => {
-    // Quando boards são adicionados ou removidos, atualizamos os atributos
-    setTimeout(updateBoardAttributes, 0);
-  });
-});
-function setupPanZoom() {
-   panZoomInstance.value = panzoom(inner.value, {
-    zoomSpeed: 0.2,
-    smoothScroll: false,
-    maxZoom: 2,
-    minZoom: 0.2,
-    zoomDoubleClickSpeed: 1, 
-    initialX: -1012,
-    initialY: -1100,
-    initialZoom: 0.7,
-    bounds: true, // deixe false se quiser sair dos limites
-    beforeWheel: (e) => {
-      editorStore.canvas.scale = panZoomInstance.value.getTransform().scale
-    return !e.ctrlKey},
-    beforeMouseDown: (e) => e.button !== 1,
-  });
-  
-  let isPanning = false;
-  panZoomInstance.value.moveBy(-700, -800, true);
-  
-  const handleMouseMove = (e) => {
-    if (isPanning) {
-      e.preventDefault();
-      panZoomInstance.value.moveBy(e.movementX, e.movementY, false);
-    }
-  };
-
-  const handleMouseDown = (e) => {
-    if (e.button === 1) {
-      isPanning = true;
-      e.preventDefault();
-      canvas.value.style.cursor = 'grabbing';
-    }
-  };
-
-  const handleMouseUp = (e) => {
-    if (e.button === 1) {
-      isPanning = false;
-      canvas.value.style.cursor = 'default';
-    }
-  };
-
-  canvas.value.addEventListener('mousedown', handleMouseDown);
-  window.addEventListener('mousemove', handleMouseMove);
-  window.addEventListener('mouseup', handleMouseUp);
-
-  scaleRef.value.getScale = () => panZoomInstance.value.getTransform().scale;
-  
-  // Atualizar atributos dos boards
-  updateBoardAttributes();
-}
-async function onZoomEmit(action) {
-  let targetZoom = 1
-  
-  if (action === '+') {
-    targetZoom = 0.5;
-  } else if (action === '-') {
-    targetZoom = 1.5;
-  } else {
-    targetZoom = 1;
-  }
- panZoomInstance.value.smoothZoom(
-    canvas.value.getBoundingClientRect().width / 2,
-    canvas.value.getBoundingClientRect().height / 2,
-    targetZoom
-  );
-  setTimeout(()=>{
-    editorStore.canvas.scale = panZoomInstance.value.getTransform().scale;
-  },450)
-
-}
-function updateBoardAttributes() {
-  // Adicionar atributos de dados aos elementos .board
-  const boardElements = document.querySelectorAll('.board-component');
+  watch(
+    () => editorStore.canvas.boards.length,
+    () => setTimeout(()=>{
+      const boardElements = document.querySelectorAll('.board-component')
   boardElements.forEach((el, index) => {
-    el.setAttribute('data-board-index', index);
-  });
+    el.setAttribute('data-board-index', index)
+  })
+    }, 0)
+  )
+  setTimeout(()=>{
+    if(editorStore.canvas.panPosition.x == 0){
+      // let boardWidth = (2000 * editorStore.canvas.scale) / 2
+      // let boardHeight = (1700 * editorStore.canvas.scale) / 2
+      let bRect = document.querySelector("#"+editorStore.canvas.boards[0].id).getBoundingClientRect()
+      // console.log(bRect.width / 2)
+      scrollToCanvasPosition(editorStore.canvas.boards[0].posicao.x + bRect.width / 2, editorStore.canvas.boards[0].posicao.y + bRect.height / 2)
+    }else{
+      scrollToCanvasPosition(editorStore.canvas.panPosition.x, editorStore.canvas.panPosition.y)
+    }
+  },10)
+})
+
+
+function setupMousePan() {
+  let isPanning = false
+
+  canvas.value.addEventListener('mousedown', (e) => {
+    if (e.button === 1) {
+      isPanning = true
+      canvas.value.style.cursor = 'grabbing'
+      e.preventDefault()
+    }
+  })
+
+  window.addEventListener('mousemove', (e) => {
+    if (isPanning) {
+      // console.log(canvas.value.scrollLeft)
+      canvas.value.scrollLeft -= e.movementX
+      canvas.value.scrollTop -= e.movementY
+    }
+  })
+
+  window.addEventListener('mouseup', (e) => {
+    if (e.button === 1) {
+      isPanning = false
+      canvas.value.style.cursor = 'default'
+    }
+  })
 }
 
-// Função para converter coordenadas do cliente para coordenadas do canvas
-// Útil para posicionar novos boards quando subpáginas são destacadas
+function onZoomEmit(action) {
+  // função para dar zoom através do popup de zoom
+  if (action === '+') zoomTo(editorStore.canvas.scale + 0.2)
+  else if (action === '-') zoomTo(editorStore.canvas.scale - 0.2)
+else zoomTo(1)
+}
+
+function handleWheel(event) {
+  // função para dar zoom através do scroll do mouse
+  if (event.ctrlKey) {
+    event.preventDefault()
+    const delta = -event.deltaY
+    const zoomFactor = 0.0015
+    const newScale = Math.min(Math.max(editorStore.canvas.scale + delta * zoomFactor, 0.1), 2)
+    zoomTo(newScale, event.clientX, event.clientY)
+  }
+}
+
+function updateCanvasSize() {
+  const padding = 200
+  let width = 0
+  let height = 0
+
+  for (const board of editorStore.canvas.boards) {
+    const right = board.posicao.x + 1400
+    const bottom = board.posicao.y + 700
+    width = Math.max(width, right)
+    height = Math.max(height, bottom)
+  }
+
+  const minWidth = 10000
+  const minHeight = 10000
+
+  editorStore.canvas.size.width = Math.max(width + padding, minWidth)
+  editorStore.canvas.size.height = Math.max(height + padding, minHeight)
+}
+
 function clientToCanvasCoordinates(clientX, clientY) {
-  if (!canvas.value || !panZoomInstance.value) return { x: 0, y: 0 };
-  
-  const rect = canvas.value.getBoundingClientRect();
-  const scale = panZoomInstance.value.getTransform().scale;
-  const offsetX = panZoomInstance.value.getTransform().x;
-  const offsetY = panZoomInstance.value.getTransform().y;
-  
-  const x = (clientX - rect.left - offsetX) / scale;
-  const y = (clientY - rect.top - offsetY) / scale;
-  
-  return { x, y };
+  const rect = canvas.value.getBoundingClientRect()
+  const scrollLeft = canvas.value.scrollLeft
+  const scrollTop = canvas.value.scrollTop
+
+  return {
+    x: (clientX - rect.left + scrollLeft) / editorStore.canvas.scale,
+    y: (clientY - rect.top + scrollTop) / editorStore.canvas.scale
+  }
 }
 
-// Expor métodos úteis
-provide('clientToCanvasCoordinates', clientToCanvasCoordinates);
-defineExpose({
-  clientToCanvasCoordinates,
-  getScale: () => scaleRef.value.getScale()
-});
-</script>
+function zoomTo(newScale, clientX = null, clientY = null) {
+  const wrapper = canvas.value
+  const rect = wrapper.getBoundingClientRect()
 
+  const centerX = clientX !== null ? clientX - rect.left : rect.width / 2
+  const centerY = clientY !== null ? clientY - rect.top : rect.height / 2
+
+  const scrollX = wrapper.scrollLeft
+  const scrollY = wrapper.scrollTop
+
+  const offsetX = (scrollX + centerX) / editorStore.canvas.scale
+  const offsetY = (scrollY + centerY) / editorStore.canvas.scale
+
+  editorStore.canvas.scale = newScale
+
+  wrapper.scrollLeft = offsetX * newScale - centerX
+  wrapper.scrollTop = offsetY * newScale - centerY
+  // Atualiza com base nas posições reais dos boards, não só o viewport
+  nextTick(() => {
+    updateCanvasSize()
+  })
+}
+
+function scrollToCanvasPosition(x, y) {
+  const canvasRect = canvas.value.getBoundingClientRect()
+  const offsetX = editorStore.canvas.offset.x || 0
+  const offsetY = editorStore.canvas.offset.y || 0
+
+  const scrollX = (x + offsetX) * editorStore.canvas.scale - canvasRect.width / 2
+  const scrollY = (y + offsetY) * editorStore.canvas.scale - canvasRect.height / 2
+  // console.log(scrollX)
+  // console.log(scrollY)
+  canvas.value.scrollTo({
+    left: scrollX,
+    top: scrollY,
+    behavior: 'smooth'
+  })
+}
+
+
+function maybeExpandCanvas(x, y) {
+  const padding = 100
+  const wrapper = canvas.value
+  const scaleFactor = editorStore.canvas.scale
+
+  const visibleWidth = wrapper.clientWidth / scaleFactor
+  const visibleHeight = wrapper.clientHeight / scaleFactor
+
+  const scrollX = wrapper.scrollLeft / scaleFactor
+  const scrollY = wrapper.scrollTop / scaleFactor
+
+  const rightLimit = scrollX + visibleWidth
+  const bottomLimit = scrollY + visibleHeight
+
+  const needsRightExpansion = x + padding > rightLimit
+  const needsBottomExpansion = y + padding > bottomLimit
+  if (needsRightExpansion) {
+    const extra = x + padding - rightLimit
+    editorStore.canvas.size.width += extra
+  }
+
+  if (needsBottomExpansion) {
+    const extra = y + padding - bottomLimit
+    editorStore.canvas.size.height += extra
+  }
+
+}
+
+provide('expandCanvas', maybeExpandCanvas)
+provide('updateExpand', updateCanvasSize)
+provide('clientToCanvasCoordinates', clientToCanvasCoordinates)
+
+</script>
 <style scoped>
 .canvas {
-  /* width: 100vw; */
-  /* height:  calc(100vh - 138px - 64px); */
   height: 100%;
-  overflow: auto; /* importante para o panzoom não sair da tela */
+  overflow: auto;
   position: relative;
-  /* margin-top: 64px; */
   margin-left: 70px;
   cursor: default;
 }
+
+.scale-container {
+  transform-origin: 0 0;
+}
+
+.inner-canvas {
+  position: relative;
+}
 .ativo{
   border: 2px #ce0224 solid;
-}
-.inner-canvas {
-  width: 5000px;
-  height: 5000px;
-  /* transform-origin: 0 0;
-  background-image: repeating-linear-gradient(0deg, #ccc 0, #ccc 2px, #ededed 3px, #efefef00 100px),
-                    repeating-linear-gradient(90deg, #ccc 0, #ccc 4px, #efefef00 5px, transparent 100px); */
 }
 .dropzone {
   background-color: #bfe4ff;

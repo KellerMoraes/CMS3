@@ -1,6 +1,6 @@
 {
-  "name": "vuetify-project",
-  "version": "0.0.0",
+  "name": "cms3",
+  "version": "3.0.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,6 +11,17 @@
     "@mdi/font": "7.0.96",
     "@panzoom/panzoom": "^4.5.1",
     "@tinymce/tinymce-vue": "^5.1.1",
+    "@tiptap/extension-color": "^3.4.2",
+    "@tiptap/extension-font-family": "^3.4.3",
+    "@tiptap/extension-list": "^3.6.1",
+    "@tiptap/extension-strike": "^3.6.1",
+    "@tiptap/extension-subscript": "^3.6.1",
+    "@tiptap/extension-superscript": "^3.6.1",
+    "@tiptap/extension-text-align": "^3.5.1",
+    "@tiptap/extension-text-style": "^3.4.2",
+    "@tiptap/extension-underline": "^3.6.1",
+    "@tiptap/starter-kit": "^3.4.1",
+    "@tiptap/vue-3": "^3.4.1",
     "core-js": "^3.34.0",
     "date-fns": "^4.1.0",
     "lodash": "^4.17.21",
@@ -22,7 +33,6 @@
     "splitpanes": "^4.0.3",
     "vue": "^3.4.0",
     "vue-interactjs": "^0.1.10",
-    "vue3-dropzone": "^2.2.1",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {

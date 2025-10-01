@@ -1,0 +1,14 @@
+FROM node
+
+WORKDIR /app
+
+# # Copia arquivos de dependências
+COPY package*.json ./
+
+# # Instala dependências
+RUN npm install
+
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev", "--", "--host"]

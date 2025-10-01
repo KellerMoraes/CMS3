@@ -26,7 +26,6 @@
 
 import Draggable from "vuedraggable";
 import { useFerramentaStore } from '@/stores/ferramenta.js';
-import { defineModel } from 'vue';
 import useCms from '@/composables/useCms';
 // Command-pattern imports 
 import { itemAdd, itemRemove, itemSort, itemMoved } from "@/command/command";

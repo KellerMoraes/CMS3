@@ -20,7 +20,7 @@
         </Pane>
         <Pane min-size="20" style="z-index: 500" :size="userConfigsStore.configBarSize" :max-size="maxConfigBarSize">
           <MenuConfiguracao  />
-          <!-- Seu painel configurador -->
+          <!-- painel configurador -->
         </Pane>
       </Splitpanes>
     </Pane>
@@ -134,9 +134,9 @@ function enableTextSelection() {
    height: 100%;
    width: 100%;
  }
-//  .telasDivisao{
-//   height: calc(95vh - 100px);
-//  }
+ .telasDivisao{
+z-index: 500;
+}
  
  .abas{
   width: 100%;

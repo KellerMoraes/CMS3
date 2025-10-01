@@ -14,8 +14,9 @@ import { useCommandStore } from '@/stores/command';
 
 
 export function itemAdd(evt, path) {
+  // console.log(path)
    const commandStore = useCommandStore();
-   if (evt.from.classList.contains('listaDeComponentes')) {
+   if (evt.from.classList.contains('listaDeComponentes') || evt.from.classList.contains('quickAccessGroup')) {
      // se a origem do elemento é a "listaDeComponentes"
      // OU SEJA NÃO REMOVE DE LUGAR NENHUM, SÓ ADICIONA
      commandStore.criarComando('elemento', evt.item._underlying_vm_);
@@ -34,6 +35,7 @@ export function itemAdd(evt, path) {
   
   export function itemRemove(evt, path) {
   const commandStore = useCommandStore();
+  // console.log(path)
   commandStore.criarComando('origem', { path, index: evt.oldIndex });
 }
 
@@ -58,7 +60,6 @@ export function itemMoved() {
   
   // Se for um movimento entre linhas (tipo == 'linha'), cria um comando composto
   if (itemDestino?.tipo === 'linha') {
-    console.log("3")
     const comandoMover = new MoverElementoCommand(comando);
 
     const comandoAtualizaEstruturaDestino = new EditarElementoCommand({
@@ -90,23 +91,19 @@ export function itemMoved() {
 
 
 
-
 export function itemSort(evt, path) {
-  if (evt.from.classList.contains('listaDeComponentes')) return;
+  // ✅ Não executa se origem e destino são diferentes (drag entre containers)
+  if (evt.from !== evt.to) return;
 
   const commandStore = useCommandStore();
+  commandStore.limparComando();
+
   commandStore.criarComando('origem', { path, index: evt.oldIndex });
   commandStore.criarComando('destino', { path, index: evt.newIndex });
-  commandStore.criarComando('itemId', evt.item._underlying_vm_['id']);
+  commandStore.criarComando('item', evt.item._underlying_vm_);
   commandStore.criarComando('eventoNativo', true);
 
-  if (
-    commandStore.comando.destino &&
-    commandStore.comando.origem &&
-    commandStore.comando.itemId
-  ) {
-    commandStore.executar(new MoverElementoCommand(commandStore.comando));
-  }
+  commandStore.executar(new MoverElementoCommand(commandStore.comando));
 }
 
 /**

@@ -1,31 +1,59 @@
-<!-- eslint-disable vue/multi-word-component-names -->
-<!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <!-- basicamente resolver o problema do flick por causa do v-if   -->
-        <BaseEditor :style="pronto ? 'display: unset' : 'display: none'" @completamenteCarregado="carregado()" @desabilitarEdicao="editavel = false"  :desabilitado="!editavel" v-model="conteudo"></BaseEditor>
-        <!-- <span :style="pronto && editavel ? 'display: none' : 'display: unset'" v-html="conteudo"></span> -->
+  <!-- caso o texto não possa ser editado (garantir drag segurando no texto) -->
+  <!-- <div v-if="ferramentaStore?.itemSelecionado?.[$cms('id')] !== model[$cms('id')]" v-html="generateHTML()"></div>  -->
+  <!-- else -->
+   <!-- && ferramentaStore?.itemSelecionado?.[$cms('id')] == model[$cms('id')]" -->
+  <BaseEditor v-if="model"
+         v-model="model" :extensions="extensionFilter()">
+         </BaseEditor>
 </template>
-
-<style>
-.comp{
-  background-color: bisque;
-}
-</style>
 <script setup>
-let conteudo = defineModel('conteudo')
-let editavel = defineModel('editavel')
-let pronto = ref(false)
-function carregado() {
-  pronto.value = true
-    }
-</script>
+import { StarterKit } from '@tiptap/starter-kit'
+import Underline from '@tiptap/extension-underline'
+import Strike from '@tiptap/extension-strike'
+import Subscript from '@tiptap/extension-subscript'
+import Superscript from '@tiptap/extension-superscript'
 
-<style>
-.editavelHabilitado{
-  border: 2px black solid;
-  border-radius: 5px;
-}
-.editavelDesabilitado{
-  border: none;
-}
+import { FontWeight, TextTransform,SmartSelectAll } from "@/helpers/richtext"
+import { TextStyleKit, Color  } from '@tiptap/extension-text-style'
+
+
+const model = defineModel()
+const props = defineProps(['config','extensionException'])
+// extensions vai ser todos os estilos mais comum para todos os elementos de texto, 
+
+  function extensionFilter(){
+        // extension map remover alguma exceção props.extensionException
+        if(props.extensionException){
+                return extensions.filter(()=>{})
+        }
+     return extensions
+  }
+
+const extensions = 
+  [
+    ...props.config,
+    StarterKit,
+    Subscript,
+    Superscript,
+    Underline,
+    Strike,
+    FontWeight,
+    TextTransform,
+    SmartSelectAll,
+    TextStyleKit //pacote com, BackgroundColor, Color ,FontFamily ,FontSize ,LineHeight
+  ]
+//   function generateHTML(){
+// const tempEditor = new Editor({
+//   extensions: extensions,
+//   editable: false,
+//   content: model.value[$cms('content')], // seu objeto JSON do tiptap
+// })
+// html.value = tempEditor.getHTML()
+// tempEditor.destroy()
+// return html.value
+//   }
+</script>
+<style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&family=Staatliches&display=swap');
 </style>
